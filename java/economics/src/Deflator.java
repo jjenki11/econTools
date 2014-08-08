@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public class Deflator {
-
+/*
 	
 	
 void Deflator(){
@@ -138,5 +138,5 @@ for(int i = 0; i <= the_list.size(); i++){
 }
     	
     	
-    	
+  */  	
 }

@@ -444,17 +444,17 @@ public class Economy {
 	        			 b.disposedIndex;    */
 	        	 //System.out.println(text);
 	            
-	            if(tree.get(b.cusip) != null){
-	            	tree.get(b.cusip).add(b);
+	            if(tree.get(b.cusip) != null){ //the cusip has a prior entry
+	            	tree.get(b.cusip).add(b); // so add the new entry to the bk tree
 
 	            	
 	            	System.out.println("BK FIRM: "+b.cusip+" has "+tree.get(b.cusip).size()+" entries.");	
 	            	bankruptCount++;
 	            }
-	            else{
-	            	ArrayList<Bankrupcy> l = new ArrayList<Bankrupcy>();
-	            	l.add(b);	  
-	            	tree.put(b.cusip, l);
+	            else{ //we havent seen this cusip yet
+	            	ArrayList<Bankrupcy> l = new ArrayList<Bankrupcy>(); //make a new list to insert with the cusip
+	            	l.add(b);	  	//add the bk to the new list
+	            	tree.put(b.cusip, l);	//put <cusip, ArrayList<Bankrupcy>> key,value pair into tree
 	            	System.out.println("NEW BK");
 	            	bankruptCount++;
 	            }
@@ -469,7 +469,7 @@ public class Economy {
 		}	    
 		System.out.println("Reading bankrupcy data: done!");
 		
-		setBKTree(tree);
+		setBKTree(tree); //this sets the 
 	}	
 	
 	public BTree<Integer,ArrayList<Merger>> getSuccessMATree(){

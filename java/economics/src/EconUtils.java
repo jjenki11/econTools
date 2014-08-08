@@ -85,11 +85,12 @@ public class EconUtils
 		return counts;
 	}
 	
-	public void writeList( String filename, String text ) throws IOException{
+	public boolean writeList( String filename, String text ) throws IOException{
     	Writer out = new BufferedWriter(new FileWriter(filename, true));
     	out.append(text);
     	out.write("\r\n");
-    	out.close();				
+    	out.close();	
+    	return true;
 	}	
 	
 	public ArrayList<String> readList( String filename ){
@@ -185,7 +186,7 @@ public class EconUtils
 		writeList(filename, dM2.get(f.datadate)+", "+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic+ ","+qM2.get(dM2.get(f.datadate)));				
 	}
 	
-	public boolean writeIfFound(Economy Eco, ArrayList<String> list, Firm f, String foundFile) throws IOException{
+	public boolean writeIfFound(Economy Eco, ArrayList<String> list, Firm f, String[] foundFiles) throws IOException{
 
 		String txt = "";
 		//for(int i = 0;i<list.size();i++){
@@ -211,17 +212,29 @@ public class EconUtils
 					if( (Eco.bankTree.get(f.cusip).get(j).filedIndex <= dM2.get(f.datadate)) &&
 					   (Eco.bankTree.get(f.cusip).get(j).disposedIndex >= dM2.get(f.datadate)) ){
 						*/
+						
+					boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(dM2.get(f.datadate));
 					
-						if(Eco.bankTree.get(f.cusip).get(j).withinBankrupcyNow(dM2.get(f.datadate)))
+					txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1));
+					
+					boolean[] y = {
+									(x[0] && writeList(foundFiles[0], txt)),
+									(x[1] && writeList(foundFiles[1], txt)),
+									(x[2] && writeList(foundFiles[2], txt)),
+									(x[3] && writeList(foundFiles[3], txt)),	
+									(x[4] && writeList(foundFiles[4], txt))
+					};
+					
+						//if(Eco.bankTree.get(f.cusip).get(j).withinBankrupcyNow(dM2.get(f.datadate)))
 					//	if(withinDateRange(	dM2.get(f.datadate),
 					//						Eco.bankTree.get(f.cusip).get(j).filedIndex,
 					///						Eco.bankTree.get(f.cusip).get(j).disposedIndex))
-						{
-						txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate)));
+						//{
+						//txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1));
 						//write to file if within date filed and date disposedW
-						writeList(foundFile, txt);
-						return true;
-					}
+						//writeList(foundFiles, txt);
+						//return true;
+					//}
 						
 				}
 				

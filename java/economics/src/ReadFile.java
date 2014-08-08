@@ -17,10 +17,10 @@ public class ReadFile {
 		
 		//input filenames
 		System.out.println("first file");
-		String bankrupcies = "src\\brd_data_set2b.txt";
+		String bankrupcies = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\brd_data_set2b.txt";
 		//String successfulMergers = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\sdc_processing\\m_a_data_success.txt";
 		//String failedMergers = "";
-		String bkCusipFile = "src\\brd_cusips.txt";
+		String bkCusipFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\brd_cusips.txt";
 		//String taCusipFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\target_cusip.txt";		
 		//String acCusipFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\acquirer_cusip.txt";	
 		//String maCusipFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\ma_cusip.txt";
@@ -28,14 +28,26 @@ public class ReadFile {
 		//String tgtCusips = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\target_data_reduced.txt";
 		
 		//db filenames
-		String filename = "src\\crsp_quarterly_and_yearly_large.txt";				
+		String filename = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\crsp_quarterly_and_yearly_large.txt";				
 		
 		//output filenames
-		String bkOutputFile = "src\\bk_k_tq_qtr.txt";		
+		String bkOutputFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\bk_k_tq_qtr.txt";		
+		String bkBeforeFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\bk_before.txt";	
+		String bkDuringFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\bk_during.txt";
+		String bkAfterFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\bk_after.txt";
+		String bkEverFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\bk_ever.txt";
 		//String tgOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\tg_k_tq_qtr.txt";		
 		//String maOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\ma_k_tq_qtr.txt";		
-		//String acOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\aq_k_tq_qtr.txt";		
-		String gcOutputFile = "src\\gc_k_tq_qtr.txt";		
+		//String acOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\aq_k_tq_qtr.txt";			
+		String gcOutputFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\gc_firms.txt";
+		
+		String[] outputFileArray = {
+				bkBeforeFile,
+				bkDuringFile,
+				bkAfterFile,
+				bkEverFile,
+				gcOutputFile
+		};
 		
 		E = util.readCRSP(E, filename);		
 		System.out.println("Creating Economy Table: done!");		
@@ -94,21 +106,9 @@ System.out.println(E.AllFirms.size());
 	 f = new Firm();		 
 	 f = E.AllFirms.get(idx);
 	 float perDone = (float)((float)idx/(float)E.AllFirms.size())*(float)100;
-	 System.out.println(perDone+" %  |  BK : "+bkCount+"  |  GC: "+gcCount /*+ "  |  TG: "+tgCount + "  |  AQ: "+aqCount*/);	 
-	// found = util.writeIfFound(bkList, f, bkOutputFile);
-	 if(util.writeIfFound(E, bkList, f, bkOutputFile))
-		 bkCount++;
-	// else if(util.writeIfFound(targetList, f, tgOutputFile))
-		// tgCount++;
-	 //else if(util.writeIfFound(acquirerList, f, acOutputFile))
-		// aqCount++;
-	 else{
-		 util.writeUnconditionally(f, gcOutputFile);
-		 gcCount++;	 
-	 }
-	// found = util.writeIfFound(targetList, f, tgOutputFile);
-	// found = util.writeIfFound(acquirerList, f, acOutputFile);	 	
-	idx++; 	
+	 System.out.println(perDone+" %  |  BK : "+bkCount+"  |  GC: "+gcCount /*+ "  |  TG: "+tgCount + "  |  AQ: "+aqCount*/);	
+	 util.writeIfFound(E, bkList, f, outputFileArray);	 	
+	 idx++; 	
  }
  System.out.println("NUM UNIQUE BK: "+bkUniqueSize);
  System.out.println("NUM FOUND BK OVERALL"+bkFoundSize);
@@ -118,7 +118,7 @@ System.out.println(E.AllFirms.size());
  System.out.println("NUM UNIQUE MA: "+ (aqCount + tgCount));
  System.out.println("Done writing files!");
 //now filter all the categories by date in institution
-String outFolder = "src\\";
+String outFolder = "";
 String bkFiltered = "bankrupcy.txt";
 String tgFiltered = "target.txt";
 String aqFiltered = "acquirer.txt";
