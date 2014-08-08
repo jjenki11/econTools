@@ -99,15 +99,24 @@ System.out.println(E.AllFirms.size());
  boolean found = false;
  Mapping m2= new Mapping();
  m2.quartermap();
- //System.exit(0);
+ //System.exit(0)
+ int[] counter = {0,0,0,0,0};
  
  while(idx<E.AllFirms.size())
  {	
 	 f = new Firm();		 
 	 f = E.AllFirms.get(idx);
 	 float perDone = (float)((float)idx/(float)E.AllFirms.size())*(float)100;
-	 System.out.println(perDone+" %  |  BK : "+bkCount+"  |  GC: "+gcCount /*+ "  |  TG: "+tgCount + "  |  AQ: "+aqCount*/);	
-	 util.writeIfFound(E, bkList, f, outputFileArray);	 	
+	 int[] xx =  util.writeIfFound(E, bkList, f, outputFileArray);
+	 counter[0] += xx[0];	 
+	 counter[1] += xx[1];	
+	 counter[2] += xx[2];	
+	 counter[3] += xx[3];
+	 counter[4] += xx[4];	
+	 
+	 System.out.println(perDone+" %  |  BK(before) : "+counter[0]+"  |  BK(during): "+counter[1] +
+			 					"    |  BK(after) : "+counter[2]+"    |  BK(ever): "+counter[3] +
+			 					"    |  GC(always) :"+counter[4]/*+ "  |  TG: "+tgCount + "  |  AQ: "+aqCount*/);	
 	 idx++; 	
  }
  System.out.println("NUM UNIQUE BK: "+bkUniqueSize);

@@ -186,9 +186,10 @@ public class EconUtils
 		writeList(filename, dM2.get(f.datadate)+", "+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic+ ","+qM2.get(dM2.get(f.datadate)));				
 	}
 	
-	public boolean writeIfFound(Economy Eco, ArrayList<String> list, Firm f, String[] foundFiles) throws IOException{
+	public int[] writeIfFound(Economy Eco, ArrayList<String> list, Firm f, String[] foundFiles) throws IOException{
 
 		String txt = "";
+		int[] count = {0,0,0,0,0};
 		//for(int i = 0;i<list.size();i++){
 			//if found at all 
 			//if ( (boolean)list.get(i).equals(f.cusip) ){
@@ -224,6 +225,11 @@ public class EconUtils
 									(x[3] && writeList(foundFiles[3], txt)),	
 									(x[4] && writeList(foundFiles[4], txt))
 					};
+					for(int k = 0;k<y.length;k++){
+						if(y[k])
+							count[k] = 1;
+					}
+
 					
 						//if(Eco.bankTree.get(f.cusip).get(j).withinBankrupcyNow(dM2.get(f.datadate)))
 					//	if(withinDateRange(	dM2.get(f.datadate),
@@ -242,7 +248,7 @@ public class EconUtils
 			}
 			//if found in range
 		}
-		return false;
+		return count;
 	}	
 
 	public void setEconomy(Economy e){
