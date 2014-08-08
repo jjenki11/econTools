@@ -17,10 +17,11 @@ public class ReadFile {
 		
 		//input filenames
 		System.out.println("first file");
-		String bankrupcies = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\brd_data_set2b.txt";
+		
+		String bankrupcies = "C:\\Users\\Jeff\\workspace\\economics\\src\\brd_data_set2b.txt";
 		//String successfulMergers = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\sdc_processing\\m_a_data_success.txt";
 		//String failedMergers = "";
-		String bkCusipFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\brd_cusips.txt";
+		String bkCusipFile = "C:\\Users\\Jeff\\workspace\\economics\\src\\brd_cusips.txt";
 		//String taCusipFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\target_cusip.txt";		
 		//String acCusipFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\acquirer_cusip.txt";	
 		//String maCusipFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\ma_cusip.txt";
@@ -28,18 +29,18 @@ public class ReadFile {
 		//String tgtCusips = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\target_data_reduced.txt";
 		
 		//db filenames
-		String filename = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\crsp_quarterly_and_yearly_large.txt";				
+		String filename = "C:\\Users\\Jeff\\workspace\\economics\\src\\crsp_quarterly_and_yearly_large.txt";				
 		
 		//output filenames
-		String bkOutputFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\bk_k_tq_qtr.txt";		
-		String bkBeforeFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\bk_before.txt";	
-		String bkDuringFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\bk_during.txt";
-		String bkAfterFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\bk_after.txt";
-		String bkEverFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\bk_ever.txt";
+		String bkOutputFile = "C:\\Users\\Jeff\\workspace\\economics\\src\\bk_k_tq_qtr.txt";		
+		String bkBeforeFile = "C:\\Users\\Jeff\\workspace\\economics\\src\\results\\bk_before.txt";	
+		String bkDuringFile = "C:\\Users\\Jeff\\workspace\\economics\\src\\results\\bk_during.txt";
+		String bkAfterFile = "C:\\Users\\Jeff\\workspace\\economics\\src\\results\\bk_after.txt";
+		String bkEverFile = "C:\\Users\\Jeff\\workspace\\economics\\src\\results\\bk_ever.txt";
 		//String tgOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\tg_k_tq_qtr.txt";		
 		//String maOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\ma_k_tq_qtr.txt";		
 		//String acOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\aq_k_tq_qtr.txt";			
-		String gcOutputFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\gc_firms.txt";
+		String gcOutputFile = "C:\\Users\\Jeff\\workspace\\economics\\src\\results\\gc_firms.txt";
 		
 		String[] outputFileArray = {
 				bkBeforeFile,

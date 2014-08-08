@@ -86,7 +86,7 @@ public class Bankrupcy {
 	
 	// before BK within range checker boolean ; variable range size :CHANGE
 	public boolean BankrupcyBefore (int datadate, int years) {
-		if ((filedIndex - datadate < (years*365)) && (filedIndex - datadate >= 0 )) {
+		if (((filedIndex - datadate) < (years*365)) && ((filedIndex - datadate) >= 0 )) {
 			return true; 
 		}
 		return false;
@@ -94,7 +94,7 @@ public class Bankrupcy {
 	
 	//after BK within range checker boolean ; variable range size : CHANGE
 	public boolean BankrupcyAfter (int datadate, int years) {
-		if ((disposedIndex - datadate >= 0) && (datadate - disposedIndex < (years*365))) {
+		if (((disposedIndex - datadate) >= 0) && ((disposedIndex - datadate) < (years*365))) {
 			return true;
 		}
 		return false;
