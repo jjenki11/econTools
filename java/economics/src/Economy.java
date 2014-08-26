@@ -27,6 +27,29 @@ public class Economy {
 	public BTree<String,ArrayList<Bankrupcy>> bankTree; 
 	public BTree<String,ArrayList<Firm>> firmTree;
 	
+	// add category specific trees and create trees for intersection of those trees
+	
+	//public BTree <String,Btree> int , BTree > String, ArrayList<Firm>>> BKGCalwaysComp ;//
+	
+	//public BTree<String, BTree<String, BTree<String, ArrayList<Firm>>>> bigTree = new BTree<String, BTree<String, BTree<String, ArrayList<Firm>>>>();
+	
+	//ArrayList<Firm> firmList = bigTree.get("SIC").get("BKNOW").get("1");
+	
+	//public Btree <String, withinBanrupcyNow > ;
+	//public void Bankrupcy(BTree<String, ArrayList<Firm>> bt1){
+		
+		
+		
+	//}
+	
+	public BTree<String,ArrayList<Firm>> sicTree;
+	
+	public BTree<String,ArrayList<Firm>> categoryTree;
+	
+	public BTree<Integer,ArrayList<Firm>> quarterTree;
+	
+	
+	
 //	Describe data in terms of bk, tgt, acq, gc
 		int goingconcernCount = 0;
 		int targetCount = 0;
@@ -55,6 +78,10 @@ public class Economy {
 		targetTree = new BTree<String,ArrayList<Firm>>();
 		acquirerTree = new BTree<String,ArrayList<Firm>>();		
 		goingConcernTree = new BTree<String,ArrayList<Firm>>();		
+		sicTree = new BTree<String,ArrayList<Firm>>();
+		categoryTree = new BTree<String,ArrayList<Firm>>();
+		quarterTree = new BTree<Integer,ArrayList<Firm>>();
+		
 	}
 	
 	public ArrayList<String> setupTarget(String filename){
@@ -448,14 +475,14 @@ public class Economy {
 	            	tree.get(b.cusip).add(b); // so add the new entry to the bk tree
 
 	            	
-	            	System.out.println("BK FIRM: "+b.cusip+" has "+tree.get(b.cusip).size()+" entries.");	
+	            	//System.out.println("BK FIRM: "+b.cusip+" has "+tree.get(b.cusip).size()+" entries.");	
 	            	bankruptCount++;
 	            }
 	            else{ //we havent seen this cusip yet
 	            	ArrayList<Bankrupcy> l = new ArrayList<Bankrupcy>(); //make a new list to insert with the cusip
 	            	l.add(b);	  	//add the bk to the new list
 	            	tree.put(b.cusip, l);	//put <cusip, ArrayList<Bankrupcy>> key,value pair into tree
-	            	System.out.println("NEW BK");
+	            	//System.out.println("NEW BK");
 	            	bankruptCount++;
 	            }
 	            

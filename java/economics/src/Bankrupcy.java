@@ -74,17 +74,20 @@ public class Bankrupcy {
 		disposedIndex=-1;
 		confirmedIndex=-1;		
 	}
-	// within BKnow daterange checker boolean :CHANGE ; what about no filedindex but there is disposedindex for beginning of file
+	// within BKnow daterange checker boolean : ADDED third possibility for beginning of period where already in but no filedindex
 	
 	public boolean withinBankrupcyNow(int datadate){
 		if( ( (datadate >= filedIndex) && (datadate <= disposedIndex))
-		|| ((datadate >= filedIndex) && (disposedIndex == 0)) ) {
+		|| ((datadate >= filedIndex) && (disposedIndex == 0))
+		|| ((datadate <= disposedIndex) && (filedIndex == 0 ))
+		
+		) {
 			return true;
 		}		
 		return false;
 	}
 	
-	// before BK within range checker boolean ; variable range size :CHANGE
+	// before BK within range checker boolean ; 
 	public boolean BankrupcyBefore (int datadate, int years) {
 		if (((filedIndex - datadate) < (years*365)) && ((filedIndex - datadate) >= 0 )) {
 			return true; 
@@ -92,18 +95,19 @@ public class Bankrupcy {
 		return false;
 	}
 	
-	//after BK within range checker boolean ; variable range size : CHANGE
+	//after BK within range checker boolean ; FLIPPED around datadate and disposedindex to make it right
 	public boolean BankrupcyAfter (int datadate, int years) {
-		if (((disposedIndex - datadate) >= 0) && ((disposedIndex - datadate) < (years*365))) {
+		if (((datadate - disposedIndex) >= 0) && ((datadate - disposedIndex) < (years*365))) {
 			return true;
 		}
 		return false;
 	
 	}
 	
-	// boolean checker for BK ever in whole data range
+	// boolean checker for BK ever in whole data range: ADDED disposed index
 	public boolean withinBankrupcyEver(int datadate){
-		if(filedIndex != -1){
+		if ((filedIndex != -1)
+		|| (disposedIndex != -1)) {
 			return true;
 		}		
 		return false;
@@ -116,7 +120,8 @@ public class Bankrupcy {
 	 * index		description
 	 *   0			  before bankruptcy filed
 	 *   1			  during bankruptcy
-	 *   2			  after bankruptcy disposed
+	 *   2			  af
+	 *   ter bankruptcy disposed
 	 *   3			  ever in bankruptcy
 	 *   4			  never in bankruptcy
 	 * 

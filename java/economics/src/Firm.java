@@ -10,6 +10,9 @@ public class Firm
 	boolean TA;
 	boolean AQ;
 	boolean BK;
+	
+	String category;
+	
 	String gvkey;
 	String datadate;
 	String fyearq;
@@ -150,6 +153,14 @@ public class Firm
 		}
 		
 		return tmp;
+	}
+	
+	public boolean setCategory(String c){
+		category = c;
+		return true;
+	}
+	public String getCategory(){
+		return category;
 	}
 	
 	

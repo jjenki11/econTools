@@ -157,11 +157,18 @@ public class EconUtils
 	        		fList = new ArrayList<Firm>();
 	        		fList.add(firm);
 	        		E.firmTree.put(firm.cusip, fList);
-	        	}
-	        	
-	        	else{
+	        	} else{
 	        		E.firmTree.get(firm.cusip).add(firm);
 	        		E.firmTree.put(firm.cusip, E.firmTree.get(firm.cusip));
+	        	}
+	        	
+	        	if(E.sicTree.get(firm.sic)==null){
+	        		fList = new ArrayList<Firm>();
+	        		fList.add(firm);
+	        		E.sicTree.put(firm.sic, fList);
+	        	} else {
+	        		E.sicTree.get(firm.sic).add(firm);
+	        		E.sicTree.put(firm.sic, E.sicTree.get(firm.sic));
 	        	}
 	        	
 	        	//
@@ -194,54 +201,72 @@ public class EconUtils
 			//if found at all 
 			//if ( (boolean)list.get(i).equals(f.cusip) ){
 				
-				
+				ArrayList<Firm> tmp;
 		for(int i = 0; i<Eco.bankTree.size();i++){
 			if(Eco.bankTree.get(f.cusip) != null){
 				//found == true if also within date range.
 				
-				for(int j = 0;j<Eco.bankTree.get(f.cusip).size();j++){
-
-				//	if((Eco.bankTree.get(f.cusip).get(j).filedIndex == 0) ||
-				//			Eco.bankTree.get(f.cusip).get(j).disposedIndex == 0){
-						//return false;
-						
-				//	}
-					//System.out.println("Filed index: " + Eco.bankTree.get(f.cusip).get(j).filedIndex);
-					//System.out.println("Data index: " +dM2.get(f.datadate));
-					//System.out.println("Disposed index: " +Eco.bankTree.get(f.cusip).get(j).disposedIndex);
-					/*
-					if( (Eco.bankTree.get(f.cusip).get(j).filedIndex <= dM2.get(f.datadate)) &&
-					   (Eco.bankTree.get(f.cusip).get(j).disposedIndex >= dM2.get(f.datadate)) ){
-						*/
-						
+				for(int j = 0;j<Eco.bankTree.get(f.cusip).size();j++){						
 					boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(dM2.get(f.datadate));
+					//boolean xx = (x[0] && f.setCategory("BEFORE"));
+					//xx = ( x[1] && f.setCategory("DURING"));
+					//xx = ( x[2] && f.setCategory("AFTER"));
+					//xx = ( x[4] && (f.setCategory("NEVER")));
 					
-					txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1));
+					txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
 					
 					boolean[] y = {
 									(x[0] && writeList(foundFiles[0], txt)),
-									(x[1] && writeList(foundFiles[1], txt)),
+									(x[1] &&  writeList(foundFiles[1], txt)),
 									(x[2] && writeList(foundFiles[2], txt)),
-									(x[3] && writeList(foundFiles[3], txt)),	
+									//(x[3] && writeList(foundFiles[3], txt)),	
 									(x[4] && writeList(foundFiles[4], txt))
-					};
+					};					
+					// check to see 
+					
+					if(y[0]){
+						if(Eco.categoryTree.get("BEFORE") != null){
+							Eco.categoryTree.get("BEFORE").add(f);
+							//System.out.println("BEFORE ADDED");
+						} else {
+						tmp = new ArrayList<Firm>();
+						tmp.add(f);
+						Eco.categoryTree.put("BEFORE", tmp);
+						}
+					} else if(y[1]) {
+						if(Eco.categoryTree.get("DURING") != null){
+							Eco.categoryTree.get("DURING").add(f);
+							//System.out.println("DURING ADDED");
+						}
+						tmp = new ArrayList<Firm>();
+						tmp.add(f);
+						Eco.categoryTree.put("DURING", tmp);
+					} else if(y[2]) {
+						if(Eco.categoryTree.get("AFTER") != null){
+							Eco.categoryTree.get("AFTER").add(f);
+							System.out.println("AFTER ADDED");
+						} else {
+							tmp = new ArrayList<Firm>();
+							tmp.add(f);
+							Eco.categoryTree.put("AFTER", tmp);
+						}
+					} else if(y[3]) {
+						if(Eco.categoryTree.get("NEVER") != null){
+							Eco.categoryTree.get("NEVER").add(f);
+							//System.out.println("NEVER ADDED");
+						} else {
+							tmp = new ArrayList<Firm>();
+							tmp.add(f);
+							//Eco.categoryTree.put("NEVER", tmp);
+						}
+					} else {
+						System.out.println("DONT KNOW");
+					}
+					
 					for(int k = 0;k<y.length;k++){
 						if(y[k])
 							count[k] = 1;
 					}
-
-					
-						//if(Eco.bankTree.get(f.cusip).get(j).withinBankrupcyNow(dM2.get(f.datadate)))
-					//	if(withinDateRange(	dM2.get(f.datadate),
-					//						Eco.bankTree.get(f.cusip).get(j).filedIndex,
-					///						Eco.bankTree.get(f.cusip).get(j).disposedIndex))
-						//{
-						//txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1));
-						//write to file if within date filed and date disposedW
-						//writeList(foundFiles, txt);
-						//return true;
-					//}
-						
 				}
 				
 							
