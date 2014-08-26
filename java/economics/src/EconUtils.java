@@ -9,12 +9,12 @@ import java.util.List;
 
 public class EconUtils 
 {
-	
+	String mapFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\quarters.txt";
 	 Mapping m2= new Mapping();
 	 BTree<String, Integer> dM2 = m2.dateMap();
-	 BTree<Integer, Integer> qM2 = m2.quartermap();
+	 BTree<Integer, Integer> qM2 = m2.quartermap(mapFile);
 		Mapping map = new Mapping();
-		BTree<Integer, Integer> qtrmap = map.quartermap();
+		BTree<Integer, Integer> qtrmap = map.quartermap(mapFile);
  	 Economy utilEcon;
 	public EconUtils(){
 		System.out.println("econ utils made");
@@ -226,7 +226,8 @@ public class EconUtils
 		String txt = "";
 		int[] count = {0,0,0,0,0};				
 		ArrayList<Firm> tmp;
-		boolean[] xxx = {false,false,false,false};
+		//boolean[] y = null;
+		boolean[] y = {false,false,false,false};
 		if(Eco.bankTree.get(f.cusip) != null){
 			for(int j = 0;j<Eco.bankTree.get(f.cusip).size();j++){						
 				boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(dM2.get(f.datadate));
@@ -238,13 +239,13 @@ public class EconUtils
 				};
 				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
 				
-				boolean[] y = {
-					(x[0] && writeList(foundFiles[0], txt)),
-					(x[1] &&  writeList(foundFiles[1], txt)),
-					(x[2] && writeList(foundFiles[2], txt)),
-					(x[3] && writeList(foundFiles[4], txt))
-				};			
-				xxx = y;
+				//y = {
+				y[0] =	(x[0] && writeList(foundFiles[0], txt));
+				y[1] =	(x[1] &&  writeList(foundFiles[1], txt));
+				y[2] =	(x[2] && writeList(foundFiles[2], txt));
+				y[3] =	(x[3] && writeList(foundFiles[4], txt));
+				//};			
+				//xxx = y;
 				
 				if(y[0]){						
 					if(Eco.categoryTree.get("BEFORE") != null){
@@ -270,22 +271,22 @@ public class EconUtils
 						tmp.add(f);
 						Eco.categoryTree.put("AFTER", tmp);
 					}						
-				} else {
+				} else if(y[3]) {				
+					//xxx[3] = true;
+					if(Eco.categoryTree.get("NEVER") != null){
+						Eco.categoryTree.get("NEVER").add(f);
+					} else {
+						tmp = new ArrayList<Firm>();
+						tmp.add(f);
+						Eco.categoryTree.put("NEVER", tmp);
+					}								
+				}{
 					System.out.println("DONT KNOW");
 				}				
 			}							
-		} else {				
-			xxx[3] = true;
-			if(Eco.categoryTree.get("NEVER") != null){
-				Eco.categoryTree.get("NEVER").add(f);
-			} else {
-				tmp = new ArrayList<Firm>();
-				tmp.add(f);
-				Eco.categoryTree.put("NEVER", tmp);
-			}								
 		}
-		for(int k = 0;k<xxx.length;k++){
-			if(xxx[k])
+		for(int k = 0;k<y.length;k++){
+			if(y[k])
 				count[k] = 1;
 		}
 		return count;
