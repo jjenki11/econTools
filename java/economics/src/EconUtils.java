@@ -210,7 +210,7 @@ public class EconUtils
 	        	//}	
 	        }
 	        in.close();
-	        System.exit(0);
+	        //System.exit(0);
 	    } catch (IOException e) {
 	        System.out.println("File Read Error");
 	    }		
