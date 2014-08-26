@@ -116,9 +116,11 @@ public class EconUtils
 	public Economy readCRSP( Economy E , String filename )
 	{
 		System.out.println("REadcrsp");
-		Firm firm;
+		Firm firm = null;
 		ArrayList<Firm> fList;
 		String[] values;
+		ArrayList<String> sics = new ArrayList<String>();
+		ArrayList<Integer> qtrs = new ArrayList<Integer>();
 	    try {
 	        BufferedReader in = new BufferedReader(new FileReader(filename));
 	        String str;
@@ -153,6 +155,7 @@ public class EconUtils
 	        	firm.Equity_book_value=values[21];   
 	        	firm.Tobins_Q=values[22];	
 	        	
+	        	//build firm tree
 	        	if(E.firmTree.get(firm.cusip)==null){
 	        		fList = new ArrayList<Firm>();
 	        		fList.add(firm);
@@ -162,16 +165,27 @@ public class EconUtils
 	        		E.firmTree.put(firm.cusip, E.firmTree.get(firm.cusip));
 	        	}
 	        	
+	        	// build quarter tree
+	        	if(E.quarterTree.get(qtrmap.get(dM2.get(firm.datadate))) == null){
+	        		fList = new ArrayList<Firm>();
+	        		fList.add(firm);
+	        		E.quarterTree.put(qtrmap.get(dM2.get(firm.datadate)), fList);
+	        		qtrs.add(qtrmap.get(dM2.get(firm.datadate)));
+	        	} else {
+	        		E.quarterTree.get(qtrmap.get(dM2.get(firm.datadate))).add(firm);
+	        		E.quarterTree.put(qtrmap.get(dM2.get(firm.datadate)), E.quarterTree.get(qtrmap.get(dM2.get(firm.datadate))));
+	        	}
+	        	
+	        	// build sic tree
 	        	if(E.sicTree.get(firm.sic)==null){
 	        		fList = new ArrayList<Firm>();
 	        		fList.add(firm);
 	        		E.sicTree.put(firm.sic, fList);
+	        		sics.add(firm.sic);
 	        	} else {
 	        		E.sicTree.get(firm.sic).add(firm);
 	        		E.sicTree.put(firm.sic, E.sicTree.get(firm.sic));
 	        	}
-	        	
-	        	//
 	        	
 	        	E.AllFirms.add(firm);	        	
 	        	if(E.AllFirms2.get(firm.cusip)!= null){
@@ -180,9 +194,23 @@ public class EconUtils
 	        	else{
 	        		E.AllFirms2.put(firm.cusip, firm);
 	        	}
+	        	
 	        	//System.out.println(E.AllFirms2.get(firm.cusip).cusip+" now has "+(E.AllFirms2.get(firm.cusip).entries.size()+1)+" entry(s)!");
 	        }
+	        //print out all firms grouped by sic
+	        for(int j = 0; j < sics.size(); j++){
+	        	//for(int i = 0; i < E.sicTree.get(sics.get(j)).size(); i++){	        		
+	        		System.out.println("Firm entry for SIC " + sics.get(j) + ": "+ E.sicTree.get(sics.get(j)).get(0).cusip);
+	        	//}	
+	        }
+	        //print out all firms grouped by quarter
+	        for(int j = 0; j < qtrs.size(); j++){
+	        	//for(int i = 0; i < E.quarterTree.get(qtrs.get(j)).size(); i++){
+	        		System.out.println("Firm entry for QUARTER " + qtrs.get(j) + ": "+ E.quarterTree.get(qtrs.get(j)).get(0).cusip);
+	        	//}	
+	        }
 	        in.close();
+	        System.exit(0);
 	    } catch (IOException e) {
 	        System.out.println("File Read Error");
 	    }		
@@ -196,82 +224,69 @@ public class EconUtils
 	public int[] writeIfFound(Economy Eco, ArrayList<String> list, Firm f, String[] foundFiles) throws IOException{
 
 		String txt = "";
-		int[] count = {0,0,0,0,0};
-		//for(int i = 0;i<list.size();i++){
-			//if found at all 
-			//if ( (boolean)list.get(i).equals(f.cusip) ){
+		int[] count = {0,0,0,0,0};				
+		ArrayList<Firm> tmp;
+		boolean[] xxx = {false,false,false,false};
+		if(Eco.bankTree.get(f.cusip) != null){
+			for(int j = 0;j<Eco.bankTree.get(f.cusip).size();j++){						
+				boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(dM2.get(f.datadate));
+				boolean[] xx = {
+					(x[0] && f.setCategory("BEFORE")),
+					(x[1] && f.setCategory("DURING")),
+					(x[2] && f.setCategory("AFTER")),
+					(x[3] && f.setCategory("NEVER"))
+				};
+				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
 				
-				ArrayList<Firm> tmp;
-		for(int i = 0; i<Eco.bankTree.size();i++){
-			if(Eco.bankTree.get(f.cusip) != null){
-				//found == true if also within date range.
+				boolean[] y = {
+					(x[0] && writeList(foundFiles[0], txt)),
+					(x[1] &&  writeList(foundFiles[1], txt)),
+					(x[2] && writeList(foundFiles[2], txt)),
+					(x[3] && writeList(foundFiles[4], txt))
+				};			
+				xxx = y;
 				
-				for(int j = 0;j<Eco.bankTree.get(f.cusip).size();j++){						
-					boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(dM2.get(f.datadate));
-					//boolean xx = (x[0] && f.setCategory("BEFORE"));
-					//xx = ( x[1] && f.setCategory("DURING"));
-					//xx = ( x[2] && f.setCategory("AFTER"));
-					//xx = ( x[4] && (f.setCategory("NEVER")));
-					
-					txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
-					
-					boolean[] y = {
-									(x[0] && writeList(foundFiles[0], txt)),
-									(x[1] &&  writeList(foundFiles[1], txt)),
-									(x[2] && writeList(foundFiles[2], txt)),
-									//(x[3] && writeList(foundFiles[3], txt)),	
-									(x[4] && writeList(foundFiles[4], txt))
-					};					
-					// check to see 
-					
-					if(y[0]){
-						if(Eco.categoryTree.get("BEFORE") != null){
-							Eco.categoryTree.get("BEFORE").add(f);
-							//System.out.println("BEFORE ADDED");
-						} else {
+				if(y[0]){						
+					if(Eco.categoryTree.get("BEFORE") != null){
+						Eco.categoryTree.get("BEFORE").add(f);
+					} else {
 						tmp = new ArrayList<Firm>();
 						tmp.add(f);
 						Eco.categoryTree.put("BEFORE", tmp);
-						}
-					} else if(y[1]) {
-						if(Eco.categoryTree.get("DURING") != null){
-							Eco.categoryTree.get("DURING").add(f);
-							//System.out.println("DURING ADDED");
-						}
+					}
+				} else if(y[1]) {						
+					if(Eco.categoryTree.get("DURING") != null){
+						Eco.categoryTree.get("DURING").add(f);
+					} else {
 						tmp = new ArrayList<Firm>();
 						tmp.add(f);
 						Eco.categoryTree.put("DURING", tmp);
-					} else if(y[2]) {
-						if(Eco.categoryTree.get("AFTER") != null){
-							Eco.categoryTree.get("AFTER").add(f);
-							System.out.println("AFTER ADDED");
-						} else {
-							tmp = new ArrayList<Firm>();
-							tmp.add(f);
-							Eco.categoryTree.put("AFTER", tmp);
-						}
-					} else if(y[3]) {
-						if(Eco.categoryTree.get("NEVER") != null){
-							Eco.categoryTree.get("NEVER").add(f);
-							//System.out.println("NEVER ADDED");
-						} else {
-							tmp = new ArrayList<Firm>();
-							tmp.add(f);
-							//Eco.categoryTree.put("NEVER", tmp);
-						}
+					}
+				} else if(y[2]) {						
+					if(Eco.categoryTree.get("AFTER") != null){
+						Eco.categoryTree.get("AFTER").add(f);
 					} else {
-						System.out.println("DONT KNOW");
-					}
-					
-					for(int k = 0;k<y.length;k++){
-						if(y[k])
-							count[k] = 1;
-					}
-				}
-				
-							
-			}
-			//if found in range
+						tmp = new ArrayList<Firm>();
+						tmp.add(f);
+						Eco.categoryTree.put("AFTER", tmp);
+					}						
+				} else {
+					System.out.println("DONT KNOW");
+				}				
+			}							
+		} else {				
+			xxx[3] = true;
+			if(Eco.categoryTree.get("NEVER") != null){
+				Eco.categoryTree.get("NEVER").add(f);
+			} else {
+				tmp = new ArrayList<Firm>();
+				tmp.add(f);
+				Eco.categoryTree.put("NEVER", tmp);
+			}								
+		}
+		for(int k = 0;k<xxx.length;k++){
+			if(xxx[k])
+				count[k] = 1;
 		}
 		return count;
 	}	
@@ -284,9 +299,12 @@ public class EconUtils
 		if(dM2.get(date) != null){
 			return (dM2.get(date));
 		}
-			System.out.println("BAD VALUE: "+ date);
-		
+		System.out.println("BAD VALUE: "+ date);		
 		return -1;
+	}
+	
+	public void printSICTree(Economy e){
+			System.out.println(e.sicTree.toString());
 	}
 
 }

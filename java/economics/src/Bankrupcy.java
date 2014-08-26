@@ -120,8 +120,7 @@ public class Bankrupcy {
 	 * index		description
 	 *   0			  before bankruptcy filed
 	 *   1			  during bankruptcy
-	 *   2			  af
-	 *   ter bankruptcy disposed
+	 *   2			  after bankruptcy disposed
 	 *   3			  ever in bankruptcy
 	 *   4			  never in bankruptcy
 	 * 
@@ -132,8 +131,8 @@ public class Bankrupcy {
 		state[0] = BankrupcyBefore(data, 2); 			// if firm is in BK now
 		state[1] = withinBankrupcyNow(data); 			// if firm is preceding BK
 		state[2] = BankrupcyAfter(data,2); 				// if firm emerges out of BK
-		state[3] = (state[0] || state[1] || state[2]); 	// if firm is ever in BK		
-		state[4] = !state[3];							// if firm was never in BK, GC
+		//state[3] = (state[0] || state[1] || state[2]); 	// if firm is ever in BK		
+		state[3] = !(state[0] || state[1] || state[2]);							// if firm was never in BK, GC
 		return state;
 	}
 	

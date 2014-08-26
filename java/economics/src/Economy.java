@@ -86,16 +86,12 @@ public class Economy {
 	
 	public ArrayList<String> setupTarget(String filename){
 		ArrayList<String> tList = new ArrayList<String>();
-		
-		
 		return tList;		
 		
 	}
 	
 	public ArrayList<String> setupAcquirer(String filename){
-		ArrayList<String> aList = new ArrayList<String>();
-		
-		
+		ArrayList<String> aList = new ArrayList<String>();		
 		return aList;
 	}
 	
@@ -363,17 +359,13 @@ public class Economy {
 	
 	
 	*/
-	public void doBankrupcy(String filename)
-	{
+	public void doBankrupcy(String filename){
 		
-		
-//		Read in bankrupcy
 		BTree<String,ArrayList<Bankrupcy>> tree = new BTree<String,ArrayList<Bankrupcy>>();
 		Bankrupcy b;
 	 	String text="";		
 
-		String[] v = new String[26];
-		
+		String[] v = new String[26];		
 
 		try {
 		    BufferedReader in = new BufferedReader(new FileReader(filename));
@@ -433,7 +425,7 @@ public class Economy {
 	            else{
 	            	 b.disposedIndex = dM.get(b.dateDisposed);
 	            }
-	            /*
+	            /**
 	            String text2 ="";
 	            text2= b.cusip+","+b.SIC+","+b.chapter+","+b.daysIn+","+b.filedIndex+","+b.effectiveIndex;
 	        	 text=	b.XNameCorp+","+
@@ -472,9 +464,7 @@ public class Economy {
 	        	 //System.out.println(text);
 	            
 	            if(tree.get(b.cusip) != null){ //the cusip has a prior entry
-	            	tree.get(b.cusip).add(b); // so add the new entry to the bk tree
-
-	            	
+	            	tree.get(b.cusip).add(b); // so add the new entry to the bk tree	            	
 	            	//System.out.println("BK FIRM: "+b.cusip+" has "+tree.get(b.cusip).size()+" entries.");	
 	            	bankruptCount++;
 	            }
@@ -486,7 +476,7 @@ public class Economy {
 	            	bankruptCount++;
 	            }
 	            
-	            System.out.println(b.filedIndex);
+	           // System.out.println(b.filedIndex);
 	           // BT.put(b.cusip, )
 		    	//bankrupcyList.add(b);
 		    }		    
@@ -515,8 +505,7 @@ public class Economy {
 		return mergeTree;
 	}
 	
-	public void setTGTree(BTree<String,ArrayList<Merger>> f){
-	
+	public void setTGTree(BTree<String,ArrayList<Merger>> f){	
 		tarTree = f;
 	}
 	public void setAQTree(BTree<String,ArrayList<Merger>> f){
