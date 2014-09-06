@@ -129,13 +129,13 @@ public class Economy {
 	            
 	            b.merge = "yes";
 	            if(dM.get(b.dateAnnounced) == null){
-	            	b.announcedIndex = -1;
+	            	b.announcedIndex = 0;
 	            }
 	            else{
 	            	b.announcedIndex = dM.get(b.dateAnnounced);
 	            }
 	            if(dM.get(b.dateEffective) == null){
-	            	b.effectiveIndex = -1;
+	            	b.effectiveIndex = 0;
 	            	b.daysIn = 10957-b.announcedIndex;
 	            }
 	            else{
@@ -382,45 +382,45 @@ public class Economy {
 	            		);
 	           
 	            if(dM.get(b.date363sale) == null){
-	            	b._363Index = -1;	            	
+	            	b._363Index = 0;	            	
 	            }
 	            else{
 	            	b._363Index = dM.get(b.date363sale);
 	            }
 	            if(dM.get(b.dateConfirmed) == null){
-	            	b.confirmedIndex = -1;
+	            	b.confirmedIndex = 0;
 	            }
 	            else{
 	            	b.confirmedIndex = dM.get(b.dateConfirmed);
 	            }
 	            if(dM.get(b.dateConvDismiss) == null){
-	            	b.convDismissedIndex = -1;
+	            	b.convDismissedIndex = 0;
 	            }
 	            else{
 	            	b.convDismissedIndex = dM.get(b.dateConvDismiss);
 	            }
 	            if(dM.get(b.dateEffective) == null){
-	            	b.effectiveIndex = -1;
+	            	b.effectiveIndex = 0;
 	            }
 	            else{
 	            	b.effectiveIndex = dM.get(b.dateEffective);
 	            }
 	            if(dM.get(b.dateEmerging) == null){
-	            	b.emergingIndex = -1;
+	            	b.emergingIndex = 0;
 	            }
 	            else{
 	            	b.emergingIndex = dM.get(b.dateEmerging);
 	            }
 	            
 	            if(dM.get(b.dateFiled) == null){
-	            	b.filedIndex = -1;
+	            	b.filedIndex = 0;
 	            }
 	            else{
 	            	///System.out.println(b.dateFiled+" | INDEX FOUND: "+dM.get(b.dateFiled));	            	
 	            	b.filedIndex = dM.get(b.dateFiled);
 	            }
 	            if(dM.get(b.dateDisposed) == null){
-	            	b.disposedIndex = -1;
+	            	b.disposedIndex = 0;
 	            }
 	            else{
 	            	 b.disposedIndex = dM.get(b.dateDisposed);

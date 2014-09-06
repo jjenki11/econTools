@@ -280,7 +280,7 @@ public class EconUtils
 						tmp.add(f);
 						Eco.categoryTree.put("NEVER", tmp);
 					}								
-				}{
+				} else {
 					System.out.println("DONT KNOW");
 				}				
 			}							

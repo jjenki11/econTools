@@ -74,7 +74,7 @@ public class Mapping {
 		BTree<String,Integer> cusipMap =new BTree<String,Integer>();
 
 		String[] values=new String[2];
-		String filename = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\cusip_map.txt";
+		//String filename = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\cusip_map.txt";
 		//String filename1 = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\acquirer_data_reduced.txt";
 		//String filename2 = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\bankrupcyreduced.txt";
 		//String filename3 = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\target_data_reduced.txt";

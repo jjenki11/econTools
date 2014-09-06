@@ -69,10 +69,10 @@ public class Bankrupcy {
 		filedIndex=0;disposedIndex=0;_363Index=0;confirmedIndex=0;effectiveIndex=0;emergingIndex=0;
 	}
 	Bankrupcy(){
-		filedIndex=-1;
-		effectiveIndex=-1;
-		disposedIndex=-1;
-		confirmedIndex=-1;		
+		filedIndex = 0;
+		effectiveIndex = 0;
+		disposedIndex = 0;
+		confirmedIndex = 0;		
 	}
 	// within BKnow daterange checker boolean : ADDED third possibility for beginning of period where already in but no filedindex
 	
@@ -106,8 +106,8 @@ public class Bankrupcy {
 	
 	// boolean checker for BK ever in whole data range: ADDED disposed index
 	public boolean withinBankrupcyEver(int datadate){
-		if ((filedIndex != -1)
-		|| (disposedIndex != -1)) {
+		if ((filedIndex == 0)
+		|| (disposedIndex == 0)) {
 			return true;
 		}		
 		return false;
@@ -136,9 +136,9 @@ public class Bankrupcy {
 		return state;
 	}
 	
-	public void addBKNOWToList(Bankrupcy bank){
-		bankrupcyList.add(bank);
-	}
+	//public void addBKNOWToList(Bankrupcy bank){
+	//	bankrupcyList.add(bank);
+	//}
 	public void addBKBEFORETolist (Bankrupcy bank){
 		bankrupcyList.add(bank);
 	}		
