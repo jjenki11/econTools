@@ -26,7 +26,9 @@ public class Economy {
 	public BTree<String,ArrayList<Merger>> acqTree;
 	public BTree<String,ArrayList<Bankrupcy>> bankTree; 
 	public BTree<String,ArrayList<Firm>> firmTree;
-	
+	public BTree<String,ArrayList<Firm>> BeforeTree;
+	public BTree<String,ArrayList<Firm>> DuringTree;
+	public BTree<String,ArrayList<Firm>> AfterTree;
 	// add category specific trees and create trees for intersection of those trees
 	
 	//public BTree <String,Btree> int , BTree > String, ArrayList<Firm>>> BKGCalwaysComp ;//
@@ -57,6 +59,7 @@ public class Economy {
 		int bankruptCount = 0;	
 		Mapping m = new Mapping();
 		BTree<String, Integer> dM = m.dateMap();	
+		BTree<Integer, Integer> qM = m.quartermap("C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\quarters.txt");
 	
 	public Economy(){
 
@@ -81,6 +84,10 @@ public class Economy {
 		sicTree = new BTree<String,ArrayList<Firm>>();
 		categoryTree = new BTree<String,ArrayList<Firm>>();
 		quarterTree = new BTree<Integer,ArrayList<Firm>>();
+
+		BeforeTree = new BTree<String,ArrayList<Firm>>();
+		DuringTree = new BTree<String,ArrayList<Firm>>();
+		AfterTree = new BTree<String,ArrayList<Firm>>();
 		
 	}
 	
@@ -510,6 +517,84 @@ public class Economy {
 	}
 	public void setAQTree(BTree<String,ArrayList<Merger>> f){
 		acqTree = f;
+	}
+	
+	public ArrayList<Firm> getFirmsInSIC(String sic){
+		
+		ArrayList<Firm> fInSIC = new ArrayList<Firm>();
+		
+		for(int i = 0;i < sicTree.get(sic).size(); i++){
+			fInSIC.add(sicTree.get(sic).get(i));
+		}
+		
+		return fInSIC;	
+	}
+	
+	public ArrayList<Firm> getFirmsInQuarter(ArrayList<Firm> tree, Integer quarter){
+		
+		ArrayList<Firm> fInQuarter = new ArrayList<Firm>();
+		
+		for(int i=0; i<tree.size();i++){
+			if(quarter == utilities.getQuarterIndex(qM, dM.get(tree.get(i).datadate))){
+				fInQuarter.add(tree.get(i));
+			}			
+		}
+		return fInQuarter;
+	}
+	
+	public float[] compareSICandFirm(Firm f){
+		
+		ArrayList<Firm> inSic = getFirmsInSIC(f.sic);		
+		Integer qtr = utilities.getQuarterIndex(qM, dM.get(f.datadate));		
+		ArrayList<Firm> inQuarter = getFirmsInQuarter(inSic, qtr);		
+		float avgK = utilities.averageK(inQuarter);		
+		float avgQ = utilities.averageTQ(inQuarter);
+		
+		float[] result = 
+		{				
+				(Float.parseFloat(f.ppegtq) - avgK),
+				(Float.parseFloat(f.Tobins_Q) - avgQ)
+				
+		};
+		
+		return result;
+		
+	}
+	
+	public void shareResults(){	
+		ArrayList<Firm> before = categoryTree.get("BEFORE");
+		ArrayList<Firm> during = categoryTree.get("DURING");
+		ArrayList<Firm> after = categoryTree.get("AFTER");
+
+		System.out.println("BEFORE BEING COMPARED");
+		for(int i = 0;i<before.size();i++){
+			float[] tmp = compareSICandFirm(before.get(i));
+			System.out.println("difference in K: "+ tmp[0] + " difference in TQ: "+ tmp[1]);
+		}
+		System.out.println("DURING BEING COMPARED");
+		for(int i = 0;i<during.size();i++){
+			float[] tmp = compareSICandFirm(during.get(i));
+			System.out.println("difference in K: "+ tmp[0] + " difference in TQ: "+ tmp[1]);
+		}
+		System.out.println("AFTER BEING COMPARED");
+		for(int i = 0;i<after.size();i++){
+			float[] tmp = compareSICandFirm(after.get(i));
+			System.out.println("difference in K: "+ tmp[0] + " difference in TQ: "+ tmp[1]);
+		}
+		
+	}
+	
+
+	public void compareFirmBeforeAfter(ArrayList<String> cusips) {
+		// TODO Auto-generated method stub
+		
+		ArrayList<Firm> beforeList = new ArrayList<Firm>();
+		ArrayList<Firm> duringList = new ArrayList<Firm>();
+		ArrayList<Firm> afterList= new ArrayList<Firm>();
+
+		
+
+		
 	}
 	
 }

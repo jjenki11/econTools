@@ -74,6 +74,8 @@ public class ReadFile {
 		
 		E.doBankrupcy(bankrupcies);
 		
+		
+		
 		//E.doMerger(successfulMergers, maCusipFile);	
 		//E.doTarget(successfulMergers, taCusipFile);
 		//E.doAcquirer(successfulMergers, acCusipFile);
@@ -125,14 +127,19 @@ System.out.println(E.AllFirms.size());
  System.out.println("NUM UNIQUE TG: "+tgCount);
  System.out.println("NUM UNIQUE MA: "+ (aqCount + tgCount));*/
  System.out.println("Done writing files!");
- System.out.println("Printing sic tree");
+
 //now filter all the categories by date in institution
+ 
+ /*
 String outFolder = "";
 String bkFiltered = "bankrupcy.txt";
 String tgFiltered = "target.txt";
 String aqFiltered = "acquirer.txt";
 String gcFiltered = "going_concern.txt";
+*/
     
-System.out.println("MOVING TO LABOR");
+	System.out.println("MOVING TO NEW QUERY");
+	
+	E.shareResults();
 	}
 }

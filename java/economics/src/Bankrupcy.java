@@ -121,8 +121,8 @@ public class Bankrupcy {
 	 *   0			  before bankruptcy filed
 	 *   1			  during bankruptcy
 	 *   2			  after bankruptcy disposed
-	 *   3			  ever in bankruptcy
-	 *   4			  never in bankruptcy
+	 *  // 3			  ever in bankruptcy
+	 *   3			  never in bankruptcy
 	 * 
 	 * @param data
 	 * @return

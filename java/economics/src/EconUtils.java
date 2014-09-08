@@ -217,6 +217,44 @@ public class EconUtils
 		return E;		
 	}	
 	
+	
+	public boolean addToBeforeTree(Economy e, Firm f){
+		ArrayList<Firm> tmp;
+		if(e.BeforeTree.get(f.cusip) != null){
+			e.BeforeTree.get(f.cusip).add(f);
+		} else {
+			tmp = new ArrayList<Firm>();
+			tmp.add(f);
+			e.BeforeTree.put(f.cusip, tmp);			
+		}
+		return true;
+	}
+	
+	public boolean addToAfterTree(Economy e, Firm f){
+		ArrayList<Firm> tmp;
+		if(e.AfterTree.get(f.cusip) != null){
+			e.AfterTree.get(f.cusip).add(f);
+		} else {
+			tmp = new ArrayList<Firm>();
+			tmp.add(f);
+			e.AfterTree.put(f.cusip, tmp);
+		}
+		return true;
+	}	
+	
+	public boolean addToDuringTree(Economy e, Firm f){
+		ArrayList<Firm> tmp;
+		if(e.AfterTree.get(f.cusip) != null){
+			e.AfterTree.get(f.cusip).add(f);
+		} else {
+			tmp = new ArrayList<Firm>();
+			tmp.add(f);
+			e.AfterTree.put(f.cusip, tmp);
+		}
+		return true;
+	}	
+	
+	
 	public void writeUnconditionally(Firm f, String filename) throws IOException{
 		writeList(filename, dM2.get(f.datadate)+", "+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic+ ","+qM2.get(dM2.get(f.datadate)));				
 	}
@@ -240,9 +278,9 @@ public class EconUtils
 				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
 				
 				//y = {
-				y[0] =	(x[0] && writeList(foundFiles[0], txt));
-				y[1] =	(x[1] &&  writeList(foundFiles[1], txt));
-				y[2] =	(x[2] && writeList(foundFiles[2], txt));
+				y[0] =	(x[0] && writeList(foundFiles[0], txt) && addToBeforeTree(Eco, f));
+				y[1] =	(x[1] &&  writeList(foundFiles[1], txt) && addToDuringTree(Eco, f));
+				y[2] =	(x[2] && writeList(foundFiles[2], txt) && addToAfterTree(Eco, f));
 				y[3] =	(x[3] && writeList(foundFiles[4], txt));
 				//};			
 				//xxx = y;
@@ -282,7 +320,9 @@ public class EconUtils
 					}								
 				} else {
 					System.out.println("DONT KNOW");
-				}				
+				}	
+				
+				
 			}							
 		}
 		for(int k = 0;k<y.length;k++){
@@ -291,7 +331,94 @@ public class EconUtils
 		}
 		return count;
 	}	
+	
+	
+	
+	
+	
+	/*
+	public void writespecificQuery(Economy Eco, ArrayList<String> list, Firm f, String[] foundFiles) throws IOException{
 
+		String txt = "";
+		int[] count = {0,0,0};				
+		ArrayList<Firm> tmp;
+		//boolean[] y = null;
+		boolean[] y = {false,false,false};
+		if(Eco."BEFORE".get(f.cusip) != null){
+			for(int j = 0;j<Eco."BEFORE".get(f.cusip).size();j++){						
+				boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(dM2.get(f.datadate));
+				boolean[] xx = {
+					(x[0] && f.setCategory("BEFORE")),
+					(x[1] && f.setCategory("DURING")),
+					(x[2] && f.setCategory("AFTER")),
+					(x[3] && f.setCategory("NEVER"))
+				};
+				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
+	}
+		}
+	}
+	*/
+				
+	//  float  f.ppegt - averageK( per quarter sic );
+	
+		
+	
+	
+	//		get all firms having f.sic and f.quarter; start with one CUSIP get SIC and write out file for all the quarters it has to find the average of the SIC for
+	/*		if(Eco.DuringTree.get(f.cusip) != null){
+			for(int j = 0;j<Eco.DuringTree.get(f.cusip).get(f.sic).get(f.quarter).size();j++) {
+			return perCusipSicquartersList;
+			
+			for(int j =0; j<Eco.GCalwaysTree.get(f.quarter).size();j++) {
+			return sicGCalwaysList;
+			
+			
+			.sicTree.get(f.sic).get(f.quarter).size();j++){	
+			
+			}
+			public ArrayList<firm> sicFirmList string (filename)
+	 * 		ArrayList<firm> sicFirmList = Econ.sicTree.get(f.sic);
+	 * 		return sicFirmList ; 
+	 *		}
+	 *		public ArrayList<firm> sicFirmList string (filename)
+	 * 		ArrayList<firm> quarterFirmSICList = Econ.sicTree.get(f.sic).get(f.quarter);
+	 * 		return quarterFirmSICList;
+	 * 
+	 * 		for(int i = 0; i<sicFirmList.size();i++){
+	 * 			if(sicFirmList.get(i).quarter == f.quarter){
+	 * 				quarterFirmSICList.add(sicFirmList.get(i));	
+	 * 			}
+	 * 		}
+	 * 
+	 * 		float averageSicAtQuarter = averageK(quarterFirmList);
+	 * 		
+	 * 		float differenceFromSic = f.ppegt - averageSicAtQuarter;
+	 * 
+	 * 
+	 * 		
+	 * 
+	 */
+	//	 f.ppegt - averageK( within BK all firms );
+	
+	
+	
+	
+	public float averageK(ArrayList<Firm> list){
+		float x = 0;
+		for(int i = 0; i< list.size(); i++){
+			x+=Float.parseFloat(list.get(i).ppegtq);
+		}
+		return (x / list.size());		
+	}
+
+	public float averageTQ(ArrayList<Firm> list){
+		float x = 0;
+		for(int i = 0; i< list.size(); i++){
+			x+=Float.parseFloat(list.get(i).Tobins_Q);
+		}
+		return (x / list.size());		
+	}
+	
 	public void setEconomy(Economy e){
 		utilEcon = e;
 	}
