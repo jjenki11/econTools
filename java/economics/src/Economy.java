@@ -19,6 +19,8 @@ public class Economy {
 
 	public BTree<String,ArrayList<Merger>> mergeTree;
 	
+	
+	
 	public BTree<Integer,ArrayList<Merger>> successfulMergerTree;
 	public BTree<Integer,ArrayList<Merger>> failedMergerTree;
 	
@@ -29,6 +31,7 @@ public class Economy {
 	public BTree<String,ArrayList<Firm>> BeforeTree;
 	public BTree<String,ArrayList<Firm>> DuringTree;
 	public BTree<String,ArrayList<Firm>> AfterTree;
+	
 	// add category specific trees and create trees for intersection of those trees
 	
 	//public BTree <String,Btree> int , BTree > String, ArrayList<Firm>>> BKGCalwaysComp ;//
@@ -585,16 +588,51 @@ public class Economy {
 	}
 	
 
-	public void compareFirmBeforeAfter(ArrayList<String> cusips) {
+	
+	/**
+	 * 
+	 * 	createFirmTransitionObj returns a nested list structure
+	 * 	
+	 * 			1) list of all cusips in argument
+	 * 			2) list of before during and after
+	 * 			3) list of firm entries
+	 * 
+	 * @param cusips
+	 * @return
+	 */
+	public ArrayList<ArrayList<ArrayList<Firm>>> createFirmTransitionObj(ArrayList<String> cusips) {
 		// TODO Auto-generated method stub
 		
 		ArrayList<Firm> beforeList = new ArrayList<Firm>();
 		ArrayList<Firm> duringList = new ArrayList<Firm>();
 		ArrayList<Firm> afterList= new ArrayList<Firm>();
 
-		
+		ArrayList<ArrayList<ArrayList<Firm>>> firmTimeSeries = new ArrayList<ArrayList<ArrayList<Firm>>>();
+		ArrayList<ArrayList<Firm>> cusipTimeSeries;
 
-		
+		for(int i = 0; i<cusips.size();i++)
+		{
+			
+			
+			cusipTimeSeries = new ArrayList<ArrayList<Firm>>();
+			
+			beforeList = BeforeTree.get(cusips.get(i));
+			duringList = DuringTree.get(cusips.get(i));
+			afterList  = AfterTree.get(cusips.get(i));
+			
+			utilities.printList(beforeList);
+			utilities.printList(duringList);
+			utilities.printList(afterList);
+			
+			cusipTimeSeries.add(beforeList);
+			cusipTimeSeries.add(duringList);
+			cusipTimeSeries.add(afterList);
+			
+			firmTimeSeries.add(cusipTimeSeries);
+			
+		}
+
+		return firmTimeSeries;
 	}
 	
 }

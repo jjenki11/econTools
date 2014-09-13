@@ -10,7 +10,10 @@ import java.util.List;
 
 public class ReadFile {
 	//FILED INDEX NEEDS TO BE FIXED!
-	public static void main(String[] args) throws IOException{
+	
+	static String text = "";
+	public ReadFile() {
+	//public static void main(String[] args) throws IOException{
 		
 		EconUtils util = new EconUtils();		
 		Economy E = new Economy();
@@ -75,7 +78,7 @@ public class ReadFile {
 		E.doBankrupcy(bankrupcies);
 		
 		
-		
+		//System.exit(0);
 		//E.doMerger(successfulMergers, maCusipFile);	
 		//E.doTarget(successfulMergers, taCusipFile);
 		//E.doAcquirer(successfulMergers, acCusipFile);
@@ -103,22 +106,33 @@ System.out.println(E.AllFirms.size());
  //System.exit(0)
  int[] counter = {0,0,0,0};
  
+ 
+ 
+ 
+ 
  while(idx<E.AllFirms.size())
  {	
 	 f = new Firm();		 
 	 f = E.AllFirms.get(idx);
 	 float perDone = (float)((float)idx/(float)E.AllFirms.size())*(float)100;
-	 int[] xx =  util.writeIfFound(E, bkList, f, outputFileArray);
+	 int[] xx = new int[4];
+	try {
+		xx = util.writeIfFound(E, bkList, f, outputFileArray);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	 counter[0] += xx[0];	 
 	 counter[1] += xx[1];	
 	 counter[2] += xx[2];	
 	 counter[3] += xx[3];
 	// counter[4] += xx[4];	
 	 
-	// System.out.println(perDone+" %  |  BK(before) : "+counter[0]+"  |  BK(during): "+counter[1] +
-		//	 					"    |  BK(after) : "+counter[2]+
-			// 					"    |  GC(always) :"+counter[3]/*+ "  |  TG: "+tgCount + "  |  AQ: "+aqCount*/);	
-	 idx++; 	
+	 /*System.out.println(perDone+" %  |  BK(before) : "+counter[0]+"  |  BK(during): "+counter[1] +
+			 					"    |  BK(after) : "+counter[2]+
+			 					"    |  GC(always) :"+counter[3]/*+ "  |  TG: "+tgCount + "  |  AQ: "+aqCount);	*/
+	 idx++;
+	 System.out.println(perDone	); 	
  }
 /* System.out.println("NUM UNIQUE BK: "+bkUniqueSize);
  System.out.println("NUM FOUND BK OVERALL"+bkFoundSize);
@@ -127,6 +141,7 @@ System.out.println(E.AllFirms.size());
  System.out.println("NUM UNIQUE TG: "+tgCount);
  System.out.println("NUM UNIQUE MA: "+ (aqCount + tgCount));*/
  System.out.println("Done writing files!");
+ 
 
 //now filter all the categories by date in institution
  
@@ -140,6 +155,12 @@ String gcFiltered = "going_concern.txt";
     
 	System.out.println("MOVING TO NEW QUERY");
 	
-	E.shareResults();
+	//E.shareResults();
+	text = util.printFirmTransitionObject(E.createFirmTransitionObj(bkList));
+	
+	}
+	
+	public String getText(){
+		return text;
 	}
 }

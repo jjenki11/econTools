@@ -431,8 +431,77 @@ public class EconUtils
 		return -1;
 	}
 	
+	public String printList(ArrayList<Firm> firms){
+		Firm f;
+		String txt = "";
+		String tmp = "";
+		if(firms!=null){
+			for(int i = 0;i<firms.size();i++){
+				f = new Firm();
+				f = firms.get(i);
+				tmp =  "CUSIP: "+f.cusip+" Date: "+dM2.get(f.datadate)+" State: "+f.category+"\n";
+				txt += tmp;
+				System.out.println(tmp);
+			}			
+		} else {
+			System.out.println("NULL LIST ");
+		}
+		return txt;
+	}
+	
+	
+	
 	public void printSICTree(Economy e){
 			System.out.println(e.sicTree.toString());
 	}
+	
+	public String printFirmTransitionObject(ArrayList<ArrayList<ArrayList<Firm>>> list){
+		
+		String fname = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\Transitions.txt";
+		
+		Firm firm;
+		String txt = "";
+		String tmp = "";
+		String retVal = "";
+		for(int i = 0; i < list.size(); i++)
+		{
+			//Going thru cusip list
+			
+			System.out.println("\n");
+			txt = "\n\n";
+			for(int j = 0; j < list.get(i).size(); j++)
+			{
+				if(list.get(i).get(j) != null)
+				{
+				//Going thru 3 element (before during after) list
+					for(int k = 0; k < list.get(i).get(j).size(); k++)
+					{
+						//Going thru each entry
+						firm = new Firm();
+						firm = list.get(i).get(j).get(k);
+						if(firm.category != "NEVER")
+						{
+							tmp = "CUSIP: "+firm.cusip+" Date: "+dM2.get(firm.datadate)+" Quarter: "+qM2.get(dM2.get(firm.datadate)) + " State: "+firm.category;
+							//System.out.println(txt+tmp);
+							retVal += (txt+tmp+"\n");
+							//try {
+								//writeList(fname,(txt+tmp));
+							//} catch (IOException e) {
+							//	System.out.println("BAD FILENAME IN FIRM TRANSITION OBJECT");
+							//	e.printStackTrace();
+							//}
+						}
+						txt = "";				
+					}
+				}				
 
+			}
+		}
+		
+		return retVal;
+		
+	}
+
+	
+	
 }
