@@ -162,5 +162,6 @@ String gcFiltered = "going_concern.txt";
 	
 	public String getText(){
 		return text;
+		
 	}
 }

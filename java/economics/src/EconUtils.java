@@ -400,8 +400,18 @@ public class EconUtils
 	 */
 	//	 f.ppegt - averageK( within BK all firms );
 	
+	public float averageN(ArrayList<Float> list){
+		float sum = sumN(list);
+		return (sum / list.size());
+	}
 	
-	
+	public float sumN(ArrayList<Float> list){
+		float x = 0;
+		for(int i = 0; i< list.size(); i++){
+			x+=(list.get(i));
+		}		
+		return x;
+	}
 	
 	public float averageK(ArrayList<Firm> list){
 		float x = 0;
@@ -454,6 +464,10 @@ public class EconUtils
 	public void printSICTree(Economy e){
 			System.out.println(e.sicTree.toString());
 	}
+	
+	// constructing before/during/after firm difference values ; begin with two intervals per class
+	
+	
 	
 	public String printFirmTransitionObject(ArrayList<ArrayList<ArrayList<Firm>>> list){
 		
