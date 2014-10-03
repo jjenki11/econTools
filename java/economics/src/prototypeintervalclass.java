@@ -9,7 +9,7 @@ public class prototypeintervalclass {
 	static ArrayList<Integer> kinterval = new ArrayList<Integer>();
 	
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
-	
+	static Economy econo;
 	static EconUtils utils = new EconUtils();
 	
 	// take average on both sides of 3 element interval to return an arraylist
@@ -117,7 +117,7 @@ public class prototypeintervalclass {
 	        	
 	}
 	// call firmlist
-	public ArrayList<ArrayList<ArrayList<Firm>>> createFirmintervaldifferencetransobject(ArrayList<String> cusips) {
+	public static ArrayList<ArrayList<ArrayList<Firm>>> createFirmintervaldifferencetransobject(ArrayList<Firm> cusips) {
 		// TODO Auto-generated method stub
 		
 		ArrayList<Firm> beforeListintervaldifference = new ArrayList<Firm>();
@@ -133,17 +133,17 @@ public class prototypeintervalclass {
 			
 			cusipintervaldifferenceseries = new ArrayList<ArrayList<Firm>>();
 			
-			beforeListintervaldifference = BeforeTree.get(cusips.get(i));
-			duringListintervaldifference = DuringTree.get(cusips.get(i));
-			afterListintervaldifference  = AfterTree.get(cusips.get(i));
+			beforeListintervaldifference = econo.BeforeTree.get(cusips.get(i).cusip);
+			duringListintervaldifference = econo.DuringTree.get(cusips.get(i).cusip);
+			afterListintervaldifference  = econo.AfterTree.get(cusips.get(i).cusip);
 			
-			utils.printList(beforeintervaldifferenceList);
-			utils.printList(duringListintervaldifferenceList);
-			utils.printList(afterListintervaldifferenceList);
+			utils.printList(beforeListintervaldifference);
+			utils.printList(duringListintervaldifference);
+			utils.printList(afterListintervaldifference);
 			
-			cusipintervaldifferenceseries.add(beforeintervaldifferenceList);
-			cusipintervaldifferenceseries.add(duringListintervaldifferenceList);
-			cusipintervaldifferenceseries.add(afterListintervaldifferenceList);
+			cusipintervaldifferenceseries.add(beforeListintervaldifference);
+			cusipintervaldifferenceseries.add(duringListintervaldifference);
+			cusipintervaldifferenceseries.add(afterListintervaldifference);
 			
 			firmintervaldifferenceseries.add(cusipintervaldifferenceseries);
 			
@@ -177,6 +177,13 @@ public class prototypeintervalclass {
 		
 		System.out.println("before average" +result[0] +" after average" +result[1] + "differencequarterly" +result[2]);
 	
+		ReadFile f = new ReadFile();
+		econo = f.getEconomy();
+		
+		//YOUR PROTOTYPE HERE
+		ArrayList<ArrayList<ArrayList<Firm>>> yourObject = createFirmintervaldifferencetransobject(firms);
+		
+		System.out.println(yourObject.toString());
 	}
 		
 	

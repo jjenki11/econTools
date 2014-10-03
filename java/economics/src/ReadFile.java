@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ReadFile {
 	//FILED INDEX NEEDS TO BE FIXED!
-	
+	static Economy ECONOMY;
 	static String text = "";
 	public ReadFile() {
 	//public static void main(String[] args) throws IOException{
@@ -157,7 +157,11 @@ String gcFiltered = "going_concern.txt";
 	
 	//E.shareResults();
 	text = util.printFirmTransitionObject(E.createFirmTransitionObj(bkList));
+	ECONOMY = E;
+	}
 	
+	public Economy getEconomy(){
+		return ECONOMY;
 	}
 	
 	public String getText(){
