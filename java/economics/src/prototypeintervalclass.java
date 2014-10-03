@@ -11,6 +11,13 @@ public class prototypeintervalclass {
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils();
+	static int cusips = 100;
+	static int timeBlock = 3;
+	static int dataPoints = 120;
+	
+	/*  look here  */
+	static Firm[][][] x = new Firm[cusips][timeBlock][dataPoints];
+	
 	
 	// take average on both sides of 3 element interval to return an arraylist
 	// of floats, the 'before midpoint average' and 'after midpoint average'
@@ -75,7 +82,7 @@ public class prototypeintervalclass {
 
 	public static ArrayList<Firm> readexample (String file){
 		
-		System.out.println("REadcrsp");
+		System.out.println("Readcrsp");
 		Firm firm = null;
 		ArrayList<Firm> fList = new ArrayList<Firm>();
 		String[] values;
