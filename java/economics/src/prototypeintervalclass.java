@@ -80,8 +80,9 @@ public class prototypeintervalclass {
 		
 	}
 
-	public static ArrayList<Firm> readexample (String file){
+	public static ArrayList<ArrayList<ArrayList<Firm>>> firmintervaldifferenceseries (){
 		
+		firmTimeseries = econo.get(firmTimeSeries)
 		System.out.println("Readcrsp");
 		Firm firm = null;
 		ArrayList<Firm> fList = new ArrayList<Firm>();
@@ -89,7 +90,7 @@ public class prototypeintervalclass {
 		ArrayList<String> sics = new ArrayList<String>();
 		ArrayList<Integer> qtrs = new ArrayList<Integer>();
 	    try {
-	        BufferedReader in = new BufferedReader(new FileReader(file));
+	        BufferedReader in = new BufferedReader(new FileReader(firmintervaldifferenceseries));
 	        String str;
 	        str = in.readLine();    	
 	        while ((str = in.readLine()) != null) {
@@ -120,12 +121,12 @@ public class prototypeintervalclass {
 	        System.out.println("File Read Error");
 	    }	
 	    
-	    return fList;
+	    return firmintervaldifferenceseries;
 	        	
 	}
 	// call firmlist
 	public static ArrayList<ArrayList<ArrayList<Firm>>> createFirmintervaldifferencetransobject(ArrayList<Firm> cusips) {
-		// TODO Auto-generated method stub
+		
 		
 		ArrayList<Firm> beforeListintervaldifference = new ArrayList<Firm>();
 		ArrayList<Firm> duringListintervaldifference = new ArrayList<Firm>();
@@ -160,11 +161,22 @@ public class prototypeintervalclass {
 	}
 	
 	
+	// getting SIC interval differences
+	
+	public ArrayList<Firm> getFirmsInSICandQuarters(ArrayList<Firm> firmintervaldifferenceseries, Integer SIC, Integer quarter){
+		
+		ArrayList<Firm> FirmsInSIC = new ArrayList<Firm>();
+		
+		for(int i=0; i<SIC.size();i++){
+			
+		}
+		return FirmsInSIC;
+	}
+	
 	
 	public static void main(String[] args) {
 	
-		String filename = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\onefirmexample.txt";				
-
+		
 		
 		System.out.println("Adding integers to list");
 	
@@ -175,7 +187,7 @@ public class prototypeintervalclass {
 		kinterval.add(10);
 		kinterval.add(14);
 	
-		firms = readexample(filename);
+		firms = readexample(econo.get(firmTimeSeries));
 		//System.out.println(kinterval.toString());
 		
 		
