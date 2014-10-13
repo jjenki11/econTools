@@ -14,7 +14,7 @@ public class Economy {
 	
 	public BTree<String,ArrayList<Firm>> targetTree;
 	public BTree<String,ArrayList<Firm>> acquirerTree;
-	public BTree<String,ArrayList<Firm>> bankruptTree;
+	public static BTree<String,ArrayList<Firm>> bankruptTree;
 	public BTree<String,ArrayList<Firm>> goingConcernTree;
 
 	public BTree<String,ArrayList<Merger>> mergeTree;
@@ -29,8 +29,8 @@ public class Economy {
 	public BTree<String,ArrayList<Bankrupcy>> bankTree; 
 	public BTree<String,ArrayList<Firm>> firmTree;
 	public BTree<String,ArrayList<Firm>> BeforeTree;
-	public BTree<String,ArrayList<Firm>> DuringTree;
-	public BTree<String,ArrayList<Firm>> AfterTree;
+	public static BTree<String,ArrayList<Firm>> DuringTree;
+	public static BTree<String,ArrayList<Firm>> AfterTree;
 	
 	// add category specific trees and create trees for intersection of those trees
 	
@@ -52,6 +52,8 @@ public class Economy {
 	public BTree<String,ArrayList<Firm>> categoryTree;
 	
 	public BTree<Integer,ArrayList<Firm>> quarterTree;
+	
+	public ArrayList<String> cusipList;
 	
 	
 	
@@ -634,5 +636,6 @@ public class Economy {
 
 		return firmTimeSeries;
 	}
+
 	
 }

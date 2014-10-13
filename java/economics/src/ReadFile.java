@@ -58,6 +58,8 @@ public class ReadFile {
 
 //	Read in bankrupcy
 		ArrayList<String> bkList = util.readList(bkCusipFile);
+		
+		E.cusipList = bkList;
 
 		//bkList = util.readList(bkCusipFile);    
 		System.out.println("Reading bankrupcy data: done!");
