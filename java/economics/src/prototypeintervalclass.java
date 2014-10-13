@@ -5,19 +5,89 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class prototypeintervalclass {
-	static ArrayList<Integer> kinterval = new ArrayList<Integer>();
+
+class boundedValue{
 	
+	int start;
+	int mid;
+	int end;	
+	float beforeAverageFirm;
+	float afterAverageFirm;
+	
+	float beforeAverageSIC;
+	float afterAverageSIC;
+	
+	float firmSicBeforeDifference;
+	float firmSicAfterDifference;
+	
+	String sic;
+	String cusip;
+	
+	public boundedValue()
+	{
+		start = 0;
+		mid = 0;
+		end = 0;
+		
+		beforeAverageFirm = 0;
+		afterAverageFirm = 0;
+		
+		beforeAverageSIC=0;
+		afterAverageSIC=0;
+		
+		sic = "";
+		cusip = "";
+	}
+	
+	
+	
+}
+
+
+public class prototypeintervalclass {
+	
+	
+
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils();
 	static int cusips = 100;
 	static int timeBlock = 3;
 	static int dataPoints = 120;
+	static ArrayList<ArrayList<ArrayList<Firm>>> firmTimeseries;
 	
-	/*  look here  */
-	static Firm[][][] x = new Firm[cusips][timeBlock][dataPoints];
 	
+	public static ArrayList<Firm> getFirmsInQuarterRangeWithSIC(int start, int end, String sic)
+	{		
+		ArrayList<ArrayList<Firm>> firmsInQuarterRange = new ArrayList<ArrayList<Firm>>();
+		
+		for(int i = (start-1); i < (end-1); i++)
+		{
+			firmsInQuarterRange.add(econo.quarterTree.get(i));
+		}
+		
+		ArrayList<Firm> firmsWithSIC = new ArrayList<Firm>();
+		
+		for(int i = 0; i < firmsInQuarterRange.size(); i ++)
+		{
+			if((firmsInQuarterRange.get(i) != null)	
+			)
+			{
+				for(int j = 0; j < firmsInQuarterRange.get(i).size(); j ++)
+				{
+					//check if the firm evaluated has desired sic
+					if(firmsInQuarterRange.get(i).get(j).sic == sic)
+					{
+						firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
+					}				
+				}
+			}
+		}
+		
+		return firmsWithSIC;
+	}
+	
+
 	
 	// take average on both sides of 3 element interval to return an arraylist
 	// of floats, the 'before midpoint average' and 'after midpoint average'
@@ -28,8 +98,8 @@ public class prototypeintervalclass {
 		System.out.println(list.get(finalIndex-1).datadate);
 		System.out.println("List size: "+finalIndex);
 		
-		int last = utils.qM2.get(Integer.parseInt(list.get(list.size()-1).datadate));
-		int first = utils.qM2.get(Integer.parseInt(list.get(0).datadate));		
+		int last = utils.qM2.get(utils.dM2.get((list.get(list.size()-1).datadate)));
+		int first = utils.qM2.get(utils.dM2.get((list.get(0).datadate)));		
 		int firstlast = (first+last)/2;
 		System.out.println("Interval start: "+first+", mid: "+firstlast+", end: "+last);
 		int[] x = new int[3];
@@ -39,16 +109,22 @@ public class prototypeintervalclass {
 		return x;	
 	}
 	
-	public static float[] findAverages(ArrayList<Firm> list){
+	public static boundedValue findAverages(ArrayList<Firm> list){
 		
 		ArrayList<Float> beforeAvg = new ArrayList<Float>();
 		ArrayList<Float> afterAvg = new ArrayList<Float>();
 		
 		int[] interval = makeinterval(list);
 		
+		boundedValue value = new boundedValue();
+		
 		int start = interval[0];
 		int mid = interval[1];
 		int end = interval[2];
+		
+		value.start = interval[0];
+		value.mid = interval[1];
+		value.end = interval[2];
 		
 		for(int i = 0; i < list.size();i++){
 			
@@ -58,13 +134,13 @@ public class prototypeintervalclass {
 			}
 			else{
 			
-				if( (utils.qM2.get(Integer.parseInt(list.get(i).datadate)) >= start) &&
-					(utils.qM2.get(Integer.parseInt(list.get(i).datadate)) < mid))
+				if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= start) &&
+					(utils.qM2.get(utils.dM2.get((list.get(i).datadate))) < mid))
 				{				
 					beforeAvg.add(Float.parseFloat(list.get(i).ppegtq));
 				}
-				if( (utils.qM2.get(Integer.parseInt(list.get(i).datadate)) >= mid) &&
-					(utils.qM2.get(Integer.parseInt(list.get(i).datadate)) <= end))
+				if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= mid) &&
+					(utils.qM2.get(utils.dM2.get(list.get(i).datadate)) <= end))
 				{				
 					afterAvg.add(Float.parseFloat(list.get(i).ppegtq));
 				}
@@ -76,19 +152,49 @@ public class prototypeintervalclass {
 		result[1] = utils.sumN(afterAvg) / afterAvg.size();
 		result [2] = (result[1] - result[0]) / (float) (end - start);	
 		
-		return result;
+		value.beforeAverageFirm = result[0];		
+		value.afterAverageFirm = result[1];
 		
+		value.cusip = list.get(0).cusip;
+		value.sic = list.get(0).sic;
+		
+		ArrayList<Firm> beforeSIC = getFirmsInQuarterRangeWithSIC(value.start, value.mid, list.get(0).sic);
+		ArrayList<Firm> afterSIC = getFirmsInQuarterRangeWithSIC(value.mid, value.end, list.get(0).sic);
+		
+		value.beforeAverageSIC = averageList(beforeSIC);
+		value.afterAverageSIC = averageList(afterSIC);
+		
+		value.firmSicBeforeDifference = (value.beforeAverageSIC - value.beforeAverageFirm);
+		value.firmSicAfterDifference = (value.afterAverageSIC - value.afterAverageFirm);
+		
+		
+		return value;
+
 	}
+	
+	public static float averageList(ArrayList<Firm> list)
+	{
+		float res = 0;
+		for(int i = 0;i<list.size();i++)
+		{
+			res += Float.parseFloat(list.get(i).ppegtq);
+		}
+		
+		return (res / list.size());	
+	}
+	
+	
 
 	public static ArrayList<ArrayList<ArrayList<Firm>>> firmintervaldifferenceseries (){
 		
-		firmTimeseries = econo.get(firmTimeSeries)
+		firmTimeseries = econo.createFirmTransitionObj(econo.cusipList);
 		System.out.println("Readcrsp");
 		Firm firm = null;
 		ArrayList<Firm> fList = new ArrayList<Firm>();
 		String[] values;
 		ArrayList<String> sics = new ArrayList<String>();
 		ArrayList<Integer> qtrs = new ArrayList<Integer>();
+		/*
 	    try {
 	        BufferedReader in = new BufferedReader(new FileReader(firmintervaldifferenceseries));
 	        String str;
@@ -120,9 +226,9 @@ public class prototypeintervalclass {
 	    } catch (IOException e) {
 	        System.out.println("File Read Error");
 	    }	
-	    
-	    return firmintervaldifferenceseries;
-	        	
+	    */
+	    //return firmintervaldifferenceseries;
+	    return null;    	
 	}
 	// call firmlist
 	public static ArrayList<ArrayList<ArrayList<Firm>>> createFirmintervaldifferencetransobject(ArrayList<Firm> cusips) {
@@ -167,42 +273,138 @@ public class prototypeintervalclass {
 		
 		ArrayList<Firm> FirmsInSIC = new ArrayList<Firm>();
 		
-		for(int i=0; i<SIC.size();i++){
+		for(int i=0; i<firmintervaldifferenceseries.size();i++){
 			
 		}
 		return FirmsInSIC;
 	}
 	
 	
-	public static void main(String[] args) {
+	public static Object[] doRoutine()
+	{
+		
+		Object[] boundedFirmsObject = new Object[3];
+		ArrayList<Firm> bkTmp= new ArrayList<Firm>();
+		boundedValue value = new boundedValue();
+		
+		ArrayList<boundedValue> list1 = new ArrayList<boundedValue>();
+		ArrayList<boundedValue> list2 = new ArrayList<boundedValue>();
+		ArrayList<boundedValue> list3 = new ArrayList<boundedValue>();
+		
+		ArrayList<String> cusips = econo.cusipList;
+
+		for(int i = 0;i<cusips.size();i++)
+		{
+			bkTmp = econo.BeforeTree.get(
+					cusips.get(
+							i));
+			if(bkTmp != null)
+			{
+				System.out.println("Size of stuff in bk tree: "+bkTmp.size());				
+				value = findAverages(bkTmp);				
+				list1.add(value);
+			}
+			
+			bkTmp = econo.DuringTree.get(
+					cusips.get(
+							i));
+			if(bkTmp!=null){
+				System.out.println("Size of stuff in bk tree: "+bkTmp.size());				
+				value = findAverages(bkTmp);				
+				list2.add(value);
+			}
+			
+			bkTmp = econo.AfterTree.get(
+								cusips.get(
+										i));
+			if(bkTmp!=null){
+				System.out.println("Size of stuff in bk tree: "+bkTmp.size());				
+				value = findAverages(bkTmp);				
+				list3.add(value);
+			}
+			
+		}		
+		boundedFirmsObject[0] = list1;
+		boundedFirmsObject[1] = list2;
+		boundedFirmsObject[2] = list3;
+		
+		return boundedFirmsObject;
+	}
+	
+	public static void writeResult(Object valList, String outFile) throws IOException
+	{
+		System.out.println("Start  |  Mid  |  End  |  averageDifference  |  cusip  |  sic");
+		ArrayList<boundedValue> vals = (ArrayList<boundedValue>) valList;
+		for(int i = 0;i<vals.size();i++)
+		{
+			double averageDifference = 0;
+			if(Float.isNaN(vals.get(i).firmSicBeforeDifference) ){
+				if(Float.isNaN(vals.get(i).firmSicAfterDifference) ){
+					averageDifference = -123.456;
+				} else {
+					averageDifference = vals.get(i).firmSicAfterDifference;
+				}
+			}
+			else if(Float.isNaN(vals.get(i).firmSicAfterDifference) ){
+				if(Float.isNaN(vals.get(i).firmSicBeforeDifference) ){
+					averageDifference = -123.456;
+				} else {
+					averageDifference = vals.get(i).firmSicBeforeDifference;
+				}
+			}
+			else {
+				averageDifference = (vals.get(i).firmSicBeforeDifference + vals.get(i).firmSicAfterDifference) / 2;
+			}
+			String text = vals.get(i).start+"  |  "+
+					vals.get(i).mid+"  |  "+
+					vals.get(i).end+" |  "+
+					averageDifference+"   |   "+
+					vals.get(i).cusip+"  |  "+
+					vals.get(i).sic;
+			
+			utils.writeList(outFile, text);
+		}
+	}
+	
+	public static void main(String[] args) throws IOException {
 	
 		
 		
-		System.out.println("Adding integers to list");
-	
-		kinterval.add(2);
-		kinterval.add(4);
-		kinterval.add(6);
-		kinterval.add(9);
-		kinterval.add(10);
-		kinterval.add(14);
-	
-		firms = readexample(econo.get(firmTimeSeries));
-		//System.out.println(kinterval.toString());
+		
+		//float[] result = findAverages(firms );
 		
 		
-		float[] result = findAverages(firms );
-		
-		
-		System.out.println("before average" +result[0] +" after average" +result[1] + "differencequarterly" +result[2]);
+		//System.out.println("before average" +result[0] +" after average" +result[1] + "differencequarterly" +result[2]);
 	
 		ReadFile f = new ReadFile();
 		econo = f.getEconomy();
-		
+		//firms = readexample((econo.createFirmTransitionObj(econo.cusipList)));
+		econo.createFirmTransitionObj(econo.cusipList);
 		//YOUR PROTOTYPE HERE
-		ArrayList<ArrayList<ArrayList<Firm>>> yourObject = createFirmintervaldifferencetransobject(firms);
 		
-		System.out.println(yourObject.toString());
+		System.out.println("HERE WE GO");
+		Object[] vals = doRoutine();
+		System.out.println("The size of our before result set: "+((ArrayList<Firm>) vals[0]).size());
+		System.out.println("The size of our during result set: "+((ArrayList<Firm>) vals[1]).size());
+		System.out.println("The size of our after result set: "+((ArrayList<Firm>) vals[2]).size());
+		String before = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\beforeAvgDifferece.txt";
+		String during = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\duringAvgDifferece.txt";
+		String after = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\afterAvgDifferece.txt";
+		
+		writeResult(vals[0], before);
+		
+		writeResult(vals[1], during);
+		
+		writeResult(vals[2], after);
+		
+		
+		
+		
+		
+		
+		//ArrayList<ArrayList<ArrayList<Firm>>> yourObject = createFirmintervaldifferencetransobject(firms);
+		
+		//System.out.println(yourObject.toString());
 	}
 		
 	
