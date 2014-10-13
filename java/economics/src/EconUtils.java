@@ -9,17 +9,22 @@ import java.util.List;
 
 public class EconUtils 
 {
-	String mapFile = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\quarters.txt";
+
 	 Mapping m2= new Mapping();
-	 BTree<String, Integer> dM2 = m2.dateMap();
-	 BTree<Integer, Integer> qM2 = m2.quartermap(mapFile);
+	 String filePath;
+	 BTree<String, Integer> dM2;
+	 BTree<Integer, Integer> qM2;
 		Mapping map = new Mapping();
-		BTree<Integer, Integer> qtrmap = map.quartermap(mapFile);
+		BTree<Integer, Integer> qtrmap;
  	 Economy utilEcon;
-	public EconUtils(){
+	public EconUtils(String path){
 		System.out.println("econ utils made");
 		//qM2 = m2.quartermap();
 		//dM2 = m2.dateMap();
+		 filePath = path;
+		 dM2 = m2.dateMap(path);
+		 qM2 = m2.quartermap(path);
+		 qtrmap = m2.quartermap(path);
 	};
 	
 	// within data range checker
@@ -195,14 +200,14 @@ public class EconUtils
 	        	}
 	        	
 	        	// build quarter tree
-	        	if(E.quarterTree.get(qtrmap.get(dM2.get(firm.datadate))) == null){
+	        	if(E.quarterTree.get(qM2.get(dM2.get(firm.datadate))) == null){
 	        		fList = new ArrayList<Firm>();
 	        		fList.add(firm);
-	        		E.quarterTree.put(qtrmap.get(dM2.get(firm.datadate)), fList);
+	        		E.quarterTree.put(qM2.get(dM2.get(firm.datadate)), fList);
 	        		qtrs.add(qtrmap.get(dM2.get(firm.datadate)));
 	        	} else {
-	        		E.quarterTree.get(qtrmap.get(dM2.get(firm.datadate))).add(firm);
-	        		E.quarterTree.put(qtrmap.get(dM2.get(firm.datadate)), E.quarterTree.get(qtrmap.get(dM2.get(firm.datadate))));
+	        		E.quarterTree.get(qM2.get(dM2.get(firm.datadate))).add(firm);
+	        		E.quarterTree.put(qM2.get(dM2.get(firm.datadate)), E.quarterTree.get(qM2.get(dM2.get(firm.datadate))));
 	        	}	        	
 	        	// build sic tree
 	        	if(E.sicTree.get(firm.sic)==null){
@@ -295,7 +300,7 @@ public class EconUtils
 					(x[2] && f.setCategory("AFTER")),
 					(x[3] && f.setCategory("NEVER"))
 				};
-				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
+				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
 				
 				//y = {
 				y[0] =	(x[0] && writeList(foundFiles[0], txt) && addToBeforeTree(Eco, f));
@@ -491,7 +496,7 @@ public class EconUtils
 	
 	public String printFirmTransitionObject(ArrayList<ArrayList<ArrayList<Firm>>> list){
 		
-		String fname = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\results\\Transitions.txt";
+		String fname = filePath+"results\\Transitions.txt";
 		
 		Firm firm;
 		String txt = "";

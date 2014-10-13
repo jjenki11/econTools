@@ -7,10 +7,11 @@ import java.util.List;
 
 public class Economy {
 	
+	public String filePath;
 	
 	public List<Firm> AllFirms;
 	public BTree<String,Firm> AllFirms2;
-    public EconUtils utilities = new EconUtils();
+    public EconUtils utilities;
 	
 	public BTree<String,ArrayList<Firm>> targetTree;
 	public BTree<String,ArrayList<Firm>> acquirerTree;
@@ -18,8 +19,6 @@ public class Economy {
 	public BTree<String,ArrayList<Firm>> goingConcernTree;
 
 	public BTree<String,ArrayList<Merger>> mergeTree;
-	
-	
 	
 	public BTree<Integer,ArrayList<Merger>> successfulMergerTree;
 	public BTree<Integer,ArrayList<Merger>> failedMergerTree;
@@ -63,11 +62,12 @@ public class Economy {
 		int acquirerCount = 0;
 		int bankruptCount = 0;	
 		Mapping m = new Mapping();
-		BTree<String, Integer> dM = m.dateMap();	
-		BTree<Integer, Integer> qM = m.quartermap("C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\quarters.txt");
+		BTree<String, Integer> dM = m.dateMap(filePath);	
+		BTree<Integer, Integer> qM = m.quartermap(filePath+"quarters.txt");
 	
-	public Economy(){
-
+	public Economy(String path){
+		filePath = path;
+		utilities = new EconUtils(filePath);
 		AllFirms = new ArrayList<Firm>(); //All CRSP entries
 		AllFirms2 = new BTree<String,Firm>(); //
 		
@@ -117,7 +117,7 @@ public class Economy {
 	 	String text="";		
 	 	//Writer out;
 		Mapping m = new Mapping();
-		BTree<String, Integer> dM = m.dateMap();	
+		BTree<String, Integer> dM = m.dateMap(filePath);	
 		String[] values = new String[4];
 		//read in successful mergers
 		//String filename = "C:\\Users\\jeff\\Desktop\\econ_project\\sdc_processing\\m_a_data_success.txt";
@@ -195,7 +195,7 @@ public class Economy {
 	 	String text="";		
 	 	//Writer out;
 		Mapping m = new Mapping();
-		BTree<String, Integer> dM = m.dateMap();	
+		BTree<String, Integer> dM = m.dateMap(filePath);	
 		String[] values = new String[4];
 		//read in successful mergers
 		//String filename = "C:\\Users\\jeff\\Desktop\\econ_project\\sdc_processing\\m_a_data_success.txt";

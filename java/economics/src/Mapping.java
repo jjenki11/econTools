@@ -4,13 +4,15 @@ import java.io.IOException;
 import java.util.*;
 
 public class Mapping {
-
-	public Mapping(){}
+	Economy ec;
+	public Mapping(){
+		
+	}
 	
-	public BTree<String, Integer> dateMap(){
+	public BTree<String, Integer> dateMap(String fPath){
 		BTree<String,Integer> dateMap =new BTree<String,Integer>();
 		String[] values=new String[2];
-		String filename = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\dateMap.txt";
+		String filename = fPath+"dateMap.txt";
 		Integer i = 0;
 		try {
 		    BufferedReader in = new BufferedReader(new FileReader(filename));
@@ -45,7 +47,7 @@ public class Mapping {
 		String filename = fname;
 		Integer i = 0;
 		try {
-		    BufferedReader in = new BufferedReader(new FileReader(filename));
+		    BufferedReader in = new BufferedReader(new FileReader(filename+"quarters.txt"));
 		    String str;
 		    str = in.readLine();   
 		    

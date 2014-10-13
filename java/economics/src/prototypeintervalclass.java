@@ -46,11 +46,11 @@ class boundedValue{
 
 public class prototypeintervalclass {
 	
-	
+	static String path = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\";
 
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
-	static EconUtils utils = new EconUtils();
+	static EconUtils utils = new EconUtils(path);
 	static int cusips = 100;
 	static int timeBlock = 3;
 	static int dataPoints = 120;
@@ -377,7 +377,7 @@ public class prototypeintervalclass {
 		
 		//System.out.println("before average" +result[0] +" after average" +result[1] + "differencequarterly" +result[2]);
 	
-		ReadFile f = new ReadFile();
+		ReadFile f = new ReadFile(path);
 		econo = f.getEconomy();
 		//firms = readexample((econo.createFirmTransitionObj(econo.cusipList)));
 		econo.createFirmTransitionObj(econo.cusipList);
@@ -388,9 +388,9 @@ public class prototypeintervalclass {
 		System.out.println("The size of our before result set: "+((ArrayList<Firm>) vals[0]).size());
 		System.out.println("The size of our during result set: "+((ArrayList<Firm>) vals[1]).size());
 		System.out.println("The size of our after result set: "+((ArrayList<Firm>) vals[2]).size());
-		String before = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\results\\beforeAvgDifferece.txt";
-		String during = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\results\\duringAvgDifferece.txt";
-		String after = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\results\\afterAvgDifferece.txt";
+		String before = econo.filePath+"results\\beforeAvgDifferece.txt";
+		String during = econo.filePath+"results\\duringAvgDifferece.txt";
+		String after = econo.filePath+"results\\afterAvgDifferece.txt";
 		
 		writeResult(vals[0], before);
 		
