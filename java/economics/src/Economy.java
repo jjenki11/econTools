@@ -14,7 +14,7 @@ public class Economy {
 	
 	public BTree<String,ArrayList<Firm>> targetTree;
 	public BTree<String,ArrayList<Firm>> acquirerTree;
-	public static BTree<String,ArrayList<Firm>> bankruptTree;
+	public BTree<String,ArrayList<Firm>> bankruptTree;
 	public BTree<String,ArrayList<Firm>> goingConcernTree;
 
 	public BTree<String,ArrayList<Merger>> mergeTree;
@@ -29,8 +29,8 @@ public class Economy {
 	public BTree<String,ArrayList<Bankrupcy>> bankTree; 
 	public BTree<String,ArrayList<Firm>> firmTree;
 	public BTree<String,ArrayList<Firm>> BeforeTree;
-	public static BTree<String,ArrayList<Firm>> DuringTree;
-	public static BTree<String,ArrayList<Firm>> AfterTree;
+	public BTree<String,ArrayList<Firm>> DuringTree;
+	public BTree<String,ArrayList<Firm>> AfterTree;
 	
 	// add category specific trees and create trees for intersection of those trees
 	
@@ -64,7 +64,7 @@ public class Economy {
 		int bankruptCount = 0;	
 		Mapping m = new Mapping();
 		BTree<String, Integer> dM = m.dateMap();	
-		BTree<Integer, Integer> qM = m.quartermap("C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\quarters.txt");
+		BTree<Integer, Integer> qM = m.quartermap("C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\quarters.txt");
 	
 	public Economy(){
 

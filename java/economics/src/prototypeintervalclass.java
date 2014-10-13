@@ -128,7 +128,7 @@ public class prototypeintervalclass {
 		
 		for(int i = 0; i < list.size();i++){
 			
-			if(Float.parseFloat(list.get(i).ppegtq) == 0)
+			if(Float.parseFloat(list.get(i).Tobins_Q) == 0)
 			{
 				
 			}
@@ -137,12 +137,12 @@ public class prototypeintervalclass {
 				if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= start) &&
 					(utils.qM2.get(utils.dM2.get((list.get(i).datadate))) < mid))
 				{				
-					beforeAvg.add(Float.parseFloat(list.get(i).ppegtq));
+					beforeAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				}
 				if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= mid) &&
 					(utils.qM2.get(utils.dM2.get(list.get(i).datadate)) <= end))
 				{				
-					afterAvg.add(Float.parseFloat(list.get(i).ppegtq));
+					afterAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				}
 			}
 		}
@@ -177,7 +177,7 @@ public class prototypeintervalclass {
 		float res = 0;
 		for(int i = 0;i<list.size();i++)
 		{
-			res += Float.parseFloat(list.get(i).ppegtq);
+			res += Float.parseFloat(list.get(i).Tobins_Q);
 		}
 		
 		return (res / list.size());	
@@ -243,8 +243,6 @@ public class prototypeintervalclass {
 
 		for(int i = 0; i<cusips.size();i++)
 		{
-			
-			
 			cusipintervaldifferenceseries = new ArrayList<ArrayList<Firm>>();
 			
 			beforeListintervaldifference = econo.BeforeTree.get(cusips.get(i).cusip);
@@ -282,43 +280,46 @@ public class prototypeintervalclass {
 	
 	public static Object[] doRoutine()
 	{
-		
 		Object[] boundedFirmsObject = new Object[3];
-		ArrayList<Firm> bkTmp= new ArrayList<Firm>();
-		boundedValue value = new boundedValue();
+		ArrayList<Firm> bkTmp;
+		boundedValue value;
 		
 		ArrayList<boundedValue> list1 = new ArrayList<boundedValue>();
 		ArrayList<boundedValue> list2 = new ArrayList<boundedValue>();
 		ArrayList<boundedValue> list3 = new ArrayList<boundedValue>();
 		
 		ArrayList<String> cusips = econo.cusipList;
-
+		
+		System.out.println("Size of duringTree? " + econo.DuringTree.size());
 		for(int i = 0;i<cusips.size();i++)
 		{
+			bkTmp = new ArrayList<Firm>();
 			bkTmp = econo.BeforeTree.get(
 					cusips.get(
 							i));
 			if(bkTmp != null)
 			{
-				System.out.println("Size of stuff in bk tree: "+bkTmp.size());				
+				value  = new boundedValue();
 				value = findAverages(bkTmp);				
 				list1.add(value);
 			}
-			
+			bkTmp = new ArrayList<Firm>();
 			bkTmp = econo.DuringTree.get(
 					cusips.get(
 							i));
 			if(bkTmp!=null){
-				System.out.println("Size of stuff in bk tree: "+bkTmp.size());				
+				System.out.println("Size of stuff in During bk tree: "+bkTmp.size());	
+				value  = new boundedValue();
 				value = findAverages(bkTmp);				
 				list2.add(value);
 			}
-			
+			bkTmp = new ArrayList<Firm>();
 			bkTmp = econo.AfterTree.get(
 								cusips.get(
 										i));
 			if(bkTmp!=null){
-				System.out.println("Size of stuff in bk tree: "+bkTmp.size());				
+				//System.out.println("Size of stuff in bk tree: "+bkTmp.size());		
+				value  = new boundedValue();
 				value = findAverages(bkTmp);				
 				list3.add(value);
 			}
@@ -387,9 +388,9 @@ public class prototypeintervalclass {
 		System.out.println("The size of our before result set: "+((ArrayList<Firm>) vals[0]).size());
 		System.out.println("The size of our during result set: "+((ArrayList<Firm>) vals[1]).size());
 		System.out.println("The size of our after result set: "+((ArrayList<Firm>) vals[2]).size());
-		String before = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\beforeAvgDifferece.txt";
-		String during = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\duringAvgDifferece.txt";
-		String after = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\afterAvgDifferece.txt";
+		String before = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\results\\beforeAvgDifferece.txt";
+		String during = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\results\\duringAvgDifferece.txt";
+		String after = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\results\\afterAvgDifferece.txt";
 		
 		writeResult(vals[0], before);
 		

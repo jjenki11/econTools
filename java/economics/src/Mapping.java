@@ -10,7 +10,7 @@ public class Mapping {
 	public BTree<String, Integer> dateMap(){
 		BTree<String,Integer> dateMap =new BTree<String,Integer>();
 		String[] values=new String[2];
-		String filename = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\dateMap.txt";
+		String filename = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\dateMap.txt";
 		Integer i = 0;
 		try {
 		    BufferedReader in = new BufferedReader(new FileReader(filename));
@@ -41,7 +41,7 @@ public class Mapping {
 		BTree<Integer,Integer> dateMap =new BTree<Integer,Integer>();
 
 		String[] values=new String[2];
-		//String filename = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\quarters.txt";
+		//String filename = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\quarters.txt";
 		String filename = fname;
 		Integer i = 0;
 		try {
@@ -70,7 +70,7 @@ public class Mapping {
 	
 }
 	
-	public BTree<String, Integer> cusipMap(){
+	public BTree<String, Integer> cusipMap(String filename){
 		BTree<String,Integer> cusipMap =new BTree<String,Integer>();
 
 		String[] values=new String[2];

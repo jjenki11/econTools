@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EconUtils 
 {
-	String mapFile = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\quarters.txt";
+	String mapFile = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\quarters.txt";
 	 Mapping m2= new Mapping();
 	 BTree<String, Integer> dM2 = m2.dateMap();
 	 BTree<Integer, Integer> qM2 = m2.quartermap(mapFile);
@@ -112,6 +112,35 @@ public class EconUtils
 		return theList;
 	}
 	
+	public String mapMonth(String month){
+		String result="";
+		switch(month){
+			case "01": result = "jan";break;
+			case "02": result = "feb";break;
+			case "03": result = "mar";break;
+			case "04": result = "apr";break;
+			case "05": result = "may";break;
+			case "06": result = "jun";break;
+			case "07": result = "jul";break;
+			case "08": result = "aug";break;
+			case "09": result = "sep";break;
+			case "10": result = "oct";break;
+			case "11": result = "nov";break;
+			case "12": result = "dec";break;
+			default:   result = "YOURE SHIT OUTTA LUCK";break;		
+		}		
+		return result;
+	}
+	
+	public String convertDateFormat(String dateIn){
+		
+		String year = dateIn.substring(0, 3);		
+		String month = 	mapMonth(
+							dateIn.substring(4,5)
+						);		
+		String day = dateIn.substring(6,7);		
+		return (day+month+year);		
+	}	
 	
 	public Economy readCRSP( Economy E , String filename )
 	{
@@ -126,8 +155,8 @@ public class EconUtils
 	        String str;
 	        str = in.readLine();    	
 	        while ((str = in.readLine()) != null) {
-	        	values=new String[23]; 
 	        	
+	        	values=new String[23];	        	
 	            values = str.split(",");
 	            
 	            firm =new Firm();
@@ -174,8 +203,7 @@ public class EconUtils
 	        	} else {
 	        		E.quarterTree.get(qtrmap.get(dM2.get(firm.datadate))).add(firm);
 	        		E.quarterTree.put(qtrmap.get(dM2.get(firm.datadate)), E.quarterTree.get(qtrmap.get(dM2.get(firm.datadate))));
-	        	}
-	        	
+	        	}	        	
 	        	// build sic tree
 	        	if(E.sicTree.get(firm.sic)==null){
 	        		fList = new ArrayList<Firm>();
@@ -194,29 +222,21 @@ public class EconUtils
 	        	else{
 	        		E.AllFirms2.put(firm.cusip, firm);
 	        	}
-	        	
-	        	//System.out.println(E.AllFirms2.get(firm.cusip).cusip+" now has "+(E.AllFirms2.get(firm.cusip).entries.size()+1)+" entry(s)!");
 	        }
 	        //print out all firms grouped by sic
-	        for(int j = 0; j < sics.size(); j++){
-	        	//for(int i = 0; i < E.sicTree.get(sics.get(j)).size(); i++){	        		
-	        		System.out.println("Firm entry for SIC " + sics.get(j) + ": "+ E.sicTree.get(sics.get(j)).get(0).cusip);
-	        	//}	
+	        for(int j = 0; j < sics.size(); j++){    		
+	        	System.out.println("Firm entry for SIC " + sics.get(j) + ": "+ E.sicTree.get(sics.get(j)).get(0).cusip);
 	        }
 	        //print out all firms grouped by quarter
 	        for(int j = 0; j < qtrs.size(); j++){
-	        	//for(int i = 0; i < E.quarterTree.get(qtrs.get(j)).size(); i++){
-	        		System.out.println("Firm entry for QUARTER " + qtrs.get(j) + ": "+ E.quarterTree.get(qtrs.get(j)).get(0).cusip);
-	        	//}	
+	        	System.out.println("Firm entry for QUARTER " + qtrs.get(j) + ": "+ E.quarterTree.get(qtrs.get(j)).get(0).cusip);
 	        }
 	        in.close();
-	        //System.exit(0);
 	    } catch (IOException e) {
 	        System.out.println("File Read Error");
 	    }		
 		return E;		
-	}	
-	
+	}		
 	
 	public boolean addToBeforeTree(Economy e, Firm f){
 		ArrayList<Firm> tmp;
@@ -244,12 +264,12 @@ public class EconUtils
 	
 	public boolean addToDuringTree(Economy e, Firm f){
 		ArrayList<Firm> tmp;
-		if(e.AfterTree.get(f.cusip) != null){
-			e.AfterTree.get(f.cusip).add(f);
+		if(e.DuringTree.get(f.cusip) != null){
+			e.DuringTree.get(f.cusip).add(f);
 		} else {
 			tmp = new ArrayList<Firm>();
 			tmp.add(f);
-			e.AfterTree.put(f.cusip, tmp);
+			e.DuringTree.put(f.cusip, tmp);
 		}
 		return true;
 	}	
@@ -471,7 +491,7 @@ public class EconUtils
 	
 	public String printFirmTransitionObject(ArrayList<ArrayList<ArrayList<Firm>>> list){
 		
-		String fname = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\results\\Transitions.txt";
+		String fname = "C:\\Users\\Jeff\\Desktop\\econTools\\java\\economics\\src\\results\\Transitions.txt";
 		
 		Firm firm;
 		String txt = "";
