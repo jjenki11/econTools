@@ -432,8 +432,9 @@ public class prototypeintervalclass {
 		ArrayList<String> cusips = econo.cusipList;		
 		
 		float[] quarters;			
-		ArrayList<float[]> firmValues = new ArrayList<float[]>();	
-		
+		ArrayList<float[]> firmBeforeValues = new ArrayList<float[]>();	
+		ArrayList<float[]> firmDuringValues = new ArrayList<float[]>();	
+		ArrayList<float[]> firmAfterValues = new ArrayList<float[]>();	
 		for(int i = 0; i < cusips.size(); i++)
 		{
 			quarters = new float[120];
@@ -442,15 +443,52 @@ public class prototypeintervalclass {
 			{
 				for(int j = 0; j < query.get(cusips.get(i)).size(); j++)
 				{
-					int s = query.get(cusips.get(i)).get(j).start;
-					int e = query.get(cusips.get(i)).get(j).end;
-					
-					for(int a = (s-1); a <= (e-1); a++)
+					if(query.get(cusips.get(i)).get(j).state == "before")
 					{
-						quarters[a] = query.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
-					}				
+						int s = query.get(cusips.get(i)).get(j).start;
+						int e = query.get(cusips.get(i)).get(j).end;
 					
-					firmValues.add(quarters);
+						for(int a = (s-1); a <= (e-1); a++)
+						{
+							if( Float.isNaN(query.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
+							{
+								quarters[a] = 0;
+							}	
+						}				
+					
+						firmBeforeValues.add(quarters);
+					}
+					if(query.get(cusips.get(i)).get(j).state == "during")
+					{
+						int s = query.get(cusips.get(i)).get(j).start;
+						int e = query.get(cusips.get(i)).get(j).end;
+					
+						for(int a = (s-1); a <= (e-1); a++)
+						{
+							if( Float.isNaN(query.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
+							{
+								quarters[a] = 0;
+							}	
+						}				
+					
+						firmDuringValues.add(quarters);
+					}
+					
+					if(query.get(cusips.get(i)).get(j).state == "after")
+					{
+						int s = query.get(cusips.get(i)).get(j).start;
+						int e = query.get(cusips.get(i)).get(j).end;
+					
+						for(int a = (s-1); a <= (e-1); a++)
+						{
+							if( Float.isNaN(query.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
+							{
+								quarters[a] = 0;
+							}							
+						}				
+					
+						firmAfterValues.add(quarters);
+					}
 				}
 			}
 			else
@@ -458,8 +496,12 @@ public class prototypeintervalclass {
 				System.out.println("Undiscovered cusip :(");
 			}
 		}	
+		printMatrix(firmBeforeValues);
 		
-		return firmValues;		
+		printMatrix(firmDuringValues);
+		printMatrix(firmAfterValues);
+		
+		return null;		
 	}
 	
 	public static void printMatrix(ArrayList<float[]> vals)
@@ -509,7 +551,7 @@ public class prototypeintervalclass {
 		
 		ArrayList<float[]> result = constructMatrix(vals);
 		
-		printMatrix(result);
+		//printMatrix(result);
 		
 		
 		
