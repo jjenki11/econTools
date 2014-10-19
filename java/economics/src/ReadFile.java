@@ -20,7 +20,6 @@ public class ReadFile {
 		
 		//input filenames
 		System.out.println("first file");
-		String mapping = util.filePath+"quarters.txt";
 		String bankrupcies = util.filePath+"brd_data_set2b.txt";
 		//String successfulMergers = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\sdc_processing\\m_a_data_success.txt";
 		//String failedMergers = "";

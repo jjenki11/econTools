@@ -32,7 +32,9 @@ public class Mapping {
 		}
 		catch (IOException e) 
 		{
-		    System.out.println("File Read Error");
+			System.out.println("BAD FILE WAS > " + fPath);
+		    System.out.println("File Read Error in dateMap");
+		    System.exit(0);
 		}
 		System.out.println("Date mapping success");
 		return dateMap;
@@ -65,7 +67,9 @@ public class Mapping {
 		}
 		catch (IOException e) 
 		{
-		    System.out.println("File Read Error");
+			System.out.println("BAD FILE WAS > " + filename);
+		    System.out.println("File Read Error in dateMap");
+		    System.exit(0);
 		}
 		System.out.println("Date mapping success");
 		return dateMap;

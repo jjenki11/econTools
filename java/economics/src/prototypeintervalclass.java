@@ -128,7 +128,7 @@ public class prototypeintervalclass {
 		
 		for(int i = 0; i < list.size();i++){
 			
-			if(Float.parseFloat(list.get(i).Tobins_Q) == 0)
+			if(Float.parseFloat(list.get(i).ppegtq) == 0)
 			{
 				
 			}
@@ -137,12 +137,12 @@ public class prototypeintervalclass {
 				if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= start) &&
 					(utils.qM2.get(utils.dM2.get((list.get(i).datadate))) < mid))
 				{				
-					beforeAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
+					beforeAvg.add(Float.parseFloat(list.get(i).ppegtq));
 				}
 				if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= mid) &&
 					(utils.qM2.get(utils.dM2.get(list.get(i).datadate)) <= end))
 				{				
-					afterAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
+					afterAvg.add(Float.parseFloat(list.get(i).ppegtq));
 				}
 			}
 		}
@@ -177,7 +177,7 @@ public class prototypeintervalclass {
 		float res = 0;
 		for(int i = 0;i<list.size();i++)
 		{
-			res += Float.parseFloat(list.get(i).Tobins_Q);
+			res += Float.parseFloat(list.get(i).ppegtq);
 		}
 		
 		return (res / list.size());	
@@ -290,7 +290,6 @@ public class prototypeintervalclass {
 		
 		ArrayList<String> cusips = econo.cusipList;
 		
-		System.out.println("Size of duringTree? " + econo.DuringTree.size());
 		for(int i = 0;i<cusips.size();i++)
 		{
 			bkTmp = new ArrayList<Firm>();
@@ -308,7 +307,7 @@ public class prototypeintervalclass {
 					cusips.get(
 							i));
 			if(bkTmp!=null){
-				System.out.println("Size of stuff in During bk tree: "+bkTmp.size());	
+					
 				value  = new boundedValue();
 				value = findAverages(bkTmp);				
 				list2.add(value);
@@ -317,8 +316,7 @@ public class prototypeintervalclass {
 			bkTmp = econo.AfterTree.get(
 								cusips.get(
 										i));
-			if(bkTmp!=null){
-				//System.out.println("Size of stuff in bk tree: "+bkTmp.size());		
+			if(bkTmp!=null){	
 				value  = new boundedValue();
 				value = findAverages(bkTmp);				
 				list3.add(value);

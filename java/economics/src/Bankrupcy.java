@@ -89,7 +89,7 @@ public class Bankrupcy {
 	
 	// before BK within range checker boolean ; 
 	public boolean BankrupcyBefore (int datadate, int years) {
-		if (((filedIndex - datadate) < (years*365)) && ((filedIndex - datadate) >= 0 )) {
+		if (((filedIndex - datadate) <= (years*365)) && ((filedIndex - datadate) >= 0 )) {
 			return true; 
 		}
 		return false;

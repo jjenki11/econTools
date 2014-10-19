@@ -62,12 +62,16 @@ public class Economy {
 		int acquirerCount = 0;
 		int bankruptCount = 0;	
 		Mapping m = new Mapping();
-		BTree<String, Integer> dM = m.dateMap(filePath);	
-		BTree<Integer, Integer> qM = m.quartermap(filePath+"quarters.txt");
+		BTree<String, Integer> dM;
+		BTree<Integer, Integer> qM;
 	
 	public Economy(String path){
+		
 		filePath = path;
-		utilities = new EconUtils(filePath);
+		dM = m.dateMap(path);			
+		qM = m.quartermap(path);
+		utilities = new EconUtils(path);
+		
 		AllFirms = new ArrayList<Firm>(); //All CRSP entries
 		AllFirms2 = new BTree<String,Firm>(); //
 		
@@ -179,7 +183,9 @@ public class Economy {
 			//tarTree = treeTarget;
 			//acqTree = treeAcquirer;
 		} catch (IOException e) {
-		    System.out.println("File Read Error");
+			System.out.println("BAD FILE WAS > " + filename);
+		    System.out.println("File Read Error in doTarget");
+		    System.exit(0);
 		}	    
 		setTGTree(treeTarget);
 		System.out.println("Reading successful target data: done!");		
@@ -266,7 +272,9 @@ public class Economy {
 			//tarTree = treeTarget;
 			//acqTree = treeAcquirer;
 		} catch (IOException e) {
-		    System.out.println("File Read Error");
+			System.out.println("BAD FILE WAS > " + filename);
+		    System.out.println("File Read Error in doTarget");
+		    System.exit(0);
 		}	    
 		setAQTree(treeAcquirer);
 		System.out.println("Reading successful target data: done!");		
@@ -494,7 +502,9 @@ public class Economy {
 		    }		    
 		    in.close();		    
 		} catch (IOException e) {
-		    System.out.println("File Read Error");
+			System.out.println("BAD FILE WAS > " + filename);
+		    System.out.println("File Read Error in doBankrupcy");
+		    System.exit(0);
 		}	    
 		System.out.println("Reading bankrupcy data: done!");
 		
