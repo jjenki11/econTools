@@ -445,7 +445,7 @@ public class prototypeintervalclass {
 			{
 				for(int j = 0; j < queryBefore.get(cusips.get(i)).size(); j++)
 				{
-					if(queryBefore.get(cusips.get(i)).get(j).state == "before")
+					if(queryBefore.get(cusips.get(i)).get(j) != null)
 					{
 						int s = queryBefore.get(cusips.get(i)).get(j).start;
 						int e = queryBefore.get(cusips.get(i)).get(j).end;
@@ -464,11 +464,18 @@ public class prototypeintervalclass {
 					
 						firmBeforeValues.add(quarters);
 					}
-					if(queryDuring.get(cusips.get(i)).get(j).state == "during")
+				}
+			}
+			quarters = new float[120];
+			if(queryDuring.get(cusips.get(i)) != null)
+			{
+				for(int j = 0; j < queryDuring.get(cusips.get(i)).size(); j++)
+				{		
+					if(queryDuring.get(cusips.get(i)).get(j) != null)
 					{
 						int s = queryDuring.get(cusips.get(i)).get(j).start;
 						int e = queryDuring.get(cusips.get(i)).get(j).end;
-					
+			
 						for(int a = (s-1); a <= (e-1); a++)
 						{
 							if( Float.isNaN(queryDuring.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
@@ -483,8 +490,14 @@ public class prototypeintervalclass {
 					
 						firmDuringValues.add(quarters);
 					}
-					
-					if(queryAfter.get(cusips.get(i)).get(j).state == "after")
+				}
+			}
+			quarters = new float[120];
+			if(queryAfter.get(cusips.get(i)) != null)
+			{
+				for(int j = 0; j < queryAfter.get(cusips.get(i)).size(); j++)
+				{		
+					if(queryAfter.get(cusips.get(i)).get(j) != null)
 					{
 						int s = queryAfter.get(cusips.get(i)).get(j).start;
 						int e = queryAfter.get(cusips.get(i)).get(j).end;
@@ -501,7 +514,7 @@ public class prototypeintervalclass {
 							}
 						}				
 					
-						firmAfterValues.add(quarters);
+						firmAfterValues.add(quarters);		
 					}
 				}
 			}
