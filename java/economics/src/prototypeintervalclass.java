@@ -454,6 +454,10 @@ public class prototypeintervalclass {
 							{
 								quarters[a] = 0;
 							}	
+							else 
+							{
+								quarters[a] = query.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
+							}
 						}				
 					
 						firmBeforeValues.add(quarters);
@@ -468,7 +472,11 @@ public class prototypeintervalclass {
 							if( Float.isNaN(query.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
 							{
 								quarters[a] = 0;
-							}	
+							}
+							else 
+							{
+								quarters[a] = query.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
+							}
 						}				
 					
 						firmDuringValues.add(quarters);
@@ -484,7 +492,11 @@ public class prototypeintervalclass {
 							if( Float.isNaN(query.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
 							{
 								quarters[a] = 0;
-							}							
+							}
+							else 
+							{
+								quarters[a] = query.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
+							}
 						}				
 					
 						firmAfterValues.add(quarters);
