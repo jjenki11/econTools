@@ -382,49 +382,51 @@ public class prototypeintervalclass {
 		ArrayList<boundedValue> during = (ArrayList<boundedValue>) vals[1];		//vals[1] is during bk
 		ArrayList<boundedValue> after = (ArrayList<boundedValue>) vals[2];		//vals[2] is after  bk
 		
-		BTree<String, ArrayList<boundedValue>> query = new BTree<String, ArrayList<boundedValue>>();
+		BTree<String, ArrayList<boundedValue>> queryBefore = new BTree<String, ArrayList<boundedValue>>();
+		BTree<String, ArrayList<boundedValue>> queryDuring = new BTree<String, ArrayList<boundedValue>>();
+		BTree<String, ArrayList<boundedValue>> queryAfter = new BTree<String, ArrayList<boundedValue>>();
 		
 		ArrayList<boundedValue> tmp;
 		
 		for(int i = 0; i < before.size(); i++)
 		{
-			if(query.get(before.get(i).cusip) != null)
+			if(queryBefore.get(before.get(i).cusip) != null)
 			{
-				query.get(before.get(i).cusip).add(before.get(i));
+				queryBefore.get(before.get(i).cusip).add(before.get(i));
 			}
 			else
 			{
 				tmp = new ArrayList<boundedValue>();
 				tmp.add(before.get(i));
-				query.put(before.get(i).cusip,tmp);
+				queryBefore.put(before.get(i).cusip,tmp);
 			}
 		}
 		
 		for(int i = 0; i < during.size(); i++)
 		{
-			if(query.get(during.get(i).cusip) != null)
+			if(queryDuring.get(during.get(i).cusip) != null)
 			{
-				query.get(during.get(i).cusip).add(during.get(i));
+				queryDuring.get(during.get(i).cusip).add(during.get(i));
 			}
 			else
 			{
 				tmp = new ArrayList<boundedValue>();
 				tmp.add(during.get(i));
-				query.put(during.get(i).cusip,tmp);
+				queryDuring.put(during.get(i).cusip,tmp);
 			}
 		}
 		
 		for(int i = 0; i < after.size(); i++)
 		{
-			if(query.get(after.get(i).cusip) != null)
+			if(queryAfter.get(after.get(i).cusip) != null)
 			{
-				query.get(after.get(i).cusip).add(after.get(i));
+				queryAfter.get(after.get(i).cusip).add(after.get(i));
 			}
 			else
 			{
 				tmp = new ArrayList<boundedValue>();
 				tmp.add(after.get(i));
-				query.put(after.get(i).cusip,tmp);
+				queryAfter.put(after.get(i).cusip,tmp);
 			}
 		}
 		
@@ -439,63 +441,63 @@ public class prototypeintervalclass {
 		{
 			quarters = new float[120];
 			
-			if(query.get(cusips.get(i)) != null)
+			if(queryBefore.get(cusips.get(i)) != null)
 			{
-				for(int j = 0; j < query.get(cusips.get(i)).size(); j++)
+				for(int j = 0; j < queryBefore.get(cusips.get(i)).size(); j++)
 				{
-					if(query.get(cusips.get(i)).get(j).state == "before")
+					if(queryBefore.get(cusips.get(i)).get(j).state == "before")
 					{
-						int s = query.get(cusips.get(i)).get(j).start;
-						int e = query.get(cusips.get(i)).get(j).end;
+						int s = queryBefore.get(cusips.get(i)).get(j).start;
+						int e = queryBefore.get(cusips.get(i)).get(j).end;
 					
 						for(int a = (s-1); a <= (e-1); a++)
 						{
-							if( Float.isNaN(query.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
+							if( Float.isNaN(queryBefore.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
 							{
 								quarters[a] = 0;
 							}	
 							else 
 							{
-								quarters[a] = query.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
+								quarters[a] = queryBefore.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
 							}
 						}				
 					
 						firmBeforeValues.add(quarters);
 					}
-					if(query.get(cusips.get(i)).get(j).state == "during")
+					if(queryDuring.get(cusips.get(i)).get(j).state == "during")
 					{
-						int s = query.get(cusips.get(i)).get(j).start;
-						int e = query.get(cusips.get(i)).get(j).end;
+						int s = queryDuring.get(cusips.get(i)).get(j).start;
+						int e = queryDuring.get(cusips.get(i)).get(j).end;
 					
 						for(int a = (s-1); a <= (e-1); a++)
 						{
-							if( Float.isNaN(query.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
+							if( Float.isNaN(queryDuring.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
 							{
 								quarters[a] = 0;
 							}
 							else 
 							{
-								quarters[a] = query.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
+								quarters[a] = queryDuring.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
 							}
 						}				
 					
 						firmDuringValues.add(quarters);
 					}
 					
-					if(query.get(cusips.get(i)).get(j).state == "after")
+					if(queryAfter.get(cusips.get(i)).get(j).state == "after")
 					{
-						int s = query.get(cusips.get(i)).get(j).start;
-						int e = query.get(cusips.get(i)).get(j).end;
+						int s = queryAfter.get(cusips.get(i)).get(j).start;
+						int e = queryAfter.get(cusips.get(i)).get(j).end;
 					
 						for(int a = (s-1); a <= (e-1); a++)
 						{
-							if( Float.isNaN(query.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
+							if( Float.isNaN(queryAfter.get(cusips.get(i)).get(j).quarterlyIntervalDifference))
 							{
 								quarters[a] = 0;
 							}
 							else 
 							{
-								quarters[a] = query.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
+								quarters[a] = queryAfter.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
 							}
 						}				
 					
@@ -509,7 +511,6 @@ public class prototypeintervalclass {
 			}
 		}	
 		printMatrix(firmBeforeValues);
-		
 		printMatrix(firmDuringValues);
 		printMatrix(firmAfterValues);
 		
