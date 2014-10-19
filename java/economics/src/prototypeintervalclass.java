@@ -20,14 +20,20 @@ class boundedValue{
 	float firmSicBeforeDifference;
 	float firmSicAfterDifference;
 	
+	float quarterlyIntervalDifference;
+	
 	String sic;
 	String cusip;
+	
+	String state;
 	
 	public boundedValue()
 	{
 		start = 0;
 		mid = 0;
 		end = 0;
+		
+		state = "";
 		
 		beforeAverageFirm = 0;
 		afterAverageFirm = 0;
@@ -150,10 +156,12 @@ public class prototypeintervalclass {
 		float[] result = new float[3];
 		result[0] = utils.sumN(beforeAvg) / beforeAvg.size();
 		result[1] = utils.sumN(afterAvg) / afterAvg.size();
-		result [2] = (result[1] - result[0]) / (float) (end - start);	
+		result[2] = (result[1] - result[0]) / (float) (end - start);	
 		
 		value.beforeAverageFirm = result[0];		
 		value.afterAverageFirm = result[1];
+		
+		value.quarterlyIntervalDifference = result[2];
 		
 		value.cusip = list.get(0).cusip;
 		value.sic = list.get(0).sic;
@@ -299,7 +307,8 @@ public class prototypeintervalclass {
 			if(bkTmp != null)
 			{
 				value  = new boundedValue();
-				value = findAverages(bkTmp);				
+				value = findAverages(bkTmp);		
+				value.state = "before";
 				list1.add(value);
 			}
 			bkTmp = new ArrayList<Firm>();
@@ -309,7 +318,8 @@ public class prototypeintervalclass {
 			if(bkTmp!=null){
 					
 				value  = new boundedValue();
-				value = findAverages(bkTmp);				
+				value = findAverages(bkTmp);	
+				value.state = "during";
 				list2.add(value);
 			}
 			bkTmp = new ArrayList<Firm>();
@@ -318,7 +328,8 @@ public class prototypeintervalclass {
 										i));
 			if(bkTmp!=null){	
 				value  = new boundedValue();
-				value = findAverages(bkTmp);				
+				value = findAverages(bkTmp);	
+				value.state = "after";
 				list3.add(value);
 			}
 			
@@ -365,6 +376,105 @@ public class prototypeintervalclass {
 		}
 	}
 	
+	public static ArrayList<float[]> constructMatrix(Object[] vals)
+	{		
+		ArrayList<boundedValue> before = (ArrayList<boundedValue>) vals[0];		//vals[0] is before bk
+		ArrayList<boundedValue> during = (ArrayList<boundedValue>) vals[1];		//vals[1] is during bk
+		ArrayList<boundedValue> after = (ArrayList<boundedValue>) vals[2];		//vals[2] is after  bk
+		
+		BTree<String, ArrayList<boundedValue>> query = new BTree<String, ArrayList<boundedValue>>();
+		
+		ArrayList<boundedValue> tmp;
+		
+		for(int i = 0; i < before.size(); i++)
+		{
+			if(query.get(before.get(i).cusip) != null)
+			{
+				query.get(before.get(i).cusip).add(before.get(i));
+			}
+			else
+			{
+				tmp = new ArrayList<boundedValue>();
+				tmp.add(before.get(i));
+				query.put(before.get(i).cusip,tmp);
+			}
+		}
+		
+		for(int i = 0; i < during.size(); i++)
+		{
+			if(query.get(during.get(i).cusip) != null)
+			{
+				query.get(during.get(i).cusip).add(during.get(i));
+			}
+			else
+			{
+				tmp = new ArrayList<boundedValue>();
+				tmp.add(during.get(i));
+				query.put(during.get(i).cusip,tmp);
+			}
+		}
+		
+		for(int i = 0; i < after.size(); i++)
+		{
+			if(query.get(after.get(i).cusip) != null)
+			{
+				query.get(after.get(i).cusip).add(after.get(i));
+			}
+			else
+			{
+				tmp = new ArrayList<boundedValue>();
+				tmp.add(after.get(i));
+				query.put(after.get(i).cusip,tmp);
+			}
+		}
+		
+		//make final obj
+		ArrayList<String> cusips = econo.cusipList;		
+		
+		float[] quarters;			
+		ArrayList<float[]> firmValues = new ArrayList<float[]>();	
+		
+		for(int i = 0; i < cusips.size(); i++)
+		{
+			quarters = new float[120];
+			
+			if(query.get(cusips.get(i)) != null)
+			{
+				for(int j = 0; j < query.get(cusips.get(i)).size(); j++)
+				{
+					int s = query.get(cusips.get(i)).get(j).start;
+					int e = query.get(cusips.get(i)).get(j).end;
+					
+					for(int a = (s-1); a <= (e-1); a++)
+					{
+						quarters[a] = query.get(cusips.get(i)).get(j).quarterlyIntervalDifference;
+					}				
+					
+					firmValues.add(quarters);
+				}
+			}
+			else
+			{
+				System.out.println("Undiscovered cusip :(");
+			}
+		}	
+		
+		return firmValues;		
+	}
+	
+	public static void printMatrix(ArrayList<float[]> vals)
+	{
+		
+		for(int i = 0; i < vals.size(); i++){
+			
+			for(int j = 0; j < vals.get(i).length; j++){
+				System.out.print(vals.get(i)[j]+", ");
+			}
+			System.out.println();
+		}
+	}
+	
+	
 	public static void main(String[] args) throws IOException {
 	
 		
@@ -397,7 +507,9 @@ public class prototypeintervalclass {
 		writeResult(vals[2], after);
 		
 		
+		ArrayList<float[]> result = constructMatrix(vals);
 		
+		printMatrix(result);
 		
 		
 		
