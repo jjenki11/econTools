@@ -112,7 +112,9 @@ public class EconUtils
 		    }
 		    in.close();
 		} catch (IOException e) {
-		    System.out.println("File Read Error");
+			System.out.println("BAD FILE WAS > " + filename);
+		    System.out.println("File Read Error in writelist");
+		    System.exit(0);
 		}			
 		return theList;
 	}
@@ -238,19 +240,24 @@ public class EconUtils
 	        }
 	        in.close();
 	    } catch (IOException e) {
-	        System.out.println("File Read Error");
+			System.out.println("BAD FILE WAS > " + filename);
+		    System.out.println("File Read Error in read crsp");
+		    System.exit(0);
 	    }		
 		return E;		
 	}		
 	
 	public boolean addToBeforeTree(Economy e, Firm f){
+		
 		ArrayList<Firm> tmp;
 		if(e.BeforeTree.get(f.cusip) != null){
 			e.BeforeTree.get(f.cusip).add(f);
+			System.out.println("already had it in b4 tree");
 		} else {
 			tmp = new ArrayList<Firm>();
 			tmp.add(f);
-			e.BeforeTree.put(f.cusip, tmp);			
+			e.BeforeTree.put(f.cusip, tmp);		
+			System.out.println("had to make a new b4 tree");
 		}
 		return true;
 	}
