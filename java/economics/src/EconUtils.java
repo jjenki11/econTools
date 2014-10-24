@@ -1,3 +1,5 @@
+//package test;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -307,7 +309,9 @@ public class EconUtils
 					(x[2] && f.setCategory("AFTER")),
 					(x[3] && f.setCategory("NEVER"))
 				};
-				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
+				//txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
+				
+				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
 				
 				//y = {
 				y[0] =	(x[0] && writeList(foundFiles[0], txt) && addToBeforeTree(Eco, f));
@@ -364,6 +368,22 @@ public class EconUtils
 		return count;
 	}	
 	
+	
+	public ArrayList<Float> calculateZScore(ArrayList<Float> values)
+	{		
+		
+		float std = (float) Math.sqrt(varianceN(values));
+		
+		ArrayList<Float> scores = new ArrayList<Float>();
+		
+		for(int i = 0; i < values.size(); i++)
+		{
+			scores.add(
+					(float) ((values.get(i) - averageN(values)) / (std))	//xbar - mu0 / std_dev*sqrt(N) gives test statistic
+			);
+		}		
+		return scores;		
+	}
 	
 	
 	
@@ -435,6 +455,20 @@ public class EconUtils
 	public float averageN(ArrayList<Float> list){
 		float sum = sumN(list);
 		return (sum / list.size());
+	}
+	
+	public float varianceN(ArrayList<Float> list){
+		
+		float avg = averageN(list);
+		ArrayList<Float> diffs = new ArrayList<Float>();
+		
+		for(int i = 0; i < list.size(); i++){
+			diffs.add( 
+					(float) Math.pow((list.get(i) - avg), 2)
+			);
+		}
+		
+		return sumN(diffs);		
 	}
 	
 	public float sumN(ArrayList<Float> list){
