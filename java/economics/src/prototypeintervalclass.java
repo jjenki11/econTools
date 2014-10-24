@@ -478,11 +478,11 @@ public class prototypeintervalclass {
 		ArrayList<Float> prD = new ArrayList<Float>();
 		prD = utils.calculateZScore(profDuringDiffs);
 
-		utils.writeList(outFile1, getStringFromList(tqB));
-		utils.writeList(outFile2, getStringFromList(tqD));
+		utils.writeList(outFile1, getStringFromList(tqBeforeDiffs));
+		utils.writeList(outFile2, getStringFromList(tqDuringDiffs));
 		
-		utils.writeList(outFile3, getStringFromList(prB));
-		utils.writeList(outFile4, getStringFromList(prD));
+		utils.writeList(outFile3, getStringFromList(profBeforeDiffs));
+		utils.writeList(outFile4, getStringFromList(profDuringDiffs));
 		
 	}
 	
