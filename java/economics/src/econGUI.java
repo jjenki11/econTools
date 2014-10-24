@@ -1,4 +1,4 @@
-
+package test;
 import java.awt.EventQueue;
 
 import javax.swing.*;
@@ -141,7 +141,7 @@ public class econGUI extends JFrame implements ListSelectionListener {
         doBankrupcyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                rf = new ReadFile();
+               // rf = new ReadFile();
                 while(rf.getText() == ""){}
                 ex.initUI();
                 console.setText(rf.getText());
