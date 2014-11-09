@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 
 
@@ -199,7 +199,7 @@ public class prototypeintervalclass {
 		resultTQ[0] = utils.averageN(beforeTQAvg);
 		resultTQ[1] = utils.averageN(afterTQAvg);
 		// beforeAverage - afterAverage (interval)
-		resultTQ[2] = (resultTQ[0] - resultTQ[1]);
+		resultTQ[2] = (resultTQ[1] - resultTQ[0]);
 		
 		value.beforeAverageTQFirm = resultTQ[0];		
 		value.afterAverageTQFirm = resultTQ[1];		
@@ -209,7 +209,7 @@ public class prototypeintervalclass {
 		resultProf[0] = utils.averageN(beforeProfAvg);
 		resultProf[1] = utils.averageN(afterProfAvg);
 		// beforeAverage - afterAverage (interval)
-		resultProf[2] = (resultProf[0] - resultProf[1]);	
+		resultProf[2] = (resultProf[1] - resultProf[0]);	
 		
 		value.beforeAverageProfFirm = resultProf[0];		
 		value.afterAverageProfFirm = resultProf[1];		
@@ -369,6 +369,10 @@ public class prototypeintervalclass {
 	}
 	
 	
+	
+	// prof and tq for firms coming out of bk
+	
+	
 	public static Object[] doRoutine()
 	{
 		Object[] boundedFirmsObject = new Object[6];
@@ -426,7 +430,13 @@ public class prototypeintervalclass {
 		return boundedFirmsObject;
 	}
 	
-	public static void writeQuarterlyIntervalDiff(Object valList, String outFile1, String outFile2, String outFile3, String outFile4) throws IOException
+	public static void writeQuarterlyIntervalDiff(Object valList, 
+												  String outFile1, 
+												  String outFile2, 
+												  String outFile3, 
+												  String outFile4,
+												  String outFile5,
+												  String outFile6) throws IOException
 	{
 		// quarterlyIntervalTQDifference
 		// quarterlyIntervalProfDifference
@@ -440,6 +450,9 @@ public class prototypeintervalclass {
 		
 		ArrayList<Float> tqDuringDiffs = new ArrayList<Float>();
 		ArrayList<Float> profDuringDiffs = new ArrayList<Float>();
+		
+		ArrayList<Float> tqAfterDiffs = new ArrayList<Float>();
+		ArrayList<Float> profAfterDiffs = new ArrayList<Float>();
 		
 		// BEFORE BK
 		for(int i = 0; i < ((ArrayList<boundedValue>) vals[0]).size();i++){
@@ -469,20 +482,36 @@ public class prototypeintervalclass {
 			}			
 		}		
 		
-		ArrayList<Float> tqB = new ArrayList<Float>();
-		tqB = utils.calculateZScore(tqBeforeDiffs);
-		ArrayList<Float> prB = new ArrayList<Float>();
-		prB = utils.calculateZScore(profBeforeDiffs);
-		ArrayList<Float> tqD = new ArrayList<Float>();
-		tqD = utils.calculateZScore(tqDuringDiffs);
-		ArrayList<Float> prD = new ArrayList<Float>();
-		prD = utils.calculateZScore(profDuringDiffs);
-
-		utils.writeList(outFile1, getStringFromList(tqB));
-		utils.writeList(outFile2, getStringFromList(tqD));
+		// AFTER BK
+		for(int i = 0; i < ((ArrayList<boundedValue>) vals[2]).size();i++){
+			float x = ((ArrayList<boundedValue>) vals[2]).get(i).quarterlyIntervalTQDifference;
+			float y = ((ArrayList<boundedValue>) vals[2]).get(i).quarterlyIntervalProfDifference;
+			if(Float.isNaN(x)){}
+			else{
+				tqAfterDiffs.add(x);
+			}
+			if(Float.isNaN(y)){}
+			else{
+				profAfterDiffs.add(y);
+			}			
+		}
+		/*
+			ArrayList<Float> tqB = new ArrayList<Float>();
+			tqB = utils.calculateZScore(tqBeforeDiffs);
+			ArrayList<Float> prB = new ArrayList<Float>();
+			prB = utils.calculateZScore(profBeforeDiffs);
+			ArrayList<Float> tqD = new ArrayList<Float>();
+			tqD = utils.calculateZScore(tqDuringDiffs);
+			ArrayList<Float> prD = new ArrayList<Float>();
+			prD = utils.calculateZScore(profDuringDiffs);
+		*/
+		utils.writeList(outFile1, getStringFromList(tqBeforeDiffs));
+		utils.writeList(outFile2, getStringFromList(tqDuringDiffs));		
+		utils.writeList(outFile5, getStringFromList(tqAfterDiffs));
 		
-		utils.writeList(outFile3, getStringFromList(prB));
-		utils.writeList(outFile4, getStringFromList(prD));
+		utils.writeList(outFile3, getStringFromList(profBeforeDiffs));
+		utils.writeList(outFile4, getStringFromList(profDuringDiffs));
+		utils.writeList(outFile4, getStringFromList(profAfterDiffs));
 		
 	}
 	
@@ -784,15 +813,18 @@ public class prototypeintervalclass {
 		
 		String beforeTQDist = econo.filePath+"results\\beforeTQDist.txt";
 		String duringTQDist = econo.filePath+"results\\duringTQDist.txt";
+		String afterTQDist = econo.filePath+"results\\afterTQDist.txt";
 		String beforeProfDist = econo.filePath+"results\\beforeProfDist.txt";
 		String duringProfDist = econo.filePath+"results\\duringProfDist.txt";
+		String afterProfDist = econo.filePath+"results\\afterProfDist.txt";
 		
 		writeResult(vals[0], before);		
 		writeResult(vals[1], during);		
 		writeResult(vals[2], after);
 		
 		// THIS IS WHAT I ADDED
-		writeQuarterlyIntervalDiff(vals, beforeTQDist, duringTQDist, beforeProfDist, duringProfDist);		
+		writeQuarterlyIntervalDiff(vals, beforeTQDist, duringTQDist, afterTQDist, beforeProfDist, duringProfDist, afterProfDist);		
+	
 		
 		//ArrayList<float[]> result = constructMatrix(vals);		
 		//printMatrix(result);
