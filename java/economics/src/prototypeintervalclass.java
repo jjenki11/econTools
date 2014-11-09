@@ -436,7 +436,13 @@ public class prototypeintervalclass {
 												  String outFile3, 
 												  String outFile4,
 												  String outFile5,
-												  String outFile6) throws IOException
+												  String outFile6,
+												  String outFile7,
+												  String outFile8,
+												  String outFile9,
+												  String outFile10,
+												  String outFile11,
+												  String outFile12) throws IOException
 	{
 		// quarterlyIntervalTQDifference
 		// quarterlyIntervalProfDifference
@@ -454,6 +460,13 @@ public class prototypeintervalclass {
 		ArrayList<Float> tqAfterDiffs = new ArrayList<Float>();
 		ArrayList<Float> profAfterDiffs = new ArrayList<Float>();
 		
+		ArrayList<Float> tqBeforeSICDiffs = new ArrayList<Float>();
+		ArrayList<Float> tqDuringSICDiffs = new ArrayList<Float>();
+		ArrayList<Float> tqAfterSICDiffs = new ArrayList<Float>();
+		ArrayList<Float> profBeforeSICDiffs = new ArrayList<Float>();
+		ArrayList<Float> profDuringSICDiffs = new ArrayList<Float>();
+		ArrayList<Float> profAfterSICDiffs = new ArrayList<Float>();
+		
 		// BEFORE BK
 		for(int i = 0; i < ((ArrayList<boundedValue>) vals[0]).size();i++){
 			float x = ((ArrayList<boundedValue>) vals[0]).get(i).quarterlyIntervalTQDifference;
@@ -465,6 +478,18 @@ public class prototypeintervalclass {
 			if(Float.isNaN(y)){}
 			else{
 				profBeforeDiffs.add(y);
+			}
+			
+			//sic
+			float a = ((ArrayList<boundedValue>) vals[0]).get(i).afterAverageTQSIC - ((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageTQSIC;
+			float b = ((ArrayList<boundedValue>) vals[0]).get(i).afterAverageProfSIC - ((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageProfSIC;
+			if(Float.isNaN(a)){}
+			else{
+				tqBeforeSICDiffs.add(a);
+			}
+			if(Float.isNaN(y)){}
+			else{
+				tqBeforeSICDiffs.add(b);
 			}
 		}
 		
@@ -479,7 +504,18 @@ public class prototypeintervalclass {
 			if(Float.isNaN(y)){}
 			else{
 				profDuringDiffs.add(y);
-			}			
+			}
+			//sic
+			float a = ((ArrayList<boundedValue>) vals[1]).get(i).afterAverageTQSIC - ((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageTQSIC;
+			float b = ((ArrayList<boundedValue>) vals[1]).get(i).afterAverageProfSIC - ((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageProfSIC;
+			if(Float.isNaN(a)){}
+			else{
+				tqDuringSICDiffs.add(a);
+			}
+			if(Float.isNaN(y)){}
+			else{
+				profDuringSICDiffs.add(b);
+			}
 		}		
 		
 		// AFTER BK
@@ -493,7 +529,18 @@ public class prototypeintervalclass {
 			if(Float.isNaN(y)){}
 			else{
 				profAfterDiffs.add(y);
-			}			
+			}	
+			//sic
+			float a = ((ArrayList<boundedValue>) vals[2]).get(i).afterAverageTQSIC - ((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageTQSIC;
+			float b = ((ArrayList<boundedValue>) vals[2]).get(i).afterAverageProfSIC - ((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageProfSIC;
+			if(Float.isNaN(a)){}
+			else{
+				tqAfterSICDiffs.add(a);
+			}
+			if(Float.isNaN(y)){}
+			else{
+				profAfterSICDiffs.add(b);
+			}	
 		}
 		/*
 			ArrayList<Float> tqB = new ArrayList<Float>();
@@ -511,8 +558,15 @@ public class prototypeintervalclass {
 		
 		utils.writeList(outFile3, getStringFromList(profBeforeDiffs));
 		utils.writeList(outFile4, getStringFromList(profDuringDiffs));
-		utils.writeList(outFile4, getStringFromList(profAfterDiffs));
+		utils.writeList(outFile6, getStringFromList(profAfterDiffs));
 		
+		utils.writeList(outFile7, getStringFromList(tqBeforeSICDiffs));
+		utils.writeList(outFile8, getStringFromList(tqDuringSICDiffs));
+		utils.writeList(outFile9, getStringFromList(tqAfterSICDiffs));
+		
+		utils.writeList(outFile10, getStringFromList(profBeforeSICDiffs));
+		utils.writeList(outFile11, getStringFromList(profDuringSICDiffs));
+		utils.writeList(outFile12, getStringFromList(profAfterSICDiffs));
 	}
 	
 	
@@ -818,12 +872,38 @@ public class prototypeintervalclass {
 		String duringProfDist = econo.filePath+"results\\duringProfDist.txt";
 		String afterProfDist = econo.filePath+"results\\afterProfDist.txt";
 		
-		writeResult(vals[0], before);		
-		writeResult(vals[1], during);		
-		writeResult(vals[2], after);
+		String beforeSICDist = econo.filePath+"results\\beforeTQSICDist.txt";
+		String duringSICDist = econo.filePath+"results\\duringTQSICDist.txt";
+		String afterSICDist = econo.filePath+"results\\afterTQSICDist.txt";
+		
+		String beforeSICTQDist = econo.filePath+"results\\beforeTQSICDist.txt";
+		String duringSICTQDist = econo.filePath+"results\\duringTQSICDist.txt";
+		String afterSICTQDist = econo.filePath+"results\\afterTQSICDist.txt";
+		
+		String beforeSICProfDist = econo.filePath+"results\\beforeProfSICDist.txt";
+		String duringSICProfDist = econo.filePath+"results\\duringProfSICDist.txt";
+		String afterSICProfDist = econo.filePath+"results\\afterProfSICDist.txt";
+		
+		//writeResult(vals[0], before);		
+		//writeResult(vals[1], during);		
+		//writeResult(vals[2], after);
 		
 		// THIS IS WHAT I ADDED
-		writeQuarterlyIntervalDiff(vals, beforeTQDist, duringTQDist, afterTQDist, beforeProfDist, duringProfDist, afterProfDist);		
+		writeQuarterlyIntervalDiff(vals, 
+								   beforeTQDist, 
+								   duringTQDist, 
+								   afterTQDist, 
+								   beforeProfDist, 
+								   duringProfDist, 
+								   afterProfDist, 
+								   beforeSICTQDist,
+								   duringSICTQDist, 
+								   afterSICTQDist,
+								   beforeSICProfDist,
+								   duringSICProfDist, 
+								   afterSICProfDist);		
+		
+		
 	
 		
 		//ArrayList<float[]> result = constructMatrix(vals);		
