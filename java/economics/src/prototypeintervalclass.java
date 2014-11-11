@@ -89,7 +89,7 @@ class boundedValue{
 
 public class prototypeintervalclass {
 	
-	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
+	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
 
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
