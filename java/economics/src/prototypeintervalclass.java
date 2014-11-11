@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 
 
@@ -89,7 +89,7 @@ class boundedValue{
 
 public class prototypeintervalclass {
 	
-	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
+	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
 
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
@@ -206,7 +206,7 @@ public class prototypeintervalclass {
 		resultTQ[0] = utils.averageN(beforeTQAvg);
 		resultTQ[1] = utils.averageN(afterTQAvg);
 		// beforeAverage - afterAverage (interval)
-		resultTQ[2] = (resultTQ[1] - resultTQ[0]);
+		resultTQ[2] = (resultTQ[1] - resultTQ[0]) / ((end - start)-1);
 		
 		value.beforeAverageTQFirm = resultTQ[0];		
 		value.afterAverageTQFirm = resultTQ[1];		
@@ -216,7 +216,7 @@ public class prototypeintervalclass {
 		resultProf[0] = utils.averageN(beforeProfAvg);
 		resultProf[1] = utils.averageN(afterProfAvg);
 		// beforeAverage - afterAverage (interval)
-		resultProf[2] = (resultProf[1] - resultProf[0]);	
+		resultProf[2] = (resultProf[1] - resultProf[0]) / ((end - start)-1);	
 		
 		value.beforeAverageProfFirm = resultProf[0];		
 		value.afterAverageProfFirm = resultProf[1];		
