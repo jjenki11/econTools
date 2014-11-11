@@ -233,25 +233,27 @@ public class prototypeintervalclass {
 		value.beforeAverageProfSIC = averageProfList(beforeSIC);
 		value.afterAverageProfSIC = averageProfList(afterSIC);			
 		
-		System.out.println("after minus before average sic TQ: "+(value.beforeAverageTQSIC - value.beforeAverageTQFirm));
-		System.out.println("after minus before average sic PROF: "+(value.beforeAverageProfSIC - value.beforeAverageProfFirm));
 		
 		
-		if(Float.isNaN((value.beforeAverageTQSIC - value.beforeAverageTQFirm))){}
+		System.out.println("after minus before average sic TQ: "+(value.beforeAverageTQSIC));
+		System.out.println("after minus before average sic PROF: "+(value.beforeAverageProfSIC));
+		
+		
+		if(Float.isNaN((value.beforeAverageTQSIC))){}
 		else{
-			value.firmSicBeforeTQDifference = (value.beforeAverageTQSIC - value.beforeAverageTQFirm);
+			value.firmSicBeforeTQDifference = (value.beforeAverageTQSIC);
 		}
-		if(Float.isNaN((value.afterAverageTQSIC - value.afterAverageTQFirm))){}
+		if(Float.isNaN((value.afterAverageTQSIC))){}
 		else{
-			value.firmSicAfterTQDifference = (value.afterAverageTQSIC - value.afterAverageTQFirm);
+			value.firmSicAfterTQDifference = (value.afterAverageTQSIC);
 		}
-		if(Float.isNaN((value.beforeAverageProfSIC - value.beforeAverageProfFirm))){}
+		if(Float.isNaN((value.beforeAverageProfSIC))){}
 		else{
-			value.firmSicBeforeProfDifference = (value.beforeAverageProfSIC - value.beforeAverageProfFirm);
+			value.firmSicBeforeProfDifference = (value.beforeAverageProfSIC);
 		}		
-		if(Float.isNaN((value.afterAverageProfSIC - value.afterAverageProfFirm))){}
+		if(Float.isNaN((value.afterAverageProfSIC))){}
 		else{
-			value.firmSicAfterProfDifference = (value.afterAverageProfSIC - value.afterAverageProfFirm);
+			value.firmSicAfterProfDifference = (value.afterAverageProfSIC);
 		}
 		
 		return value;
@@ -285,7 +287,7 @@ public class prototypeintervalclass {
 			}
 		}
 		
-		return (res / (list.size()-badValues));	
+		return (res / (list.size()+1));	
 	}
 	
 	public static float averageProfList(ArrayList<Firm> list)
@@ -302,8 +304,9 @@ public class prototypeintervalclass {
 			}
 			
 		}
-		
-		return (res / (list.size()-badValues));	
+		System.out.println((float)(res / (list.size()+1)));
+		System.out.println((float)((list.size())));
+		return (res / (list.size()+1));	
 	}
 	
 
@@ -569,7 +572,7 @@ public class prototypeintervalclass {
 			else{
 				tqDuringSICDiffs.add(a);
 			}
-			if(Float.isNaN(y)){}
+			if(Float.isNaN(b)){}
 			else{
 				profDuringSICDiffs.add(b);
 			}
