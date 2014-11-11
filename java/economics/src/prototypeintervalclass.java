@@ -236,12 +236,23 @@ public class prototypeintervalclass {
 		System.out.println("after minus before average sic TQ: "+(value.beforeAverageTQSIC - value.beforeAverageTQFirm));
 		System.out.println("after minus before average sic PROF: "+(value.beforeAverageProfSIC - value.beforeAverageProfFirm));
 		
-		float x = 
 		
-		value.firmSicBeforeTQDifference = (value.beforeAverageTQSIC - value.beforeAverageTQFirm);
-		value.firmSicAfterTQDifference = (value.afterAverageTQSIC - value.afterAverageTQFirm);		
-		value.firmSicBeforeProfDifference = (value.beforeAverageProfSIC - value.beforeAverageProfFirm);
-		value.firmSicAfterProfDifference = (value.afterAverageProfSIC - value.afterAverageProfFirm);
+		if(Float.isNaN((value.beforeAverageTQSIC - value.beforeAverageTQFirm))){}
+		else{
+			value.firmSicBeforeTQDifference = (value.beforeAverageTQSIC - value.beforeAverageTQFirm);
+		}
+		if(Float.isNaN((value.afterAverageTQSIC - value.afterAverageTQFirm))){}
+		else{
+			value.firmSicAfterTQDifference = (value.afterAverageTQSIC - value.afterAverageTQFirm);
+		}
+		if(Float.isNaN((value.beforeAverageProfSIC - value.beforeAverageProfFirm))){}
+		else{
+			value.firmSicBeforeProfDifference = (value.beforeAverageProfSIC - value.beforeAverageProfFirm);
+		}		
+		if(Float.isNaN((value.afterAverageProfSIC - value.afterAverageProfFirm))){}
+		else{
+			value.firmSicAfterProfDifference = (value.afterAverageProfSIC - value.afterAverageProfFirm);
+		}
 		
 		return value;
 	}
@@ -249,8 +260,8 @@ public class prototypeintervalclass {
 	public static String getStringFromList(ArrayList<Float> list){
 		String t = "";
 		for(int i = 0; i < list.size(); i++){
-			if(Float.isNaN(list.get(i))){
-				t += "";
+			if(Float.isNaN((float)list.get(i))){
+				//t += "";
 			}
 			else{
 				t+=list.get(i)+",";
@@ -270,6 +281,7 @@ public class prototypeintervalclass {
 			}
 			else{
 				res += Float.parseFloat(list.get(i).Tobins_Q);
+				
 			}
 		}
 		
@@ -417,7 +429,15 @@ public class prototypeintervalclass {
 				valueTQ  = new boundedValue();
 				valueTQ = findAverage(bkTmp);		
 				valueTQ.state = "before";
-				list1.add(valueTQ);				
+				if(
+						!(
+						(Float.isNaN((valueTQ.afterAverageProfFirm))) &&
+						(Float.isNaN((valueTQ.beforeAverageProfFirm))) &&
+						(Float.isNaN((valueTQ.afterAverageTQFirm))) &&
+						(Float.isNaN((valueTQ.beforeAverageTQFirm)))
+						)){
+					list1.add(valueTQ);
+				}
 			}
 			bkTmp = new ArrayList<Firm>();
 			bkTmp = econo.DuringTree.get(
@@ -428,7 +448,15 @@ public class prototypeintervalclass {
 				valueTQ  = new boundedValue();
 				valueTQ = findAverage(bkTmp);	
 				valueTQ.state = "during";
-				list2.add(valueTQ);
+				if(
+						!(
+						(Float.isNaN((valueTQ.afterAverageProfFirm))) &&
+						(Float.isNaN((valueTQ.beforeAverageProfFirm))) &&
+						(Float.isNaN((valueTQ.afterAverageTQFirm))) &&
+						(Float.isNaN((valueTQ.beforeAverageTQFirm)))
+						)){
+					list2.add(valueTQ);
+				}
 			}
 			bkTmp = new ArrayList<Firm>();
 			bkTmp = econo.AfterTree.get(
@@ -438,7 +466,15 @@ public class prototypeintervalclass {
 				valueTQ  = new boundedValue();
 				valueTQ = findAverage(bkTmp);	
 				valueTQ.state = "after";
-				list3.add(valueTQ);
+				if(
+						!(
+						(Float.isNaN((valueTQ.afterAverageProfFirm))) &&
+						(Float.isNaN((valueTQ.beforeAverageProfFirm))) &&
+						(Float.isNaN((valueTQ.afterAverageTQFirm))) &&
+						(Float.isNaN((valueTQ.beforeAverageTQFirm)))
+						)){
+					list3.add(valueTQ);
+				}
 			}
 			
 		}		
@@ -507,7 +543,7 @@ public class prototypeintervalclass {
 			else{
 				tqBeforeSICDiffs.add(a);
 			}
-			if(Float.isNaN(y)){}
+			if(Float.isNaN(b)){}
 			else{
 				profBeforeSICDiffs.add(b);
 			}
