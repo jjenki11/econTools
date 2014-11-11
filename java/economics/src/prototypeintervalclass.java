@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 
 
@@ -121,7 +121,14 @@ public class prototypeintervalclass {
 					//check if the firm evaluated has desired sic
 					if(firmsInQuarterRange.get(i).get(j).sic == sic)
 					{
-						firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
+						if(
+								Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Profitability)) ||
+								Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Tobins_Q))
+						){}
+						else{
+							firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
+						}
+						
 					}				
 				}
 			}
@@ -228,6 +235,8 @@ public class prototypeintervalclass {
 		
 		System.out.println("after minus before average sic TQ: "+(value.beforeAverageTQSIC - value.beforeAverageTQFirm));
 		System.out.println("after minus before average sic PROF: "+(value.beforeAverageProfSIC - value.beforeAverageProfFirm));
+		
+		float x = 
 		
 		value.firmSicBeforeTQDifference = (value.beforeAverageTQSIC - value.beforeAverageTQFirm);
 		value.firmSicAfterTQDifference = (value.afterAverageTQSIC - value.afterAverageTQFirm);		
@@ -491,8 +500,8 @@ public class prototypeintervalclass {
 			}
 			
 			//sic
-			float a = ((ArrayList<boundedValue>) vals[0]).get(i).afterAverageTQSIC - ((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageTQSIC;
-			float b = ((ArrayList<boundedValue>) vals[0]).get(i).afterAverageProfSIC - ((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageProfSIC;
+			float a = (float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageTQSIC;
+			float b = (float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageProfSIC;
 			System.out.println("BEFORE: a = "+a+" b = "+b);
 			if(Float.isNaN(a)){}
 			else{
@@ -506,8 +515,8 @@ public class prototypeintervalclass {
 		
 		// DURING BK
 		for(int i = 0; i < ((ArrayList<boundedValue>) vals[1]).size();i++){
-			float x = ((ArrayList<boundedValue>) vals[1]).get(i).quarterlyIntervalTQDifference;
-			float y = ((ArrayList<boundedValue>) vals[1]).get(i).quarterlyIntervalProfDifference;
+			float x = (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterlyIntervalTQDifference;
+			float y = (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterlyIntervalProfDifference;
 			if(Float.isNaN(x)){}
 			else{
 				tqDuringDiffs.add(x);
@@ -517,8 +526,8 @@ public class prototypeintervalclass {
 				profDuringDiffs.add(y);
 			}
 			//sic
-			float a = ((ArrayList<boundedValue>) vals[1]).get(i).afterAverageTQSIC - ((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageTQSIC;
-			float b = ((ArrayList<boundedValue>) vals[1]).get(i).afterAverageProfSIC - ((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageProfSIC;
+			float a = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageTQSIC;
+			float b = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageProfSIC;
 			System.out.println("DURING: a = "+a+" b = "+b);
 			if(Float.isNaN(a)){}
 			else{
@@ -532,8 +541,8 @@ public class prototypeintervalclass {
 		
 		// AFTER BK
 		for(int i = 0; i < ((ArrayList<boundedValue>) vals[2]).size();i++){
-			float x = ((ArrayList<boundedValue>) vals[2]).get(i).quarterlyIntervalTQDifference;
-			float y = ((ArrayList<boundedValue>) vals[2]).get(i).quarterlyIntervalProfDifference;
+			float x = (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterlyIntervalTQDifference;
+			float y = (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterlyIntervalProfDifference;
 			if(Float.isNaN(x)){}
 			else{
 				tqAfterDiffs.add(x);
@@ -543,14 +552,14 @@ public class prototypeintervalclass {
 				profAfterDiffs.add(y);
 			}	
 			//sic
-			float a = ((ArrayList<boundedValue>) vals[2]).get(i).afterAverageTQSIC - ((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageTQSIC;
-			float b = ((ArrayList<boundedValue>) vals[2]).get(i).afterAverageProfSIC - ((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageProfSIC;
+			float a = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageTQSIC;
+			float b = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageProfSIC;
 			System.out.println("AFTER: a = "+a+" b = "+b);
 			if(Float.isNaN(a)){}
 			else{
 				tqAfterSICDiffs.add(a);
 			}
-			if(Float.isNaN(y)){}
+			if(Float.isNaN(b)){}
 			else{
 				profAfterSICDiffs.add(b);
 			}	
