@@ -45,6 +45,8 @@ class boundedValue{
 	
 	String state;
 	
+	int quarterSpan;
+	
 	public boundedValue()
 	{
 		start = 0;
@@ -80,6 +82,7 @@ class boundedValue{
 		
 		sic = "";
 		cusip = "";
+		quarterSpan = 0;
 	}
 	
 	
@@ -233,7 +236,7 @@ public class prototypeintervalclass {
 		value.beforeAverageProfSIC = averageProfList(beforeSIC);
 		value.afterAverageProfSIC = averageProfList(afterSIC);			
 		
-		
+		value.quarterSpan = (value.end - value.start)-1;
 		
 		System.out.println("after minus before average sic TQ: "+(value.beforeAverageTQSIC));
 		System.out.println("after minus before average sic PROF: "+(value.beforeAverageProfSIC));
@@ -539,8 +542,8 @@ public class prototypeintervalclass {
 			}
 			
 			//sic
-			float a = (float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageTQSIC;
-			float b = (float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageProfSIC;
+			float a = (float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageTQSIC / (float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan;
+			float b = ((float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageProfSIC) / (float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan;
 			System.out.println("BEFORE: a = "+a+" b = "+b);
 			if(Float.isNaN(a)){}
 			else{
@@ -565,8 +568,8 @@ public class prototypeintervalclass {
 				profDuringDiffs.add(y);
 			}
 			//sic
-			float a = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageTQSIC;
-			float b = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageProfSIC;
+			float a = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageTQSIC / (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan;
+			float b = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageProfSIC / (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan;
 			System.out.println("DURING: a = "+a+" b = "+b);
 			if(Float.isNaN(a)){}
 			else{
@@ -591,8 +594,8 @@ public class prototypeintervalclass {
 				profAfterDiffs.add(y);
 			}	
 			//sic
-			float a = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageTQSIC;
-			float b = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageProfSIC;
+			float a = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageTQSIC / (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan;
+			float b = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageProfSIC / (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan;
 			System.out.println("AFTER: a = "+a+" b = "+b);
 			if(Float.isNaN(a)){}
 			else{
