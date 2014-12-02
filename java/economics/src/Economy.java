@@ -536,6 +536,8 @@ public class Economy {
 		acqTree = f;
 	}
 	
+
+	
 	public ArrayList<Firm> getFirmsInSIC(String sic){
 		
 		ArrayList<Firm> fInSIC = new ArrayList<Firm>();

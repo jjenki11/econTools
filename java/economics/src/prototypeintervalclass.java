@@ -106,13 +106,16 @@ public class prototypeintervalclass {
 	
 	public static ArrayList<Firm> getFirmsInQuarterRangeWithSIC(int start, int end, String sic)
 	{		
-		ArrayList<ArrayList<Firm>> firmsInQuarterRange = new ArrayList<ArrayList<Firm>>();
+		//ArrayList<ArrayList<Firm>> firmsInQuarterRange = new ArrayList<ArrayList<Firm>>();
 		
+		ArrayList<ArrayList<Firm>> firmsInQuarterRange = new ArrayList<ArrayList<Firm>>();
+		firmsInQuarterRange = utils.createGCRangeList(econo, start, end);
+		/*
 		for(int i = (start-1); i < (end-1); i++)
 		{
 			firmsInQuarterRange.add(econo.quarterTree.get(i));
 		}
-		
+		*/
 		ArrayList<Firm> firmsWithSIC = new ArrayList<Firm>();
 		
 		for(int i = 0; i < firmsInQuarterRange.size(); i ++)
