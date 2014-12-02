@@ -5,6 +5,7 @@ package test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 
@@ -209,7 +210,7 @@ public class prototypeintervalclass {
 		resultTQ[0] = utils.averageN(beforeTQAvg);
 		resultTQ[1] = utils.averageN(afterTQAvg);
 		// beforeAverage - afterAverage (interval)
-		resultTQ[2] = (resultTQ[1] - resultTQ[0]) / ((end - start)-1);
+		resultTQ[2] = (resultTQ[1] - resultTQ[0]) / ((end - start));
 		
 		value.beforeAverageTQFirm = resultTQ[0];		
 		value.afterAverageTQFirm = resultTQ[1];		
@@ -219,7 +220,7 @@ public class prototypeintervalclass {
 		resultProf[0] = utils.averageN(beforeProfAvg);
 		resultProf[1] = utils.averageN(afterProfAvg);
 		// beforeAverage - afterAverage (interval)
-		resultProf[2] = (resultProf[1] - resultProf[0]) / ((end - start)-1);	
+		resultProf[2] = (resultProf[1] - resultProf[0]) / ((end - start));	
 		
 		value.beforeAverageProfFirm = resultProf[0];		
 		value.afterAverageProfFirm = resultProf[1];		
@@ -236,7 +237,7 @@ public class prototypeintervalclass {
 		value.beforeAverageProfSIC = averageProfList(beforeSIC);
 		value.afterAverageProfSIC = averageProfList(afterSIC);			
 		
-		value.quarterSpan = (value.end - value.start)-1;
+		value.quarterSpan = (value.end - value.start);
 		
 		System.out.println("after minus before average sic TQ: "+(value.beforeAverageTQSIC));
 		System.out.println("after minus before average sic PROF: "+(value.beforeAverageProfSIC));
@@ -269,7 +270,7 @@ public class prototypeintervalclass {
 				//t += "";
 			}
 			else{
-				t+=list.get(i)+",";
+				t+=BigDecimal.valueOf((double)list.get(i))+",";
 			}
 		}
 		return t;
@@ -618,10 +619,10 @@ public class prototypeintervalclass {
 		*/
 		utils.writeList(outFile1, getStringFromList(tqBeforeDiffs));
 		utils.writeList(outFile2, getStringFromList(tqDuringDiffs));		
-		utils.writeList(outFile5, getStringFromList(tqAfterDiffs));
+		utils.writeList(outFile3, getStringFromList(tqAfterDiffs));
 		
-		utils.writeList(outFile3, getStringFromList(profBeforeDiffs));
-		utils.writeList(outFile4, getStringFromList(profDuringDiffs));
+		utils.writeList(outFile4, getStringFromList(profBeforeDiffs));
+		utils.writeList(outFile5, getStringFromList(profDuringDiffs));
 		utils.writeList(outFile6, getStringFromList(profAfterDiffs));
 		
 		utils.writeList(outFile7, getStringFromList(tqBeforeSICDiffs));
@@ -929,24 +930,21 @@ public class prototypeintervalclass {
 		String during = econo.filePath+"results\\duringAvgDifferece.txt";
 		String after = econo.filePath+"results\\afterAvgDifferece.txt";
 		
-		String beforeTQDist = econo.filePath+"results\\beforeTQDist.txt";
-		String duringTQDist = econo.filePath+"results\\duringTQDist.txt";
-		String afterTQDist = econo.filePath+"results\\afterTQDist.txt";
-		String beforeProfDist = econo.filePath+"results\\beforeProfDist.txt";
-		String duringProfDist = econo.filePath+"results\\duringProfDist.txt";
-		String afterProfDist = econo.filePath+"results\\afterProfDist.txt";
+		String beforeTQDist = econo.filePath+"results\\beforeTQDist.txt"; //1
+		String duringTQDist = econo.filePath+"results\\duringTQDist.txt"; //2
+		String afterTQDist = econo.filePath+"results\\afterTQDist.txt";   //3
 		
-		String beforeSICDist = econo.filePath+"results\\beforeTQSICDist.txt";
-		String duringSICDist = econo.filePath+"results\\duringTQSICDist.txt";
-		String afterSICDist = econo.filePath+"results\\afterTQSICDist.txt";
+		String beforeProfDist = econo.filePath+"results\\beforeProfDist.txt"; //4
+		String duringProfDist = econo.filePath+"results\\duringProfDist.txt"; //5
+		String afterProfDist = econo.filePath+"results\\afterProfDist.txt";   //6
 		
-		String beforeSICTQDist = econo.filePath+"results\\beforeTQSICDist.txt";
-		String duringSICTQDist = econo.filePath+"results\\duringTQSICDist.txt";
-		String afterSICTQDist = econo.filePath+"results\\afterTQSICDist.txt";
+		String beforeSICTQDist = econo.filePath+"results\\beforeTQSICDist.txt"; //7
+		String duringSICTQDist = econo.filePath+"results\\duringTQSICDist.txt"; //8
+		String afterSICTQDist = econo.filePath+"results\\afterTQSICDist.txt";   //9
 		
-		String beforeSICProfDist = econo.filePath+"results\\beforeProfSICDist.txt";
-		String duringSICProfDist = econo.filePath+"results\\duringProfSICDist.txt";
-		String afterSICProfDist = econo.filePath+"results\\afterProfSICDist.txt";
+		String beforeSICProfDist = econo.filePath+"results\\beforeProfSICDist.txt"; //10
+		String duringSICProfDist = econo.filePath+"results\\duringProfSICDist.txt"; //11
+		String afterSICProfDist = econo.filePath+"results\\afterProfSICDist.txt";   //12
 		
 		//writeResult(vals[0], before);		
 		//writeResult(vals[1], during);		
@@ -954,18 +952,18 @@ public class prototypeintervalclass {
 		
 		// THIS IS WHAT I ADDED
 		writeQuarterlyIntervalDiff(vals, 
-								   beforeTQDist, 
-								   duringTQDist, 
-								   afterTQDist, 
-								   beforeProfDist, 
-								   duringProfDist, 
-								   afterProfDist, 
-								   beforeSICTQDist,
-								   duringSICTQDist, 
-								   afterSICTQDist,
-								   beforeSICProfDist,
-								   duringSICProfDist, 
-								   afterSICProfDist);		
+								   beforeTQDist,  //1
+								   duringTQDist,  //2
+								   afterTQDist,   //3
+								   beforeProfDist,//4 
+								   duringProfDist,//5 
+								   afterProfDist, //6
+								   beforeSICTQDist,//7
+								   duringSICTQDist, //8
+								   afterSICTQDist,//9
+								   beforeSICProfDist,//10
+								   duringSICProfDist, //11
+								   afterSICProfDist); //12		
 		
 		
 	
