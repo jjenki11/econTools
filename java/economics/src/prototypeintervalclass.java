@@ -242,8 +242,8 @@ public class prototypeintervalclass {
 		
 		value.quarterSpan = (value.end - value.start);
 		
-		System.out.println("after minus before average sic TQ: "+(value.beforeAverageTQSIC));
-		System.out.println("after minus before average sic PROF: "+(value.beforeAverageProfSIC));
+		//System.out.println("after minus before average sic TQ: "+(value.beforeAverageTQSIC));
+		//System.out.println("after minus before average sic PROF: "+(value.beforeAverageProfSIC));
 		
 		
 		if(Float.isNaN((value.beforeAverageTQSIC))){}
@@ -308,11 +308,8 @@ public class prototypeintervalclass {
 			}
 			else{
 				res += Float.parseFloat(list.get(i).Profitability);
-			}
-			
+			}			
 		}
-		System.out.println((float)(res / (list.size()+1)));
-		System.out.println((float)((list.size())));
 		return (res / (list.size()+1));	
 	}
 	
@@ -532,94 +529,108 @@ public class prototypeintervalclass {
 		ArrayList<Float> profDuringSICDiffs = new ArrayList<Float>();
 		ArrayList<Float> profAfterSICDiffs = new ArrayList<Float>();
 		
+		boolean skip = false;
+		
 		// BEFORE BK
 		for(int i = 0; i < ((ArrayList<boundedValue>) vals[0]).size();i++){
+			skip = false;
 			float x = ((ArrayList<boundedValue>) vals[0]).get(i).quarterlyIntervalTQDifference;
 			float y = ((ArrayList<boundedValue>) vals[0]).get(i).quarterlyIntervalProfDifference;
-			if(Float.isNaN(x)){}
-			else{
-				tqBeforeDiffs.add(x);
+			if(
+					(Float.isNaN(x) || Float.isNaN(y)) || 
+					((x==0.0f) || (y==0.0f))
+			  ){
+				skip = true;
 			}
-			if(Float.isNaN(y)){}
-			else{
-				profBeforeDiffs.add(y);
-			}
-			
+			else{}			
 			//sic
 			float a = (float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageTQSIC / (float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan;
 			float b = ((float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageProfSIC) / (float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan;
-			System.out.println("BEFORE: a = "+a+" b = "+b+", Quarter span = "+(float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan);
-			if(Float.isNaN(a)){}
-			else{
-				tqBeforeSICDiffs.add(a);
+			if(
+					(Float.isNaN(a) || Float.isNaN(b)) || 
+					((a==0.0f) || (b==0.0f))  ||
+					((float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan == 0.0f)
+					
+			  ){
+				skip = true;
 			}
-			if(Float.isNaN(b)){}
 			else{
-				profBeforeSICDiffs.add(b);
+				if(!skip){
+					tqBeforeDiffs.add(x);
+					profBeforeDiffs.add(y);
+					tqBeforeSICDiffs.add(a);
+					profBeforeSICDiffs.add(b);
+					System.out.println("BEFORE FIRM ("+x+", "+y+"), BEFORE SIC ("+a+", "+b+"), Quarter span = "+(float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan);
+				}
 			}
-		}
+		}	
 		
 		// DURING BK
 		for(int i = 0; i < ((ArrayList<boundedValue>) vals[1]).size();i++){
+			skip = false;
 			float x = (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterlyIntervalTQDifference;
 			float y = (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterlyIntervalProfDifference;
-			if(Float.isNaN(x)){}
-			else{
-				tqDuringDiffs.add(x);
+			if(
+					(Float.isNaN(x) || Float.isNaN(y)) || 
+					((x==0.0f) || (y==0.0f))
+			  ){
+				skip = true;
 			}
-			if(Float.isNaN(y)){}
-			else{
-				profDuringDiffs.add(y);
-			}
+			else{}
 			//sic
 			float a = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageTQSIC / (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan;
 			float b = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageProfSIC / (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan;
-			System.out.println("DURING: a = "+a+" b = "+b+", Quarter span = "+(float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan);
-			if(Float.isNaN(a)){}
-			else{
-				tqDuringSICDiffs.add(a);
+			if(
+					(Float.isNaN(a) || Float.isNaN(b)) || 
+					((a==0.0f) || (b==0.0f))  ||
+					((float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan == 0.0f)
+			  ){
+				skip = true;
 			}
-			if(Float.isNaN(b)){}
 			else{
-				profDuringSICDiffs.add(b);
+				if(!skip){
+					tqDuringDiffs.add(x);
+					profDuringDiffs.add(y);
+					tqDuringSICDiffs.add(a);
+					profDuringSICDiffs.add(b);
+					System.out.println("DURING FIRM ("+x+", "+y+"), DURING SIC ("+a+", "+b+"), Quarter span = "+(float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan);
+				}
 			}
 		}		
 		
 		// AFTER BK
 		for(int i = 0; i < ((ArrayList<boundedValue>) vals[2]).size();i++){
+			skip = false;
 			float x = (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterlyIntervalTQDifference;
 			float y = (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterlyIntervalProfDifference;
-			if(Float.isNaN(x)){}
-			else{
-				tqAfterDiffs.add(x);
+			if(
+					(Float.isNaN(x) || Float.isNaN(y)) || 
+					((x==0.0f) || (y==0.0f))  
+			  ){
+				skip = true;
 			}
-			if(Float.isNaN(y)){}
-			else{
-				profAfterDiffs.add(y);
-			}	
+			else{}	
 			//sic
 			float a = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageTQSIC / (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan;
 			float b = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageProfSIC / (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan;
-			System.out.println("AFTER: a = "+a+" b = "+b+", Quarter span = "+(float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan);
-			if(Float.isNaN(a)){}
-			else{
-				tqAfterSICDiffs.add(a);
+			if(
+					(Float.isNaN(a) || Float.isNaN(b)) || 
+					((a==0.0f) || (b==0.0f))  ||
+					((float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan == 0.0f)
+			  ){
+				skip = true;
 			}
-			if(Float.isNaN(b)){}
 			else{
-				profAfterSICDiffs.add(b);
+				if(!skip){					
+					tqAfterDiffs.add(x);
+					profAfterDiffs.add(y);
+					tqAfterSICDiffs.add(a);
+					profAfterSICDiffs.add(b);
+					System.out.println("AFTER FIRM ("+x+", "+y+"), AFTER SIC ("+a+", "+b+"), Quarter span = "+(float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan);
+				}
 			}	
 		}
-		/*
-			ArrayList<Float> tqB = new ArrayList<Float>();
-			tqB = utils.calculateZScore(tqBeforeDiffs);
-			ArrayList<Float> prB = new ArrayList<Float>();
-			prB = utils.calculateZScore(profBeforeDiffs);
-			ArrayList<Float> tqD = new ArrayList<Float>();
-			tqD = utils.calculateZScore(tqDuringDiffs);
-			ArrayList<Float> prD = new ArrayList<Float>();
-			prD = utils.calculateZScore(profDuringDiffs);
-		*/
+		
 		utils.writeList(outFile1, getStringFromList(tqBeforeDiffs));
 		utils.writeList(outFile2, getStringFromList(tqDuringDiffs));		
 		utils.writeList(outFile3, getStringFromList(tqAfterDiffs));
