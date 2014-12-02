@@ -548,7 +548,7 @@ public class prototypeintervalclass {
 			//sic
 			float a = (float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageTQSIC / (float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan;
 			float b = ((float)((ArrayList<boundedValue>) vals[0]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[0]).get(i).beforeAverageProfSIC) / (float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan;
-			System.out.println("BEFORE: a = "+a+" b = "+b);
+			System.out.println("BEFORE: a = "+a+" b = "+b+", Quarter span = "+(float)((ArrayList<boundedValue>) vals[0]).get(i).quarterSpan);
 			if(Float.isNaN(a)){}
 			else{
 				tqBeforeSICDiffs.add(a);
@@ -574,7 +574,7 @@ public class prototypeintervalclass {
 			//sic
 			float a = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageTQSIC / (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan;
 			float b = (float)((ArrayList<boundedValue>) vals[1]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[1]).get(i).beforeAverageProfSIC / (float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan;
-			System.out.println("DURING: a = "+a+" b = "+b);
+			System.out.println("DURING: a = "+a+" b = "+b+", Quarter span = "+(float)((ArrayList<boundedValue>) vals[1]).get(i).quarterSpan);
 			if(Float.isNaN(a)){}
 			else{
 				tqDuringSICDiffs.add(a);
@@ -600,7 +600,7 @@ public class prototypeintervalclass {
 			//sic
 			float a = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageTQSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageTQSIC / (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan;
 			float b = (float)((ArrayList<boundedValue>) vals[2]).get(i).afterAverageProfSIC - (float)((ArrayList<boundedValue>) vals[2]).get(i).beforeAverageProfSIC / (float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan;
-			System.out.println("AFTER: a = "+a+" b = "+b);
+			System.out.println("AFTER: a = "+a+" b = "+b+", Quarter span = "+(float)((ArrayList<boundedValue>) vals[2]).get(i).quarterSpan);
 			if(Float.isNaN(a)){}
 			else{
 				tqAfterSICDiffs.add(a);
