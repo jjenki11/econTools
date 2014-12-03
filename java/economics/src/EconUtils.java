@@ -538,6 +538,40 @@ public class EconUtils
 		return (x / list.size());		
 	}
 	
+	public static float averageTQList(ArrayList<Firm> list)
+	{
+		float res = 0;
+		int badValues = 0;
+		for(int i = 0;i<list.size();i++)
+		{
+			if(Float.isNaN(Float.parseFloat(list.get(i).Tobins_Q))){
+				badValues++;
+			}
+			else{
+				res += Float.parseFloat(list.get(i).Tobins_Q);
+				
+			}
+		}
+		
+		return (res / (list.size()+1));	
+	}
+	
+	public static float averageProfList(ArrayList<Firm> list)
+	{
+		float res = 0;
+		int badValues = 0;
+		for(int i = 0;i<list.size();i++)
+		{
+			if(Float.isNaN(Float.parseFloat(list.get(i).Profitability))){
+				badValues++;
+			}
+			else{
+				res += Float.parseFloat(list.get(i).Profitability);
+			}			
+		}
+		return (res / (list.size()+1));	
+	}
+	
 	public void setEconomy(Economy e){
 		utilEcon = e;
 	}
