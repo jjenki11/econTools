@@ -276,6 +276,18 @@ public class EconUtils
 		return true;
 	}	
 	
+	public boolean addToGCTree(Economy e, Firm f){
+		ArrayList<Firm> tmp;
+		if(e.goingConcernTree.get(f.cusip) != null){
+			e.goingConcernTree.get(f.cusip).add(f);
+		} else {
+			tmp = new ArrayList<Firm>();
+			tmp.add(f);
+			e.goingConcernTree.put(f.cusip, tmp);
+		}		
+		return true;
+	}
+	
 	public boolean addToDuringTree(Economy e, Firm f){
 		ArrayList<Firm> tmp;
 		if(e.DuringTree.get(f.cusip) != null){
@@ -287,6 +299,37 @@ public class EconUtils
 		}
 		return true;
 	}	
+	
+	@SuppressWarnings("null")
+	public ArrayList<ArrayList<Firm>> createGCRangeList(Economy e, int st, int end)
+	{		
+		ArrayList<ArrayList<Firm>> tmp = new ArrayList<ArrayList<Firm>>();
+		
+		ArrayList<Firm> lh = new ArrayList<Firm>();		
+		for(int i = (st-1); i < (end-1); i++)
+		{
+			
+			
+			lh = new ArrayList<Firm>();
+			ArrayList<Firm> holster = e.quarterTree.get(i);
+			if(holster==null){}
+			else{
+				
+			
+				for(int j = 0;j < holster.size(); j++)
+				{
+					
+					if(e.bankruptTree.get(holster.get(j).cusip) == null) //found in GC tree
+					{
+						lh.add(holster.get(j));
+					}
+					
+				}			
+				tmp.add(lh);
+			}
+		}
+		return tmp;		
+	}
 	
 	
 	public void writeUnconditionally(Firm f, String filename) throws IOException{
@@ -317,7 +360,7 @@ public class EconUtils
 				y[0] =	(x[0] && writeList(foundFiles[0], txt) && addToBeforeTree(Eco, f));
 				y[1] =	(x[1] &&  writeList(foundFiles[1], txt) && addToDuringTree(Eco, f));
 				y[2] =	(x[2] && writeList(foundFiles[2], txt) && addToAfterTree(Eco, f));
-				y[3] =	(x[3] && writeList(foundFiles[4], txt));
+				y[3] =	(x[3] && writeList(foundFiles[4], txt) && addToGCTree(Eco, f));
 				//};			
 				//xxx = y;
 				
@@ -493,6 +536,40 @@ public class EconUtils
 			x+=Float.parseFloat(list.get(i).Tobins_Q);
 		}
 		return (x / list.size());		
+	}
+	
+	public static float averageTQList(ArrayList<Firm> list)
+	{
+		float res = 0;
+		int badValues = 0;
+		for(int i = 0;i<list.size();i++)
+		{
+			if(Float.isNaN(Float.parseFloat(list.get(i).Tobins_Q))){
+				badValues++;
+			}
+			else{
+				res += Float.parseFloat(list.get(i).Tobins_Q);
+				
+			}
+		}
+		
+		return (res / (list.size()+1));	
+	}
+	
+	public static float averageProfList(ArrayList<Firm> list)
+	{
+		float res = 0;
+		int badValues = 0;
+		for(int i = 0;i<list.size();i++)
+		{
+			if(Float.isNaN(Float.parseFloat(list.get(i).Profitability))){
+				badValues++;
+			}
+			else{
+				res += Float.parseFloat(list.get(i).Profitability);
+			}			
+		}
+		return (res / (list.size()+1));	
 	}
 	
 	public void setEconomy(Economy e){
