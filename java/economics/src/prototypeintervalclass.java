@@ -8,20 +8,20 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-
+//  Data structure to hold intermediate results for our Econ evaluation
 class boundedValue
 {	
 	int start;
 	int mid;
 	int end;			
+	float beforeAverageTQFirm;
+	float afterAverageTQFirm;	
+	float beforeAverageProfFirm;
+	float afterAverageProfFirm;
 	float beforeAverageTQSIC;
 	float afterAverageTQSIC;
 	float beforeAverageProfSIC;
-	float afterAverageProfSIC;		
-	float beforeAverageProfFirm;
-	float afterAverageProfFirm;
-	float beforeAverageTQFirm;
-	float afterAverageTQFirm;		
+	float afterAverageProfSIC;			
 	float quarterlyIntervalTQDifference; 
 	float quarterlyIntervalProfDifference;		
 	String sic;	String cusip;	
@@ -30,12 +30,12 @@ class boundedValue
 	
 	public boundedValue()
 	{
-		start = 0;
-		mid = 0;
-		end = 0;		
-		state = "";		
-		beforeAverageTQFirm = 0;
-		afterAverageTQFirm = 0;		
+		start=0;
+		mid=0;
+		end=0;		
+		state="";		
+		beforeAverageTQFirm=0;
+		afterAverageTQFirm=0;		
 		beforeAverageProfFirm=0;
 		afterAverageProfFirm=0;		
 		beforeAverageTQSIC=0;
@@ -61,16 +61,15 @@ public class prototypeintervalclass
 	static int dataPoints = 120;
 	static ArrayList<ArrayList<ArrayList<Firm>>> firmTimeseries;	
 	
+	// As the name suggests, find all firms within a range of quarter indices having a specified SIC
 	public static ArrayList<Firm> getFirmsInQuarterRangeWithSIC(int start, int end, String sic)
 	{				
 		ArrayList<ArrayList<Firm>> firmsInQuarterRange = new ArrayList<ArrayList<Firm>>();
 		firmsInQuarterRange = utils.createGCRangeList(econo, start, end);
-		ArrayList<Firm> firmsWithSIC = new ArrayList<Firm>();
-		
+		ArrayList<Firm> firmsWithSIC = new ArrayList<Firm>();		
 		for(int i = 0; i < firmsInQuarterRange.size(); i ++)
 		{
-			if((firmsInQuarterRange.get(i) != null)	
-			)
+			if((firmsInQuarterRange.get(i) != null))
 			{
 				for(int j = 0; j < firmsInQuarterRange.get(i).size(); j ++)
 				{
@@ -89,26 +88,25 @@ public class prototypeintervalclass
 					}				
 				}
 			}
-		}
-		
+		}		
 		return firmsWithSIC;
 	}
 	
-	// take average on both sides of 3 element interval to return an arraylist
-	// of floats, the 'before midpoint average' and 'after midpoint average'
-	
+	// Take average on both sides of 3 element interval to return an arraylist
+	// of floats, the 'before midpoint average' and 'after midpoint average'	
 	public static int[] makeinterval(ArrayList<Firm> list)
 	{
 		int last = utils.qM2.get(utils.dM2.get((list.get(list.size()-1).datadate)));
 		int first = utils.qM2.get(utils.dM2.get((list.get(0).datadate)));		
-		int firstlast = (first+last)/2;
+		int mid = (first+last)/2;
 		int[] x = new int[3];
 		x[0]=first;
-		x[1]=firstlast;
+		x[1]=mid;
 		x[2]=last;		
 		return x;	
 	}
 	
+	// Find the average value for both sides of an interval
 	public static boundedValue findAverage(ArrayList<Firm> list)
 	{		
 		ArrayList<Float> beforeTQAvg = new ArrayList<Float>();
@@ -120,24 +118,21 @@ public class prototypeintervalclass
 		int[] interval = makeinterval(list);		
 		boundedValue value = new boundedValue();
 		
-		int start = interval[0];
-		int mid = interval[1];
-		int end = interval[2];
-		
 		value.start = interval[0];
 		value.mid = interval[1];
 		value.end = interval[2];
+		value.quarterSpan = (value.end - value.start);
 		
 		for(int i = 0; i < list.size();i++)
 		{
-			if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= start) &&
-				(utils.qM2.get(utils.dM2.get((list.get(i).datadate))) < mid))
+			if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= value.start) &&
+				(utils.qM2.get(utils.dM2.get((list.get(i).datadate))) < value.mid))
 			{				
 				beforeTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				beforeProfAvg.add(Float.parseFloat(list.get(i).Profitability));
 			}
-			else if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= mid) &&
-				(utils.qM2.get(utils.dM2.get(list.get(i).datadate)) <= end))
+			else if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= value.mid) &&
+				(utils.qM2.get(utils.dM2.get(list.get(i).datadate)) <= value.end))
 			{				
 				afterTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				afterProfAvg.add(Float.parseFloat(list.get(i).Profitability));
@@ -148,7 +143,7 @@ public class prototypeintervalclass
 		resultTQ[0] = utils.averageN(beforeTQAvg);
 		resultTQ[1] = utils.averageN(afterTQAvg);
 		// beforeAverage - afterAverage (interval)
-		resultTQ[2] = (resultTQ[1] - resultTQ[0]) / ((end - start));
+		resultTQ[2] = (resultTQ[1] - resultTQ[0]) / value.quarterSpan;
 		
 		value.beforeAverageTQFirm = resultTQ[0];		
 		value.afterAverageTQFirm = resultTQ[1];		
@@ -158,7 +153,7 @@ public class prototypeintervalclass
 		resultProf[0] = utils.averageN(beforeProfAvg);
 		resultProf[1] = utils.averageN(afterProfAvg);
 		// beforeAverage - afterAverage (interval)
-		resultProf[2] = (resultProf[1] - resultProf[0]) / ((end - start));	
+		resultProf[2] = (resultProf[1] - resultProf[0]) / value.quarterSpan;	
 		
 		value.beforeAverageProfFirm = resultProf[0];		
 		value.afterAverageProfFirm = resultProf[1];		
@@ -175,11 +170,10 @@ public class prototypeintervalclass
 		value.beforeAverageProfSIC = utils.averageProfList(beforeSIC);
 		value.afterAverageProfSIC = utils.averageProfList(afterSIC);			
 		
-		value.quarterSpan = (value.end - value.start);
-		
 		return value;
 	}
 	
+	// Given an array list of floats, form a concatenated string and return it
 	public static String getStringFromList(ArrayList<Float> list){
 		String t = "";
 		for(int i = 0; i < list.size(); i++){
@@ -193,6 +187,7 @@ public class prototypeintervalclass
 		return t;
 	}
 	
+	// Performs a routine over all cusips
 	public static Object[] doRoutine()
 	{
 		Object[] boundedFirmsObject = new Object[6];
@@ -219,6 +214,7 @@ public class prototypeintervalclass
 		return boundedFirmsObject;
 	}	
 	
+	// Check not a number for a bounded value entry
 	public static boundedValue checkNaNForBV(ArrayList<boundedValue> bList, ArrayList<Firm> tmp, String cu)
 	{
 		boundedValue value = new boundedValue();
@@ -241,7 +237,7 @@ public class prototypeintervalclass
 		return new boundedValue();
 	}
 	
-	
+	// Write all the results from intermediate step to respective files
 	public static void writeQuarterlyIntervalDiff(Object valList, 
 												  String outFile1, 
 												  String outFile2, 
@@ -267,6 +263,7 @@ public class prototypeintervalclass
 		evaluateFirmSicQuery( ((ArrayList<boundedValue>) vals[2]), outFile9, outFile10, outFile11, outFile12, "After");
 	}
 	
+	// Perform query
 	public static void evaluateFirmSicQuery(ArrayList<boundedValue> vals, String file1, String file2, String file3, String file4, String period) throws IOException
 	{
 		boolean skip = false; float x = 0; float y = 0; float a = 0; float b = 0;
@@ -312,6 +309,7 @@ public class prototypeintervalclass
 		utils.writeList(file4, getStringFromList(profSIC));		
 	}	
 	
+	// Main function
 	public static void main(String[] args) throws IOException 
 	{
 		System.out.println("HERE WE GO");
