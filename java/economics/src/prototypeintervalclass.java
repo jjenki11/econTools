@@ -256,15 +256,27 @@ public class prototypeintervalclass
 		
 		ArrayList<boundedValue> boundedBeforeBKVals = ((ArrayList<boundedValue>) vals[0]);
 		ArrayList<boundedValue> boundedDuringBKVals = ((ArrayList<boundedValue>) vals[1]);
-		ArrayList<boundedValue> boundedAfterBKVals = ((ArrayList<boundedValue>) vals[2]);
+		ArrayList<boundedValue> boundedAfterBKVals = ((ArrayList<boundedValue>) vals[2]);		
 		
-		evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[0]), outFile1, outFile2, outFile3, outFile4, "Before");
-		evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[1]), outFile5, outFile6, outFile7, outFile8, "During");
-		evaluateFirmSicQuery( ((ArrayList<boundedValue>) vals[2]), outFile9, outFile10, outFile11, outFile12, "After");
+		String filePath = "OverallDataSet";
+		
+		String[] categories = {"cusip", "firmTqIntervalDiff", "firmProfIntervalDiff", "sicTqIntervalDiff", "sicProfIntervalDiff", "TimeBlock"};		
+		String[] dataTypes  = {"STRING", "NUMERIC", "NUMERIC", "NUMERIC", "NUMERIC", "STRING"};
+		
+			String[][] types = new String[2][categories.length];			
+			types[0] = categories;
+			types[1] =  dataTypes;
+			
+		utils.constructARFFFile(filePath, types);
+		
+		utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[0]), outFile1, outFile2, outFile3, outFile4, "BEFORE"), filePath);
+		utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[1]), outFile5, outFile6, outFile7, outFile8, "DURING"), filePath);
+		utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[2]), outFile9, outFile10, outFile11, outFile12, "AFTER"), filePath);
+		
 	}
 	
 	// Perform query
-	public static void evaluateFirmSicQuery(ArrayList<boundedValue> vals, String file1, String file2, String file3, String file4, String period) throws IOException
+	public static String evaluateFirmSicQuery(ArrayList<boundedValue> vals, String file1, String file2, String file3, String file4, String period) throws IOException
 	{
 		boolean skip = false; float x = 0; float y = 0; float a = 0; float b = 0;
 		ArrayList<Float> tqFirm = new ArrayList<Float>();
@@ -272,10 +284,18 @@ public class prototypeintervalclass
 		ArrayList<Float> tqSIC = new ArrayList<Float>();
 		ArrayList<Float> profSIC = new ArrayList<Float>();
 		
+		ArrayList<String> arffLine = new ArrayList<String>();
+		
+		String all = "";
+		
+		String txt = "";
+		
 		for(int i = 0; i < vals.size();i++){
 			skip = false;
+			txt = "";
 			x = (float)vals.get(i).quarterlyIntervalTQDifference;
 			y = (float)vals.get(i).quarterlyIntervalProfDifference;
+			
 			if(
 					(Float.isNaN(x) || Float.isNaN(y)) || 
 					((x==0.0f) || (y==0.0f))  
@@ -294,19 +314,22 @@ public class prototypeintervalclass
 				skip = true;
 			}
 			else{
-				if(!skip){					
-					tqFirm.add(x);
-					profFirm.add(y);
-					tqSIC.add(a);
-					profSIC.add(b);
-					System.out.println(period+" FIRM ("+x+", "+y+"), "+period+"SIC ("+a+", "+b+"), Quarter span = "+(float)vals.get(i).quarterSpan);
+				if(!skip){			
+					txt = (vals.get(i).cusip + "," + x + "," + y + "," + a + "," + b + "," + period + "\r\n");
+					all += txt;
+					//tqFirm.add(x);
+					//profFirm.add(y);
+					//tqSIC.add(a);
+					//profSIC.add(b);
 				}
 			}	
 		}		
-		utils.writeList(file1, getStringFromList(tqFirm));
-		utils.writeList(file2, getStringFromList(profFirm));
-		utils.writeList(file3, getStringFromList(tqSIC));
-		utils.writeList(file4, getStringFromList(profSIC));		
+		//utils.writeList(file1, getStringFromList(tqFirm));
+		//utils.writeList(file2, getStringFromList(profFirm));
+		//utils.writeList(file3, getStringFromList(tqSIC));
+		//utils.writeList(file4, getStringFromList(profSIC));		
+		
+		return all;		
 	}	
 	
 	// Main function
