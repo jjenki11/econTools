@@ -92,6 +92,57 @@ public class EconUtils
 		return counts;
 	}
 	
+	/*
+	 * A sample arff file format
+	 * 
+	 * @relation your_relation
+	 * 
+	 * @ATTRIBUTE Numeric1 NUMERIC
+	 * @ATTRIBUTE Numeric2 NUMERIC
+	 * @ATTRIBUTE class {Label1,Label2}
+	 * 
+	 * @DATA
+	 * 0.154763579,-0.000941792,Label1
+	 * -0.000941792,0.154763579,Label2
+	 * ... 
+	 * 
+	 *  Note: String[][] types 
+	 *  	String[0][i] is the name of the ith attribute
+	 *  	String[1][i] is the data type of the ith attribute
+	 * 
+	 */
+	
+	public void writeToARFFFile(String values, String name) throws IOException
+	{
+		String filename = filePath+"results\\"+name+".arff";		
+		String txt = "";
+		txt += values;
+		//write data lines
+		writeList(filename,txt);
+	}
+	
+	public void constructARFFFile(String name, String[][] types) throws IOException
+	{
+		String txt = "@relation "+name;	String filename = filePath+"results\\"+name+".arff";
+		txt+="\r\n";
+		//write line one
+		writeList(filename, txt);
+		
+		//construct attribute strings
+		txt = "";
+		for(int i = 0; i < types[0].length; i++)
+		{
+			txt += "@attribute " + types[0][i] + " " + types[1][i] + "\r\n";
+		}
+		txt += "\r\n";
+		//write attribute lines
+		writeList(filename, txt);
+		
+		//write one line to prepare for the data dump!
+		txt = "@data\r\n";
+		writeList(filename, txt);
+	}
+	
 	public boolean writeList( String filename, String text ) throws IOException{
     	Writer out = new BufferedWriter(new FileWriter(filename, true));
     	out.append(text);
@@ -254,12 +305,10 @@ public class EconUtils
 		ArrayList<Firm> tmp;
 		if(e.BeforeTree.get(f.cusip) != null){
 			e.BeforeTree.get(f.cusip).add(f);
-			System.out.println("already had it in b4 tree");
 		} else {
 			tmp = new ArrayList<Firm>();
 			tmp.add(f);
 			e.BeforeTree.put(f.cusip, tmp);		
-			System.out.println("had to make a new b4 tree");
 		}
 		return true;
 	}

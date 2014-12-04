@@ -131,30 +131,14 @@ System.out.println(E.AllFirms.size());
 	 counter[3] += xx[3];
 	// counter[4] += xx[4];	
 	 
-	 /*System.out.println(perDone+" %  |  BK(before) : "+counter[0]+"  |  BK(during): "+counter[1] +
+	 System.out.println(perDone+" %  |  BK(before) : "+counter[0]+"  |  BK(during): "+counter[1] +
 			 					"    |  BK(after) : "+counter[2]+
-			 					"    |  GC(always) :"+counter[3]/*+ "  |  TG: "+tgCount + "  |  AQ: "+aqCount);	*/
+			 					"    |  GC(always) :"+counter[3]+ "  |  ");//TG: "+tgCount + "  |  AQ: "+aqCount);	
 	 idx++;
-	 System.out.println(perDone	); 	
  }
-/* System.out.println("NUM UNIQUE BK: "+bkUniqueSize);
- System.out.println("NUM FOUND BK OVERALL"+bkFoundSize);
- System.out.println("NUM UNIQUE GC: "+gcCount); 
- System.out.println("NUM UNIQUE AQ: "+aqCount);
- System.out.println("NUM UNIQUE TG: "+tgCount);
- System.out.println("NUM UNIQUE MA: "+ (aqCount + tgCount));*/
+
  System.out.println("Done writing files!");
  
-
-//now filter all the categories by date in institution
- 
- /*
-String outFolder = "";
-String bkFiltered = "bankrupcy.txt";
-String tgFiltered = "target.txt";
-String aqFiltered = "acquirer.txt";
-String gcFiltered = "going_concern.txt";
-*/
     
 	System.out.println("MOVING TO NEW QUERY");
 	
