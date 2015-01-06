@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -91,7 +91,7 @@ public class Bankrupcy {
 	
 	// before BK within range checker boolean ; 
 	public boolean BankrupcyBefore (int datadate, int years) {
-		if (((filedIndex - datadate) <= (years*365)) && ((filedIndex - datadate) >= 0 )) {
+		if (((filedIndex - datadate) <= (years*366)) && ((filedIndex - datadate) > 0 )) {
 			return true; 
 		}
 		return false;
@@ -99,7 +99,7 @@ public class Bankrupcy {
 	
 	//after BK within range checker boolean ; FLIPPED around datadate and disposedindex to make it right
 	public boolean BankrupcyAfter (int datadate, int years) {
-		if (((datadate - disposedIndex) >= 0) && ((datadate - disposedIndex) < (years*365))) {
+		if (((datadate - disposedIndex) > 0) && ((datadate - disposedIndex) <= (years*366))) {
 			return true;
 		}
 		return false;
@@ -130,9 +130,9 @@ public class Bankrupcy {
 	 * @return
 	 */
 	public boolean[] evaluateBK(int data){
-		state[0] = BankrupcyBefore(data, 5); 			// if firm is in BK now
+		state[0] = BankrupcyBefore(data, 2); 			// if firm is in BK now
 		state[1] = withinBankrupcyNow(data); 			// if firm is preceding BK
-		state[2] = BankrupcyAfter(data,5); 				// if firm emerges out of BK
+		state[2] = BankrupcyAfter(data,2); 				// if firm emerges out of BK
 		//state[3] = (state[0] || state[1] || state[2]); 	// if firm is ever in BK		
 		state[3] = !(state[0] || state[1] || state[2]);							// if firm was never in BK, GC
 		return state;
