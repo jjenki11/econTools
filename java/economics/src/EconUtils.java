@@ -211,12 +211,13 @@ public class EconUtils
 		ArrayList<String> sics = new ArrayList<String>();
 		ArrayList<Integer> qtrs = new ArrayList<Integer>();
 	    try {
+	    	values=new String[23];	
 	        BufferedReader in = new BufferedReader(new FileReader(filename));
 	        String str;
 	        str = in.readLine();    	
 	        while ((str = in.readLine()) != null) {
 	        	
-	        	values=new String[23];	        	
+	        	        	
 	            values = str.split(",");
 	            
 	            firm =new Firm();
@@ -392,6 +393,11 @@ public class EconUtils
 		ArrayList<Firm> tmp;
 		//boolean[] y = null;
 		boolean[] y = {false,false,false,false};
+		
+		
+		// checking bankrupcy for file write filtering
+		
+		int watch = 0;
 		if(Eco.bankTree.get(f.cusip) != null){
 			for(int j = 0;j<Eco.bankTree.get(f.cusip).size();j++){						
 				boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(dM2.get(f.datadate));
@@ -401,6 +407,8 @@ public class EconUtils
 					(x[2] && f.setCategory("AFTER")),
 					(x[3] && f.setCategory("NEVER"))
 				};
+				
+				watch = j;
 				//txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
 				
 				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
@@ -409,7 +417,7 @@ public class EconUtils
 				y[0] =	(x[0] && writeList(foundFiles[0], txt) && addToBeforeTree(Eco, f));
 				y[1] =	(x[1] &&  writeList(foundFiles[1], txt) && addToDuringTree(Eco, f));
 				y[2] =	(x[2] && writeList(foundFiles[2], txt) && addToAfterTree(Eco, f));
-				y[3] =	(x[3] && writeList(foundFiles[4], txt) && addToGCTree(Eco, f));
+				y[3] =	(x[3] && writeList(foundFiles[3], txt) && addToGCTree(Eco, f));
 				//};			
 				//xxx = y;
 				
@@ -453,6 +461,29 @@ public class EconUtils
 				
 			}							
 		}
+		
+		// THE FORGOTTEN COMPONENT!!
+		
+		//  otherwise its not in bk list duh
+		else {
+			
+			txt = dM2.get(f.datadate)+", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(dM2.get(f.datadate))+","+(watch+1)+","+f.category);
+			
+			f.setCategory("NEVER");
+			writeList(foundFiles[3], txt);
+			addToGCTree(Eco, f);
+			if(Eco.categoryTree.get("NEVER") != null){
+				Eco.categoryTree.get("NEVER").add(f);
+			} else {
+				tmp = new ArrayList<Firm>();
+				tmp.add(f);
+				Eco.categoryTree.put("NEVER", tmp);
+			}	
+			
+			System.out.println("THE MISSING CHILDREN!");
+		}
+		
+		
 		for(int k = 0;k<y.length;k++){
 			if(y[k])
 				count[k] = 1;

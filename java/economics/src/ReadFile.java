@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -37,20 +37,19 @@ public class ReadFile {
 		
 		//output filenames
 		String bkOutputFile = util.filePath+"bk_k_tq_qtr.txt";		
-		String bkBeforeFile = util.filePath+"results\\bk_before.txt";	
-		String bkDuringFile = util.filePath+"results\\bk_during.txt";
-		String bkAfterFile = util.filePath+"results\\bk_after.txt";
-		String bkEverFile = util.filePath+"results\\bk_ever.txt";
+		String bkBeforeFile = util.filePath+"results2\\bk_before.txt";	
+		String bkDuringFile = util.filePath+"results2\\bk_during.txt";
+		String bkAfterFile = util.filePath+"results2\\bk_after.txt";
+		//String bkEverFile = util.filePath+"results2\\bk_ever.txt";
 		//String tgOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\tg_k_tq_qtr.txt";		
 		//String maOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\ma_k_tq_qtr.txt";		
 		//String acOutputFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\test_results\\w_sic\\aq_k_tq_qtr.txt";			
-		String gcOutputFile = util.filePath+"results\\gc_firms.txt";
+		String gcOutputFile = util.filePath+"results2\\gc_firms.txt";
 		
 		String[] outputFileArray = {
 				bkBeforeFile,
 				bkDuringFile,
 				bkAfterFile,
-				bkEverFile,
 				gcOutputFile
 		};
 		
@@ -129,7 +128,9 @@ System.out.println(E.AllFirms.size());
 	 counter[1] += xx[1];	
 	 counter[2] += xx[2];	
 	 counter[3] += xx[3];
-	// counter[4] += xx[4];	
+	// counter[4] += xx[4];
+	 System.out.println(counter[3]);
+	 
 	 
 	 System.out.println(perDone+" %  |  BK(before) : "+counter[0]+"  |  BK(during): "+counter[1] +
 			 					"    |  BK(after) : "+counter[2]+
