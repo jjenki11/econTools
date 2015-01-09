@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 
 
@@ -52,7 +52,7 @@ class boundedValue
 
 public class prototypeintervalclass 
 {	
-	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
+	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils(path);
@@ -238,6 +238,10 @@ public class prototypeintervalclass
 	}
 	
 	// Write all the results from intermediate step to respective files
+	// RUTGER COMMENT: the values generated in the prototype are seperated into three categories: before (vals (0)) , during (vals(1)) and after (vals(2))
+	// HOwever for some (NOT ALL...) analysis sake it is better to have those values generated per CUSIP.
+	// THUS per row, thus per CUSIP; the following columns exist: beforeAVETQ, afterAVETQ, QintdifTQ (these three are all for the before category), the same three for the during category, same for after; FOR the SIC we have the same three values; before AVETQ, afterAVETQ and QintdifTQ (for each category:before, during, after)
+	//the values I am talking about are 17-26; we dont have to use the profatibility values since the TQ are enough to test the robustness of the program
 	public static void writeQuarterlyIntervalDiff(Object valList, 
 												  String outFile1, 
 												  String outFile2, 
