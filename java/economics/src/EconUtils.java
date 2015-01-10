@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -114,7 +114,7 @@ public class EconUtils
 	
 	public void writeToARFFFile(String values, String name) throws IOException
 	{
-		String filename = filePath+"results\\"+name+".arff";		
+		String filename = filePath+"results2\\"+name+".arff";		
 		String txt = "";
 		txt += values;
 		//write data lines
@@ -405,7 +405,7 @@ public class EconUtils
 					(x[0] && f.setCategory("BEFORE")),
 					(x[1] && f.setCategory("DURING")),
 					(x[2] && f.setCategory("AFTER")),
-					(x[3] && f.setCategory("NEVER"))
+					(x[3] && f.setCategory("OUTSIDE"))
 				};
 				
 				watch = j;
@@ -447,12 +447,12 @@ public class EconUtils
 					}						
 				} else if(y[3]) {				
 					//xxx[3] = true;
-					if(Eco.categoryTree.get("NEVER") != null){
-						Eco.categoryTree.get("NEVER").add(f);
+					if(Eco.categoryTree.get("OUTSIDE") != null){
+						Eco.categoryTree.get("OUTSIDE").add(f);
 					} else {
 						tmp = new ArrayList<Firm>();
 						tmp.add(f);
-						Eco.categoryTree.put("NEVER", tmp);
+						Eco.categoryTree.put("OUTSIDE", tmp);
 					}								
 				} else {
 					System.out.println("DONT KNOW");
@@ -467,9 +467,11 @@ public class EconUtils
 		//  otherwise its not in bk list duh
 		else {
 			
-			txt = dM2.get(f.datadate)+", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(dM2.get(f.datadate))+","+(watch+1)+","+f.category);
 			
 			f.setCategory("NEVER");
+			txt = dM2.get(f.datadate)+", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(dM2.get(f.datadate))+","+(watch+1)+","+f.category);
+			
+			
 			writeList(foundFiles[3], txt);
 			addToGCTree(Eco, f);
 			if(Eco.categoryTree.get("NEVER") != null){
@@ -480,7 +482,7 @@ public class EconUtils
 				Eco.categoryTree.put("NEVER", tmp);
 			}	
 			
-			System.out.println("THE MISSING CHILDREN!");
+			//System.out.println("THE MISSING CHILDREN!");
 		}
 		
 		
