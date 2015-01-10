@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 
 
@@ -9,6 +9,97 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 //  Data structure to hold intermediate results for our Econ evaluation
+
+
+/**
+ * 
+ * 
+ * CUSIP	
+ * AVE_before(before)	
+ * AVE_after(before)	
+ * Qint_difference_before	
+ * AVE_before(during)	
+ * AVE_after(during)	
+ * Qint_difference_During	
+ * AVE_before(After)	
+ * AVE_after(After)	
+ * Qint_difference_After	
+ * SIC_AVE_before(before)	
+ * SIC_AVE_after(before)	
+ * SIC_Qint_difference_before	
+ * SIC_AVE_before(during)	
+ * SIC_AVE_after(during)	
+ * SIC_Qint_difference_During	
+ * SIC_AVE_before(After)	
+ * SIC_AVE_after(After)	
+ * SIC_Qint_difference_After
+ * 
+ * 
+ * 
+ *
+ */
+
+
+class resultMatrix
+{
+	
+	String cusip;
+	
+	
+	float ave_before_before;
+	float ave_after_before;
+	float qint_diff_before;
+	
+	float ave_before_during;
+	float ave_after_during;
+	float qint_diff_during;
+	
+	float ave_before_after;
+	float ave_after_after;
+	float qint_diff_after;
+	
+	float sic_ave_before_before;
+	float sic_ave_after_before;
+	float sic_qint_diff_before;
+	
+	float sic_ave_before_during;
+	float sic_ave_after_during;
+	float sic_qint_diff_during;
+	
+	float sic_ave_before_after;
+	float sic_ave_after_after;
+	float sic_qint_diff_after;
+	
+	public resultMatrix(){
+		
+		cusip = "";
+		
+		ave_before_before = 0;
+		ave_after_before = 0;
+		qint_diff_before = 0;
+		
+		ave_before_during = 0;
+		ave_after_during = 0;
+		qint_diff_during = 0;
+		
+		ave_before_after = 0;
+		ave_after_after = 0;
+		qint_diff_after = 0;
+		
+		sic_ave_before_before = 0;
+		sic_ave_after_before = 0;
+		sic_qint_diff_before = 0;
+		
+		sic_ave_before_during = 0;
+		sic_ave_after_during = 0;
+		sic_qint_diff_during = 0;
+		
+		sic_ave_before_after = 0;
+		sic_ave_after_after = 0;
+		sic_qint_diff_after = 0;		
+	}	
+}
+
 class boundedValue
 {	
 	int start;
@@ -24,6 +115,8 @@ class boundedValue
 	float afterAverageProfSIC;			
 	float quarterlyIntervalTQDifference; 
 	float quarterlyIntervalProfDifference;		
+	float quarterlyIntervalTQDifferenceSIC;
+	float quarterlyIntervalProfDifferenceSIC;
 	String sic;	String cusip;	
 	String state;	
 	int quarterSpan;
@@ -44,6 +137,8 @@ class boundedValue
 		afterAverageProfSIC=0;		
 		quarterlyIntervalTQDifference=0;
 		quarterlyIntervalProfDifference=0;		
+		quarterlyIntervalTQDifferenceSIC=0;
+		quarterlyIntervalProfDifferenceSIC=0;
 		sic = "";
 		cusip = "";
 		quarterSpan = 0;
@@ -52,7 +147,7 @@ class boundedValue
 
 public class prototypeintervalclass 
 {	
-	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
+	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils(path);
@@ -60,6 +155,12 @@ public class prototypeintervalclass
 	static int timeBlock = 3;
 	static int dataPoints = 120;
 	static ArrayList<ArrayList<ArrayList<Firm>>> firmTimeseries;	
+	
+	static BTree<String, ArrayList<boundedValue>> resTree;
+	
+	static BTree<String, resultMatrix> treeToWrite;
+	
+	static resultMatrix mat;
 	
 	// As the name suggests, find all firms within a range of quarter indices having a specified SIC
 	public static ArrayList<Firm> getFirmsInQuarterRangeWithSIC(int start, int end, String sic)
@@ -149,6 +250,8 @@ public class prototypeintervalclass
 		value.afterAverageTQFirm = resultTQ[1];		
 		value.quarterlyIntervalTQDifference = resultTQ[2];
 		
+
+		
 		float[] resultProf = new float[3];
 		resultProf[0] = utils.averageN(beforeProfAvg);
 		resultProf[1] = utils.averageN(afterProfAvg);
@@ -168,7 +271,10 @@ public class prototypeintervalclass
 		value.beforeAverageTQSIC = utils.averageTQList(beforeSIC);
 		value.afterAverageTQSIC = utils.averageTQList(afterSIC);		
 		value.beforeAverageProfSIC = utils.averageProfList(beforeSIC);
-		value.afterAverageProfSIC = utils.averageProfList(afterSIC);			
+		value.afterAverageProfSIC = utils.averageProfList(afterSIC);	
+		
+		value.quarterlyIntervalTQDifferenceSIC = value.afterAverageTQSIC - value.beforeAverageTQSIC / (float)value.quarterSpan;
+		value.quarterlyIntervalProfDifferenceSIC = value.afterAverageProfSIC - value.beforeAverageProfSIC / (float)value.quarterSpan;
 		
 		return value;
 	}
@@ -202,9 +308,9 @@ public class prototypeintervalclass
 		
 		for(int i = 0;i<cusips.size();i++)
 		{
-			list1.add(checkNaNForBV(list1, econo.BeforeTree.get(cusips.get(i)), cusips.get(i)));
-			list2.add(checkNaNForBV(list2,  econo.DuringTree.get(cusips.get(i)), cusips.get(i)));
-			list3.add(checkNaNForBV(list3,  econo.AfterTree.get(cusips.get(i)), cusips.get(i)));			
+			list1.add(checkNaNForBV("before", list1, econo.BeforeTree.get(cusips.get(i)), cusips.get(i)));
+			list2.add(checkNaNForBV("during", list2,  econo.DuringTree.get(cusips.get(i)), cusips.get(i)));
+			list3.add(checkNaNForBV("after", list3,  econo.AfterTree.get(cusips.get(i)), cusips.get(i)));			
 		}
 		
 		boundedFirmsObject[0] = list1; // list 1 is vals[0] -> before
@@ -215,14 +321,14 @@ public class prototypeintervalclass
 	}	
 	
 	// Check not a number for a bounded value entry
-	public static boundedValue checkNaNForBV(ArrayList<boundedValue> bList, ArrayList<Firm> tmp, String cu)
+	public static boundedValue checkNaNForBV(String state, ArrayList<boundedValue> bList, ArrayList<Firm> tmp, String cu)
 	{
 		boundedValue value = new boundedValue();
 		if(tmp != null)
 		{
 			value  = new boundedValue();
 			value = findAverage(tmp);		
-			value.state = "before";
+			value.state = state;
 			if(
 					!(
 					(Float.isNaN((value.afterAverageProfFirm))) &&
@@ -279,6 +385,183 @@ public class prototypeintervalclass
 		
 	}
 	
+	public static void writeResultMatrix(Object valList, String resultFile) throws IOException
+	{
+		Object[] vals = (Object[]) valList;			
+		
+		ArrayList<boundedValue> boundedBeforeBKVals = ((ArrayList<boundedValue>) vals[0]);
+		ArrayList<boundedValue> boundedDuringBKVals = ((ArrayList<boundedValue>) vals[1]);
+		ArrayList<boundedValue> boundedAfterBKVals = ((ArrayList<boundedValue>) vals[2]);	
+		
+		ArrayList<boundedValue> temp;
+		
+		ArrayList<String> listo = new ArrayList<String>();
+		
+		resTree = new BTree<String, ArrayList<boundedValue>>();
+		
+		treeToWrite = new BTree<String, resultMatrix>();
+		
+		
+		for(int i = 0;  i < boundedBeforeBKVals.size(); i++){
+			
+			if(treeToWrite.get(boundedBeforeBKVals.get(i).cusip) == null){
+				listo.add(boundedBeforeBKVals.get(i).cusip);
+				treeToWrite.put(boundedBeforeBKVals.get(i).cusip, new resultMatrix());
+			}
+			
+			if(resTree.get(boundedBeforeBKVals.get(i).cusip) == null){
+				temp = new ArrayList<boundedValue>();
+				temp.add(boundedBeforeBKVals.get(i));
+				resTree.put(boundedBeforeBKVals.get(i).cusip, temp);
+			} else {
+				resTree.get(boundedBeforeBKVals.get(i).cusip).add(boundedBeforeBKVals.get(i));
+			}		
+		}
+		
+		for(int i = 0;  i < boundedDuringBKVals.size(); i++){
+			
+			if(treeToWrite.get(boundedDuringBKVals.get(i).cusip) == null){
+				listo.add(boundedDuringBKVals.get(i).cusip);
+				treeToWrite.put(boundedDuringBKVals.get(i).cusip, new resultMatrix());
+			}
+			
+			if(resTree.get(boundedDuringBKVals.get(i).cusip) == null){
+				temp = new ArrayList<boundedValue>();
+				temp.add(boundedDuringBKVals.get(i));
+				resTree.put(boundedDuringBKVals.get(i).cusip, temp);
+			} else {
+				resTree.get(boundedDuringBKVals.get(i).cusip).add(boundedDuringBKVals.get(i));
+			}		
+		}
+		
+		for(int i = 0;  i < boundedAfterBKVals.size(); i++){
+			
+			if(treeToWrite.get(boundedAfterBKVals.get(i).cusip) == null){
+				listo.add(boundedAfterBKVals.get(i).cusip);
+				treeToWrite.put(boundedAfterBKVals.get(i).cusip, new resultMatrix());
+			}
+			
+			if(resTree.get(boundedAfterBKVals.get(i).cusip) == null){
+				temp = new ArrayList<boundedValue>();
+				temp.add(boundedAfterBKVals.get(i));
+				resTree.put(boundedAfterBKVals.get(i).cusip, temp);
+				
+			} else {
+				resTree.get(boundedAfterBKVals.get(i).cusip).add(boundedAfterBKVals.get(i));
+			}		
+		}
+		
+		
+		for(int i = 0; i < listo.size(); i++){
+			
+			ArrayList<boundedValue> val = resTree.get(listo.get(i));
+			
+			resultMatrix tmpMat = new resultMatrix();
+			
+			for(int j = 0; j < val.size(); j++){
+				
+				
+				if(val.get(j).state == "before"){
+					
+					tmpMat = treeToWrite.get(listo.get(i));
+					
+					tmpMat.ave_after_before = val.get(j).afterAverageTQFirm;
+					tmpMat.ave_before_before = val.get(j).beforeAverageTQFirm;
+					tmpMat.qint_diff_before = val.get(j).quarterlyIntervalTQDifference;
+					tmpMat.sic_ave_after_before = val.get(j).afterAverageTQSIC;
+					tmpMat.sic_ave_before_before = val.get(j).beforeAverageTQFirm;
+					tmpMat.sic_qint_diff_before = val.get(j).quarterlyIntervalTQDifferenceSIC;
+					
+					treeToWrite.put(listo.get(i), tmpMat);
+					
+				}
+				if(val.get(j).state == "during"){
+					
+					tmpMat = treeToWrite.get(listo.get(i));
+					
+					tmpMat.ave_after_during = val.get(j).afterAverageTQFirm;
+					tmpMat.ave_before_during = val.get(j).beforeAverageTQFirm;
+					tmpMat.qint_diff_during = val.get(j).quarterlyIntervalTQDifference;
+					tmpMat.sic_ave_after_during = val.get(j).afterAverageTQSIC;
+					tmpMat.sic_ave_before_during = val.get(j).beforeAverageTQFirm;
+					tmpMat.sic_qint_diff_during = val.get(j).quarterlyIntervalTQDifferenceSIC;
+					
+					treeToWrite.put(listo.get(i), tmpMat);
+				}
+				if(val.get(j).state == "after"){
+					
+					tmpMat = treeToWrite.get(listo.get(i));
+					
+					tmpMat.ave_after_after = val.get(j).afterAverageTQFirm;
+					tmpMat.ave_before_after = val.get(j).beforeAverageTQFirm;
+					tmpMat.qint_diff_after = val.get(j).quarterlyIntervalTQDifference;
+					tmpMat.sic_ave_after_after = val.get(j).afterAverageTQSIC;
+					tmpMat.sic_ave_before_after = val.get(j).beforeAverageTQFirm;
+					tmpMat.sic_qint_diff_after = val.get(j).quarterlyIntervalTQDifferenceSIC;
+					
+					treeToWrite.put(listo.get(i), tmpMat);
+				}						
+			}				
+		}
+		resultMatrix t = new resultMatrix();
+		for(int i = 0; i < listo.size(); i ++){
+			
+			
+			
+			String val = "";
+			
+			val += listo.get(i) + ","; // cusip
+			
+			 t = treeToWrite.get(listo.get(i));
+			 
+			 val += t.ave_before_before + ",";
+			 val += t.ave_after_before + ",";
+			 val += t.qint_diff_before + ",";
+			 
+			 val += t.ave_before_during + ",";
+			 val += t.ave_after_during + ",";
+			 val += t.qint_diff_during + ",";
+			
+			 val += t.ave_before_after + ",";
+			 val += t.ave_after_after + ",";
+			 val += t.qint_diff_after + "\n";
+			 
+			 utils.writeList(resultFile, val);
+		}
+		
+		
+		
+		
+		/*
+		float ave_before_before;
+		float ave_after_before;
+		float qint_diff_before;
+		
+		float ave_before_during;
+		float ave_after_during;
+		float qint_diff_during;
+		
+		float ave_before_after;
+		float ave_after_after;
+		float qint_diff_after;
+		
+		float sic_ave_before_before;
+		float sic_ave_after_before;
+		float sic_qint_diff_before;
+		
+		float sic_ave_before_during;
+		float sic_ave_after_during;
+		float sic_qint_diff_during;
+		
+		float sic_ave_before_after;
+		float sic_ave_after_after;
+		float sic_qint_diff_after;
+		*/
+		
+		
+		
+	}
+	
 	// Perform query
 	public static String evaluateFirmSicQuery(ArrayList<boundedValue> vals, String file1, String file2, String file3, String file4, String period) throws IOException
 	{
@@ -295,6 +578,11 @@ public class prototypeintervalclass
 		String txt = "";
 		
 		for(int i = 0; i < vals.size();i++){
+			
+			
+			
+			
+			
 			skip = false;
 			txt = "";
 			x = (float)vals.get(i).quarterlyIntervalTQDifference;
@@ -319,6 +607,8 @@ public class prototypeintervalclass
 			}
 			else{
 				if(!skip){			
+					
+					
 					txt = (vals.get(i).cusip + "," + x + "," + y + "," + a + "," + b + "," + period + "\r\n");
 					all += txt;
 					//tqFirm.add(x);
@@ -340,6 +630,7 @@ public class prototypeintervalclass
 	public static void main(String[] args) throws IOException 
 	{
 		System.out.println("HERE WE GO");
+		mat = new resultMatrix();
 		
 		//setup elements
 		ReadFile f = new ReadFile(path);		
@@ -360,6 +651,8 @@ public class prototypeintervalclass
 		String afterProfDist = econo.filePath+"results\\afterProfDist.txt";   		//10
 		String afterSICTQDist = econo.filePath+"results\\afterTQSICDist.txt";   	//11		
 		String afterSICProfDist = econo.filePath+"results\\afterProfSICDist.txt";   //12
+		
+		String resultFile = econo.filePath+"results2\\resultFile.txt";
 
 		//perform econ exploration
 		writeQuarterlyIntervalDiff(vals, 
@@ -374,7 +667,9 @@ public class prototypeintervalclass
 								   afterTQDist,			//9
 								   afterProfDist,		//10
 								   afterSICTQDist, 		//11
-								   afterSICProfDist); 	//12		
+								   afterSICProfDist); 	//12	
+		
+		writeResultMatrix(vals, resultFile);
 	}	
 }
 
