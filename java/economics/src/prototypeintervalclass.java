@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 
 
@@ -147,7 +147,7 @@ class boundedValue
 
 public class prototypeintervalclass 
 {	
-	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
+	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils(path);
@@ -524,7 +524,19 @@ public class prototypeintervalclass
 			
 			 val += t.ave_before_after + ",";
 			 val += t.ave_after_after + ",";
-			 val += t.qint_diff_after + "\n";
+			 val += t.qint_diff_after + ",";
+			 
+			 val += t.sic_ave_before_before + ",";
+			 val += t.sic_ave_after_before + ",";
+			 val += t.sic_qint_diff_before + ",";
+			 
+			 val += t.sic_ave_before_during + ",";
+			 val += t.sic_ave_after_during + ",";
+			 val += t.sic_qint_diff_during + ",";
+			
+			 val += t.sic_ave_before_after + ",";
+			 val += t.sic_ave_after_after + ",";
+			 val += t.sic_qint_diff_after + ",";
 			 
 			 utils.writeList(resultFile, val);
 		}
