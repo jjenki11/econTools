@@ -99,11 +99,10 @@ public class Bankrupcy {
 	
 	//after BK within range checker boolean ; FLIPPED around datadate and disposedindex to make it right
 	public boolean BankrupcyAfter (int datadate, int years) {
-		if (((datadate - disposedIndex) > 0) && ((datadate - disposedIndex) <= (years*366))) {
+		if (((datadate - disposedIndex) >= 0) && ((datadate - disposedIndex) <= (years*366))) {
 			return true;
 		}
-		return false;
-	
+		return false;	
 	}
 	
 	// boolean checker for BK ever in whole data range: ADDED disposed index

@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -407,6 +407,10 @@ public class EconUtils
 					(x[2] && f.setCategory("AFTER")),
 					(x[3] && f.setCategory("OUTSIDE"))
 				};
+				
+				if(x[0] || x[1] || x[2]){
+					f.setBankrupcy(Eco.bankTree.get(f.cusip).get(j));
+				}
 				
 				watch = j;
 				//txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);

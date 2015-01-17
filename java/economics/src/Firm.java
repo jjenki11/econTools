@@ -138,7 +138,7 @@ public class Firm
 	public void setBankrupcy(Bankrupcy b){
 		bankrupcy.add(b);
 	}
-	public Bankrupcy getBankrupcy(){
+	public ArrayList<Bankrupcy> getBankrupcy(){
 		Bankrupcy tmp = new Bankrupcy();
 		
 		for(int i =0; i<bankrupcy.size();i++){
@@ -154,7 +154,7 @@ public class Firm
 			}
 		}
 		
-		return tmp;
+		return bankrupcy;
 	}
 	
 	public boolean setCategory(String c){

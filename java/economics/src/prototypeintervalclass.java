@@ -216,17 +216,18 @@ public class prototypeintervalclass
 		Integer dis = 10957;		
 		int last = 0;
 		
-		if(utils.qM2.get(list.get(list.size()-1).getBankrupcy().disposedIndex) != null){
-			last = utils.qM2.get(utils.dM2.get((list.get(list.size()-1).getBankrupcy().dateDisposed)));
+		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null){
+			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex);
 		} else {
 			last = dis;
 		}
-		if(utils.qM2.get(list.get(0).getBankrupcy().filedIndex) != null){
-			first = utils.qM2.get(utils.dM2.get((list.get(0).getBankrupcy().dateFiled)));
+		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null){
+			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex);
 		} else {
 			first = dis2;
 		}		
-
+		System.out.println(list.get(0).cusip + ", " + list.get(0).getBankrupcy().get(0).filedIndex + ", " + list.get(0).getBankrupcy().get(0).disposedIndex);
+		
 		int mid = (first+last)/2;
 		int[] x = new int[3];
 		x[0]=first;
@@ -640,8 +641,8 @@ public class prototypeintervalclass
 			}
 			else{}	
 			//sic
-			a = ((float)vals.get(i).afterAverageTQSIC - (float)vals.get(i).beforeAverageTQSIC) / (float)vals.get(i).quarterSpan;
-			b = ((float)vals.get(i).afterAverageProfSIC - (float)vals.get(i).beforeAverageProfSIC) / (float)vals.get(i).quarterSpan;
+			a = (float)vals.get(i).afterAverageTQSIC - (float)vals.get(i).beforeAverageTQSIC / (float)vals.get(i).quarterSpan;
+			b = (float)vals.get(i).afterAverageProfSIC - (float)vals.get(i).beforeAverageProfSIC / (float)vals.get(i).quarterSpan;
 			if(
 					(Float.isNaN(a) || Float.isNaN(b)) || 
 					((a==0.0f) || (b==0.0f))  ||
