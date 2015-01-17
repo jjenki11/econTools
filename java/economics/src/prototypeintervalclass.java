@@ -640,8 +640,8 @@ public class prototypeintervalclass
 			}
 			else{}	
 			//sic
-			a = (float)vals.get(i).afterAverageTQSIC - (float)vals.get(i).beforeAverageTQSIC / (float)vals.get(i).quarterSpan;
-			b = (float)vals.get(i).afterAverageProfSIC - (float)vals.get(i).beforeAverageProfSIC / (float)vals.get(i).quarterSpan;
+			a = ((float)vals.get(i).afterAverageTQSIC - (float)vals.get(i).beforeAverageTQSIC) / (float)vals.get(i).quarterSpan;
+			b = ((float)vals.get(i).afterAverageProfSIC - (float)vals.get(i).beforeAverageProfSIC) / (float)vals.get(i).quarterSpan;
 			if(
 					(Float.isNaN(a) || Float.isNaN(b)) || 
 					((a==0.0f) || (b==0.0f))  ||
