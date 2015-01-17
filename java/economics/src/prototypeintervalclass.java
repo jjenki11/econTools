@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 
 
@@ -147,7 +147,8 @@ class boundedValue
 
 public class prototypeintervalclass 
 {	
-	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
+	//static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
+	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils(path);
@@ -207,16 +208,32 @@ public class prototypeintervalclass
 		return x;	
 	}
 	
+	public static int[] makeDuringInterval(ArrayList<Firm> list)
+	{
+		int last = utils.qM2.get(utils.dM2.get((list.get(list.size()-1).getBankrupcy().dateDisposed)));
+		int first = utils.qM2.get(utils.dM2.get((list.get(0).getBankrupcy().dateFiled)));		
+		int mid = (first+last)/2;
+		int[] x = new int[3];
+		x[0]=first;
+		x[1]=mid;
+		x[2]=last;		
+		return x;	
+	}
+	
 	// Find the average value for both sides of an interval
-	public static boundedValue findAverage(ArrayList<Firm> list)
+	public static boundedValue findAverage(ArrayList<Firm> list, String state)
 	{		
 		ArrayList<Float> beforeTQAvg = new ArrayList<Float>();
 		ArrayList<Float> afterTQAvg = new ArrayList<Float>();
 		
 		ArrayList<Float> beforeProfAvg = new ArrayList<Float>();
 		ArrayList<Float> afterProfAvg = new ArrayList<Float>();
-		
-		int[] interval = makeinterval(list);		
+		int[] interval;
+		if(state != "during"){
+		    interval = makeinterval(list);		
+		} else {
+			interval = makeDuringInterval(list);
+		}
 		boundedValue value = new boundedValue();
 		
 		value.start = interval[0];
@@ -273,8 +290,8 @@ public class prototypeintervalclass
 		value.beforeAverageProfSIC = utils.averageProfList(beforeSIC);
 		value.afterAverageProfSIC = utils.averageProfList(afterSIC);	
 		
-		value.quarterlyIntervalTQDifferenceSIC = value.afterAverageTQSIC - value.beforeAverageTQSIC / (float)value.quarterSpan;
-		value.quarterlyIntervalProfDifferenceSIC = value.afterAverageProfSIC - value.beforeAverageProfSIC / (float)value.quarterSpan;
+		value.quarterlyIntervalTQDifferenceSIC = (value.afterAverageTQSIC - value.beforeAverageTQSIC) / (float)value.quarterSpan;
+		value.quarterlyIntervalProfDifferenceSIC = (value.afterAverageProfSIC - value.beforeAverageProfSIC) / (float)value.quarterSpan;
 		
 		return value;
 	}
@@ -327,7 +344,7 @@ public class prototypeintervalclass
 		if(tmp != null)
 		{
 			value  = new boundedValue();
-			value = findAverage(tmp);		
+			value = findAverage(tmp, state);		
 			value.state = state;
 			if(
 					!(
