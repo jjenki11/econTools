@@ -210,21 +210,23 @@ public class prototypeintervalclass
 	
 	public static int[] makeDuringInterval(ArrayList<Firm> list)
 	{
-		Integer dis = utils.qM2.get(utils.dM2.get((list.get(list.size()-1).getBankrupcy().dateDisposed)));
-		Integer dis2 = utils.qM2.get(utils.dM2.get((list.get(0).getBankrupcy().dateFiled)));
-		int last = 0;
+		Integer dis2 = 1;
 		int first = 0;
-		if(dis != null){
-			last = dis;
-		} else { 
-			last = 10957;
-		}
 		
-		if(dis2 != null){
-			first = dis;
+		Integer dis = 10957;		
+		int last = 0;
+		
+		if(utils.qM2.get(utils.dM2.get((list.get(list.size()-1).getBankrupcy().dateDisposed))) != null){
+			last = utils.qM2.get(utils.dM2.get((list.get(list.size()-1).getBankrupcy().dateDisposed)));
 		} else {
-			first = 1;
+			last = dis;
 		}
+		if(utils.qM2.get(utils.dM2.get((list.get(0).getBankrupcy().dateFiled))) != null){
+			first = utils.qM2.get(utils.dM2.get((list.get(0).getBankrupcy().dateFiled)));
+		} else {
+			first = dis2;
+		}		
+
 		int mid = (first+last)/2;
 		int[] x = new int[3];
 		x[0]=first;
