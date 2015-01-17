@@ -216,12 +216,12 @@ public class prototypeintervalclass
 		Integer dis = 10957;		
 		int last = 0;
 		
-		if(utils.qM2.get(utils.dM2.get((list.get(list.size()-1).getBankrupcy().dateDisposed))) != null){
+		if(utils.qM2.get(list.get(list.size()-1).getBankrupcy().disposedIndex) != null){
 			last = utils.qM2.get(utils.dM2.get((list.get(list.size()-1).getBankrupcy().dateDisposed)));
 		} else {
 			last = dis;
 		}
-		if(utils.qM2.get(utils.dM2.get((list.get(0).getBankrupcy().dateFiled))) != null){
+		if(utils.qM2.get(list.get(0).getBankrupcy().filedIndex) != null){
 			first = utils.qM2.get(utils.dM2.get((list.get(0).getBankrupcy().dateFiled)));
 		} else {
 			first = dis2;
