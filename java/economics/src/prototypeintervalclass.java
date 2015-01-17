@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 
 
@@ -147,8 +147,8 @@ class boundedValue
 
 public class prototypeintervalclass 
 {	
-	//static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
-	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
+	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
+	//static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils(path);
@@ -208,25 +208,86 @@ public class prototypeintervalclass
 		return x;	
 	}
 	
-	public static int[] makeDuringInterval(ArrayList<Firm> list)
+	public static int[] makeBeforeInterval(ArrayList<Firm> list)
 	{
-		Integer dis2 = 1;
+		int dis = 1;
 		int first = 0;
 		
-		Integer dis = 10957;		
+		int dis2 = 120;		
 		int last = 0;
 		
-		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null){
+		int years = 2*366;
+
+		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null &&
+				utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != 0){
+			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex);
+			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years);
+		} else {
+			last = dis2;
+			first = dis2 - years;
+		}		
+		System.out.println(list.get(0).cusip + ", " + first + ", " + last);
+		
+		int mid = (first+last)/2;
+		int[] x = new int[3];
+		x[0]=first;
+		x[1]=mid;
+		x[2]=last;		
+		return x;	
+	}
+	
+	public static int[] makeDuringInterval(ArrayList<Firm> list)
+	{
+		int dis2 = 1;
+		int first = 0;
+		
+		int dis = 120;		
+		int last = 0;
+		
+		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null &&
+				utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != 0){
 			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex);
 		} else {
 			last = dis;
 		}
-		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null){
+		
+		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null &&
+				utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != 0){			
 			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex);
 		} else {
 			first = dis2;
-		}		
-		System.out.println(list.get(0).cusip + ", " + list.get(0).getBankrupcy().get(0).filedIndex + ", " + list.get(0).getBankrupcy().get(0).disposedIndex);
+		}
+	
+		System.out.println(list.get(0).cusip + ", " + first + ", " + last);
+		
+		int mid = (first+last)/2;
+		int[] x = new int[3];
+		x[0]=first;
+		x[1]=mid;
+		x[2]=last;		
+		return x;	
+	}
+	
+	public static int[] makeAfterInterval(ArrayList<Firm> list)
+	{
+		int dis2 = 1;
+		int first = 0;
+		
+		int dis = 120;		
+		int last = 0;
+		
+		int years = 2*366;
+		
+		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null &&
+				utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != 0){
+			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex);
+			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years);
+		} else {
+			first = dis2;
+			last = utils.qM2.get(years);
+		}
+
+		System.out.println(list.get(0).cusip + ", " + first + ", " + last);
 		
 		int mid = (first+last)/2;
 		int[] x = new int[3];
@@ -245,8 +306,10 @@ public class prototypeintervalclass
 		ArrayList<Float> beforeProfAvg = new ArrayList<Float>();
 		ArrayList<Float> afterProfAvg = new ArrayList<Float>();
 		int[] interval;
-		if(state != "during"){
-		    interval = makeinterval(list);		
+		if(state == "before"){
+		    interval = makeBeforeInterval(list);		
+		} else if(state == "after") {
+			interval = makeAfterInterval(list);
 		} else {
 			interval = makeDuringInterval(list);
 		}
