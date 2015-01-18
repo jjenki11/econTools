@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -350,7 +350,7 @@ public class EconUtils
 		return true;
 	}	
 	
-	@SuppressWarnings("null")
+	//@SuppressWarnings("null")
 	public ArrayList<ArrayList<Firm>> createGCRangeList(Economy e, int st, int end)
 	{		
 		ArrayList<ArrayList<Firm>> tmp = new ArrayList<ArrayList<Firm>>();
@@ -363,15 +363,18 @@ public class EconUtils
 			lh = new ArrayList<Firm>();
 			ArrayList<Firm> holster = e.quarterTree.get(i);
 			if(holster==null){}
-			else{
-				
-			
+			else{			
 				for(int j = 0;j < holster.size(); j++)
 				{
 					
-					if(e.bankruptTree.get(holster.get(j).cusip) == null) //found in GC tree
+					if(e.bankTree.get(holster.get(j).cusip) == null) //found in GC tree
 					{
 						lh.add(holster.get(j));
+						System.out.println("(econ utils) IS THIS A BK CUSIP: "+holster.get(j).cusip);
+					}
+					else
+					{
+						System.out.println("BK entry omitted from gc always list: " + holster.get(j).cusip);
 					}
 					
 				}			
@@ -450,6 +453,7 @@ public class EconUtils
 						Eco.categoryTree.put("AFTER", tmp);
 					}						
 				} else if(y[3]) {				
+					System.out.println("Adding an outsider...");
 					//xxx[3] = true;
 					if(Eco.categoryTree.get("OUTSIDE") != null){
 						Eco.categoryTree.get("OUTSIDE").add(f);
@@ -639,7 +643,7 @@ public class EconUtils
 			}
 		}
 		
-		return (res / (list.size()+1));	
+		return (res / (list.size()));	
 	}
 	
 	public static float averageProfList(ArrayList<Firm> list)
@@ -655,7 +659,7 @@ public class EconUtils
 				res += Float.parseFloat(list.get(i).Profitability);
 			}			
 		}
-		return (res / (list.size()+1));	
+		return (res / (list.size()));	
 	}
 	
 	public void setEconomy(Economy e){
