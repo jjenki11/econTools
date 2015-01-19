@@ -375,7 +375,7 @@ public class EconUtils
 		ArrayList<ArrayList<Firm>> tmp = new ArrayList<ArrayList<Firm>>();
 		
 		ArrayList<Firm> lh = new ArrayList<Firm>();		
-		for(int i = (st-1); i < (end-1); i++)
+		for(int i = (st+1); i < (end); i++)
 		{			
 			lh = new ArrayList<Firm>();
 			ArrayList<Firm> holster = e.quarterTree.get(i);
