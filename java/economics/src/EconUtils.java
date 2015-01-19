@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -245,25 +245,30 @@ public class EconUtils
 	        	firm.Equity_book_value=values[21];   
 	        	firm.Tobins_Q=values[22];	
 	        	
+	        	firm.dateIndex = dM2.get(firm.datadate);
+	        	
+	        	E.AllFirms.add(firm);	
 	        	//build firm tree
 	        	if(E.firmTree.get(firm.cusip)==null){
 	        		fList = new ArrayList<Firm>();
 	        		fList.add(firm);
 	        		E.firmTree.put(firm.cusip, fList);
 	        	} else{
-	        		E.firmTree.get(firm.cusip).add(firm);
+	        		fList = E.firmTree.get(firm.cusip);
+	        		fList.add(firm);
 	        		E.firmTree.put(firm.cusip, E.firmTree.get(firm.cusip));
 	        	}
 	        	
 	        	// build quarter tree
-	        	if(E.quarterTree.get(qM2.get(dM2.get(firm.datadate))) == null){
+	        	if(E.quarterTree.get(qM2.get(firm.dateIndex)) == null){
 	        		fList = new ArrayList<Firm>();
 	        		fList.add(firm);
-	        		E.quarterTree.put(qM2.get(dM2.get(firm.datadate)), fList);
-	        		qtrs.add(qtrmap.get(dM2.get(firm.datadate)));
+	        		E.quarterTree.put(qM2.get(firm.dateIndex), fList);
+	        		qtrs.add(qtrmap.get(firm.dateIndex));
 	        	} else {
-	        		E.quarterTree.get(qM2.get(dM2.get(firm.datadate))).add(firm);
-	        		E.quarterTree.put(qM2.get(dM2.get(firm.datadate)), E.quarterTree.get(qM2.get(dM2.get(firm.datadate))));
+	        		fList = E.quarterTree.get(qM2.get(firm.dateIndex));
+	        		fList.add(firm);
+	        		E.quarterTree.put(qM2.get(firm.dateIndex), fList);
 	        	}	        	
 	        	// build sic tree
 	        	if(E.sicTree.get(firm.sic)==null){
@@ -272,15 +277,21 @@ public class EconUtils
 	        		E.sicTree.put(firm.sic, fList);
 	        		sics.add(firm.sic);
 	        	} else {
-	        		E.sicTree.get(firm.sic).add(firm);
+	        		fList = E.sicTree.get(firm.sic);
+	        		fList.add(firm);
 	        		E.sicTree.put(firm.sic, E.sicTree.get(firm.sic));
 	        	}
 	        	
-	        	E.AllFirms.add(firm);	        	
+	        	// build All firms linked list
 	        	if(E.AllFirms2.get(firm.cusip)!= null){
-	        		E.AllFirms2.get(firm.cusip).entries.add(firm);
+	        		fList = (ArrayList<Firm>) E.AllFirms2.get(firm.cusip).entries;
+	        		fList.add(firm);
+	        		E.AllFirms2.put(firm.cusip, firm);
+	        	
 	        	}
 	        	else{
+	        		fList = new ArrayList<Firm>();
+	        		fList.add(firm);
 	        		E.AllFirms2.put(firm.cusip, firm);
 	        	}
 	        }
@@ -625,7 +636,7 @@ public class EconUtils
 		for(int i = 0; i< list.size(); i++){
 			x+=Float.parseFloat(list.get(i).Tobins_Q);
 		}
-		return (x / list.size());		
+		return (x / (list.size()+1));		
 	}
 	
 	public static float averageTQList(ArrayList<Firm> list)
@@ -643,7 +654,7 @@ public class EconUtils
 			}
 		}
 		
-		return (res / (list.size()));	
+		return (res / (list.size()+1));	
 	}
 	
 	public static float averageProfList(ArrayList<Firm> list)
