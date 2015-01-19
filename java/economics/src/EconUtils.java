@@ -411,7 +411,7 @@ public class EconUtils
 		int watch = 0;
 		if(Eco.bankTree.get(f.cusip) != null){
 			for(int j = 0;j<Eco.bankTree.get(f.cusip).size();j++){						
-				boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(dM2.get(f.datadate));
+				boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(f.dateIndex);
 				boolean[] xx = {
 					(x[0] && f.setCategory("BEFORE")),
 					(x[1] && f.setCategory("DURING")),
