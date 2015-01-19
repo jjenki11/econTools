@@ -323,19 +323,31 @@ public class prototypeintervalclass
 		value.end = interval[2];
 		value.quarterSpan = (value.end - value.start);
 		
+
+		
 		for(int i = 0; i < list.size();i++)
 		{
+			value.cusip = list.get(i).cusip;
+			value.sic = list.get(i).sic;
 			if( (utils.qM2.get(list.get(i).dateIndex) >= value.start) &&
 				(utils.qM2.get(list.get(i).dateIndex) < value.mid))
 			{				
 				beforeTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				beforeProfAvg.add(Float.parseFloat(list.get(i).Profitability));
+				
+				value.beforeAverageTQSIC += utils.averageTQList(getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic));
+				value.beforeAverageProfSIC += utils.averageProfList(getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic));
+				
+				
 			}
 			else if( (utils.qM2.get(list.get(i).dateIndex) >= value.mid) &&
 				(utils.qM2.get(list.get(i).dateIndex) <= value.end))
 			{				
 				afterTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				afterProfAvg.add(Float.parseFloat(list.get(i).Profitability));
+				
+				value.afterAverageTQSIC += utils.averageTQList(getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic));
+				value.afterAverageProfSIC += utils.averageProfList(getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic));
 			}			
 		}
 		
@@ -361,19 +373,24 @@ public class prototypeintervalclass
 		value.afterAverageProfFirm = resultProf[1];		
 		value.quarterlyIntervalProfDifference = resultProf[2];
 		
-		value.cusip = list.get(0).cusip;
-		value.sic = list.get(0).sic;
 		
+		
+		
+		/*
 		ArrayList<Firm> beforeSIC = getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic);		
 		ArrayList<Firm> afterSIC = getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic);
-		
-		value.beforeAverageTQSIC = utils.averageTQList(beforeSIC);
-		value.afterAverageTQSIC = utils.averageTQList(afterSIC);	
+		*/
 		
 		
 		
-		value.beforeAverageProfSIC = utils.averageProfList(beforeSIC);
-		value.afterAverageProfSIC = utils.averageProfList(afterSIC);	
+		//value.beforeAverageTQSIC = utils.averageTQList(beforeSIC);
+		
+		//value.afterAverageTQSIC = utils.averageTQList(afterSIC);	
+		
+		
+		
+		//value.beforeAverageProfSIC = utils.averageProfList(beforeSIC);
+		//value.afterAverageProfSIC = utils.averageProfList(afterSIC);	
 		
 		value.quarterlyIntervalTQDifferenceSIC = (value.afterAverageTQSIC - value.beforeAverageTQSIC) / (float)value.quarterSpan;
 		value.quarterlyIntervalProfDifferenceSIC = (value.afterAverageProfSIC - value.beforeAverageProfSIC) / (float)value.quarterSpan;
