@@ -316,7 +316,9 @@ public class EconUtils
 		
 		ArrayList<Firm> tmp;
 		if(e.BeforeTree.get(f.cusip) != null){
-			e.BeforeTree.get(f.cusip).add(f);
+			tmp = e.BeforeTree.get(f.cusip);
+			tmp.add(f);
+			e.BeforeTree.put(f.cusip, tmp);
 		} else {
 			tmp = new ArrayList<Firm>();
 			tmp.add(f);
@@ -327,8 +329,10 @@ public class EconUtils
 	
 	public boolean addToAfterTree(Economy e, Firm f){
 		ArrayList<Firm> tmp;
-		if(e.AfterTree.get(f.cusip) != null){
-			e.AfterTree.get(f.cusip).add(f);
+		if(e.AfterTree.get(f.cusip) != null){			
+			tmp = e.AfterTree.get(f.cusip);
+			tmp.add(f);
+			e.AfterTree.put(f.cusip, tmp);
 		} else {
 			tmp = new ArrayList<Firm>();
 			tmp.add(f);
@@ -340,7 +344,9 @@ public class EconUtils
 	public boolean addToGCTree(Economy e, Firm f){
 		ArrayList<Firm> tmp;
 		if(e.goingConcernTree.get(f.cusip) != null){
-			e.goingConcernTree.get(f.cusip).add(f);
+			tmp = e.goingConcernTree.get(f.cusip);
+			tmp.add(f);
+			e.goingConcernTree.put(f.cusip, tmp);
 		} else {
 			tmp = new ArrayList<Firm>();
 			tmp.add(f);
@@ -352,7 +358,9 @@ public class EconUtils
 	public boolean addToDuringTree(Economy e, Firm f){
 		ArrayList<Firm> tmp;
 		if(e.DuringTree.get(f.cusip) != null){
-			e.DuringTree.get(f.cusip).add(f);
+			tmp = e.DuringTree.get(f.cusip);
+			tmp.add(f);
+			e.DuringTree.put(f.cusip, tmp);
 		} else {
 			tmp = new ArrayList<Firm>();
 			tmp.add(f);
