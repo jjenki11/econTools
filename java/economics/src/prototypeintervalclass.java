@@ -166,42 +166,40 @@ public class prototypeintervalclass
 	// As the name suggests, find all firms within a range of quarter indices having a specified SIC
 	public static ArrayList<Firm> getFirmsInQuarterRangeWithSIC(int start, int end, String sic)
 	{				
+		System.out.println("TESTING FOR SIC = "+sic);
 		ArrayList<ArrayList<Firm>> firmsInQuarterRange = new ArrayList<ArrayList<Firm>>();
 		firmsInQuarterRange = utils.createGCRangeList(econo, start, end);
 		System.out.println("Size of gc firms... "+firmsInQuarterRange.size());
 		ArrayList<Firm> firmsWithSIC = new ArrayList<Firm>();		
 		for(int i = 0; i < firmsInQuarterRange.size(); i ++)
 		{
-			//if((firmsInQuarterRange.get(i) != null))
-			//{
+			if((firmsInQuarterRange.get(i) != null))
+			{
 				for(int j = 0; j < firmsInQuarterRange.get(i).size(); j ++)
 				{
 					
 					float tmpVal = 0.0f;
-					System.out.println("Firm "+firmsInQuarterRange.get(i).get(j).cusip + " added with TQ = "+firmsInQuarterRange.get(i).get(j).Tobins_Q);
-					firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
+					
+					//firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
 					
 					//check if the firm evaluated has desired sic
 					
-					/*
-					if(firmsInQuarterRange.get(i).get(j).sic == sic)
-					{
-						tmpVal = Float.parseFloat(firmsInQuarterRange.get(i).get(j).Tobins_Q);
-						
-						
+					System.out.println("Test sic = "+sic+ " current sic = " + firmsInQuarterRange.get(i).get(j).sic);
+					if(Integer.parseInt(firmsInQuarterRange.get(i).get(j).sic) == Integer.parseInt(sic))
+					{						
 						if(
-								Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Profitability)) ||
+								//Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Profitability)) ||
 								Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Tobins_Q))
 						  ){}
 						else
 						{
 							firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
-							
+							System.out.println("Firm "+firmsInQuarterRange.get(i).get(j).cusip + "with sic = "+firmsInQuarterRange.get(i).get(j).sic+" added with TQ = "+firmsInQuarterRange.get(i).get(j).Tobins_Q);
 						}						
 					}
-					*/
+					
 				}
-			//}
+			}
 		}		
 		return firmsWithSIC;
 	}
