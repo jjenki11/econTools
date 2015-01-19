@@ -166,10 +166,10 @@ public class prototypeintervalclass
 	// As the name suggests, find all firms within a range of quarter indices having a specified SIC
 	public static ArrayList<Firm> getFirmsInQuarterRangeWithSIC(int start, int end, String sic)
 	{				
-		System.out.println("TESTING FOR SIC = "+sic);
+		//System.out.println("TESTING FOR SIC = "+sic);
 		ArrayList<ArrayList<Firm>> firmsInQuarterRange = new ArrayList<ArrayList<Firm>>();
 		firmsInQuarterRange = utils.createGCRangeList(econo, start, end);
-		System.out.println("Size of gc firms... "+firmsInQuarterRange.size());
+		//System.out.println("Size of gc firms... "+firmsInQuarterRange.size());
 		ArrayList<Firm> firmsWithSIC = new ArrayList<Firm>();		
 		for(int i = 0; i < firmsInQuarterRange.size(); i ++)
 		{
@@ -184,7 +184,7 @@ public class prototypeintervalclass
 					
 					//check if the firm evaluated has desired sic
 					
-					System.out.println("Test sic = "+sic+ " current sic = " + firmsInQuarterRange.get(i).get(j).sic);
+					//System.out.println("Test sic = "+sic+ " current sic = " + firmsInQuarterRange.get(i).get(j).sic);
 					if(Integer.parseInt(firmsInQuarterRange.get(i).get(j).sic) == Integer.parseInt(sic) &&							
 					  (econo.bankTree.get(firmsInQuarterRange.get(i).get(j).cusip) == null))
 					{						
@@ -196,7 +196,7 @@ public class prototypeintervalclass
 						{
 							//if(econo.bankTree.get(firmsInQuarterRange.get(i).get(j).cusip) == null){
 								firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
-								System.out.println("Firm "+firmsInQuarterRange.get(i).get(j).cusip + " with sic = "+firmsInQuarterRange.get(i).get(j).sic+" added with TQ = "+Float.parseFloat(firmsInQuarterRange.get(i).get(j).Tobins_Q));
+								//System.out.println("Firm "+firmsInQuarterRange.get(i).get(j).cusip + " with sic = "+firmsInQuarterRange.get(i).get(j).sic+" added with TQ = "+Float.parseFloat(firmsInQuarterRange.get(i).get(j).Tobins_Q));
 							//}
 						}						
 					}					
@@ -220,14 +220,14 @@ public class prototypeintervalclass
 		int years = 2*366;
 
 		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null &&
-				utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != 0){
+				utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years) != 0){
 			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex);
 			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years);
 		} else {
 			last = dis2;
 			first = dis2 - years;
 		}		
-		System.out.println(list.get(0).cusip + ", " + first + ", " + last);
+		//System.out.println(list.get(0).cusip + ", " + first + ", " + last);
 		
 		int mid = (first+last)/2;
 		int[] x = new int[3];
@@ -259,7 +259,7 @@ public class prototypeintervalclass
 			first = dis2;
 		}
 	
-		System.out.println(list.get(0).cusip + ", " + first + ", " + last);
+		//System.out.println(list.get(0).cusip + ", " + first + ", " + last);
 		
 		int mid = (first+last)/2;
 		int[] x = new int[3];
@@ -280,7 +280,7 @@ public class prototypeintervalclass
 		int years = 2*366;
 		
 		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null &&
-				utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != 0){
+				utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years) != 0){
 			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex);
 			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years);
 		} else {
@@ -288,7 +288,7 @@ public class prototypeintervalclass
 			last = utils.qM2.get(years);
 		}
 
-		System.out.println(list.get(0).cusip + ", " + first + ", " + last);
+		//System.out.println(list.get(0).cusip + ", " + first + ", " + last);
 		
 		int mid = (first+last)/2;
 		int[] x = new int[3];
@@ -364,19 +364,21 @@ public class prototypeintervalclass
 		value.cusip = list.get(0).cusip;
 		value.sic = list.get(0).sic;
 		
-		ArrayList<Firm> beforeSIC = getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic);
+		ArrayList<Firm> beforeSIC = getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic);		
 		ArrayList<Firm> afterSIC = getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic);
 		
 		value.beforeAverageTQSIC = utils.averageTQList(beforeSIC);
 		value.afterAverageTQSIC = utils.averageTQList(afterSIC);	
+		
+		
 		
 		value.beforeAverageProfSIC = utils.averageProfList(beforeSIC);
 		value.afterAverageProfSIC = utils.averageProfList(afterSIC);	
 		
 		value.quarterlyIntervalTQDifferenceSIC = (value.afterAverageTQSIC - value.beforeAverageTQSIC) / (float)value.quarterSpan;
 		value.quarterlyIntervalProfDifferenceSIC = (value.afterAverageProfSIC - value.beforeAverageProfSIC) / (float)value.quarterSpan;
-		
-		System.out.println("IS THIS ZERO? -> "+value.quarterlyIntervalTQDifferenceSIC);
+		System.out.println("cusip = " + value.cusip + " | state = "+state + " | beforeSICavg = "+ value.beforeAverageTQSIC + " | afterSICavg = " + value.afterAverageTQSIC + " | qtrlyDiff = " + value.quarterlyIntervalTQDifferenceSIC);
+		//System.out.println("IS THIS ZERO? -> "+value.quarterlyIntervalTQDifferenceSIC);
 		
 		return value;
 	}
@@ -527,8 +529,7 @@ public class prototypeintervalclass
 			if(treeToWrite.get(boundedDuringBKVals.get(i).cusip) == null){
 				listo.add(boundedDuringBKVals.get(i).cusip);
 				treeToWrite.put(boundedDuringBKVals.get(i).cusip, new resultMatrix());
-			}
-			
+			}			
 			if(resTree.get(boundedDuringBKVals.get(i).cusip) == null){
 				temp = new ArrayList<boundedValue>();
 				temp.add(boundedDuringBKVals.get(i));
@@ -542,7 +543,7 @@ public class prototypeintervalclass
 		
 		for(int i = 0;  i < boundedAfterBKVals.size(); i++){
 			
-			if(treeToWrite.get(boundedAfterBKVals.get(i).cusip) == null){
+			if(treeToWrite.get(boundedAfterBKVals.get(i).cusip) == null){				
 				listo.add(boundedAfterBKVals.get(i).cusip);
 				treeToWrite.put(boundedAfterBKVals.get(i).cusip, new resultMatrix());
 			}
@@ -644,7 +645,7 @@ public class prototypeintervalclass
 			
 			 val += t.sic_ave_before_after + ",";
 			 val += t.sic_ave_after_after + ",";
-			 val += t.sic_qint_diff_after ;
+			 val += t.sic_qint_diff_after;
 			 
 			 utils.writeList(resultFile, val);
 		}
@@ -716,8 +717,8 @@ public class prototypeintervalclass
 			}
 			else{}	
 			//sic
-			a = (float)vals.get(i).afterAverageTQSIC - (float)vals.get(i).beforeAverageTQSIC / (float)vals.get(i).quarterSpan;
-			b = (float)vals.get(i).afterAverageProfSIC - (float)vals.get(i).beforeAverageProfSIC / (float)vals.get(i).quarterSpan;
+			a = ((float)vals.get(i).afterAverageTQSIC - (float)vals.get(i).beforeAverageTQSIC) / (float)vals.get(i).quarterSpan;
+			b = ((float)vals.get(i).afterAverageProfSIC - (float)vals.get(i).beforeAverageProfSIC) / (float)vals.get(i).quarterSpan;
 			if(
 					(Float.isNaN(a) || Float.isNaN(b)) || 
 					((a==0.0f) || (b==0.0f))  ||

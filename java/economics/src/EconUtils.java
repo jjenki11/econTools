@@ -386,11 +386,11 @@ public class EconUtils
 					if(e.bankTree.get(holster.get(j).cusip) == null) //found in GC tree
 					{
 						lh.add(holster.get(j));
-						System.out.println("(econ utils) IS THIS A BK CUSIP: "+holster.get(j).cusip);
+						//System.out.println("(econ utils) IS THIS A BK CUSIP: "+holster.get(j).cusip);
 					}
 					else
 					{
-						System.out.println("BK entry omitted from gc always list: " + holster.get(j).cusip);
+						//System.out.println("BK entry omitted from gc always list: " + holster.get(j).cusip);
 					}
 					
 				}			
@@ -658,7 +658,7 @@ public class EconUtils
 			else{
 				
 				res += Float.parseFloat(list.get(i).Tobins_Q);
-				System.out.println("Current tq value in average func: "+res);
+				//System.out.println("Current tq value in average func: "+res);
 				
 			}
 		}
