@@ -193,11 +193,12 @@ public class prototypeintervalclass
 						  ){}
 						else
 						{
-							firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
-							System.out.println("Firm "+firmsInQuarterRange.get(i).get(j).cusip + "with sic = "+firmsInQuarterRange.get(i).get(j).sic+" added with TQ = "+firmsInQuarterRange.get(i).get(j).Tobins_Q);
+							if(econo.bankTree.get(firmsInQuarterRange.get(i).get(j).cusip) == null){
+								firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
+								System.out.println("Firm "+firmsInQuarterRange.get(i).get(j).cusip + "with sic = "+firmsInQuarterRange.get(i).get(j).sic+" added with TQ = "+firmsInQuarterRange.get(i).get(j).Tobins_Q);
+							}
 						}						
-					}
-					
+					}					
 				}
 			}
 		}		
