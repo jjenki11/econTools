@@ -305,13 +305,15 @@ public class prototypeintervalclass
 		
 		ArrayList<Float> beforeProfAvg = new ArrayList<Float>();
 		ArrayList<Float> afterProfAvg = new ArrayList<Float>();
-		int[] interval;
+		int[] interval = new int[3];
 		if(state == "before"){
 		    interval = makeBeforeInterval(list);		
 		} else if(state == "after") {
 			interval = makeAfterInterval(list);
-		} else {
+		} else if(state == "during") {
 			interval = makeDuringInterval(list);
+		} else {
+			System.out.println("hmmm we shouldn't be here!");
 		}
 		boundedValue value = new boundedValue();
 		
@@ -365,7 +367,8 @@ public class prototypeintervalclass
 		ArrayList<Firm> afterSIC = getFirmsInQuarterRangeWithSIC(value.mid, value.end, list.get(0).sic);
 		
 		value.beforeAverageTQSIC = utils.averageTQList(beforeSIC);
-		value.afterAverageTQSIC = utils.averageTQList(afterSIC);		
+		value.afterAverageTQSIC = utils.averageTQList(afterSIC);	
+		
 		value.beforeAverageProfSIC = utils.averageProfList(beforeSIC);
 		value.afterAverageProfSIC = utils.averageProfList(afterSIC);	
 		
