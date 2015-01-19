@@ -426,7 +426,7 @@ public class EconUtils
 				watch = j;
 				//txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
 				
-				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
+				txt = f.dateIndex+", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(f.dateIndex)+","+(j+1)+","+f.category);
 				
 				//y = {
 				y[0] =	(x[0] && writeList(foundFiles[0], txt) && addToBeforeTree(Eco, f));
@@ -485,7 +485,7 @@ public class EconUtils
 			
 			
 			f.setCategory("NEVER");
-			txt = dM2.get(f.datadate)+", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(dM2.get(f.datadate))+","+(watch+1)+","+f.category);
+			txt = f.dateIndex +", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(f.dateIndex)+","+(watch+1)+","+f.category);
 			
 			
 			writeList(foundFiles[3], txt);
@@ -695,7 +695,7 @@ public class EconUtils
 			for(int i = 0;i<firms.size();i++){
 				f = new Firm();
 				f = firms.get(i);
-				tmp =  "CUSIP: "+f.cusip+" Date: "+dM2.get(f.datadate)+" State: "+f.category+"\n";
+				tmp =  "CUSIP: "+f.cusip+" Date: "+f.dateIndex+" State: "+f.category+"\n";
 				txt += tmp;
 				System.out.println(tmp);
 			}			
@@ -741,7 +741,7 @@ public class EconUtils
 						firm = list.get(i).get(j).get(k);
 						if(firm.category != "NEVER")
 						{
-							tmp = "CUSIP: "+firm.cusip+" Date: "+dM2.get(firm.datadate)+" Quarter: "+qM2.get(dM2.get(firm.datadate)) + " State: "+firm.category;
+							tmp = "CUSIP: "+firm.cusip+" Date: "+firm.dateIndex+" Quarter: "+qM2.get(firm.dateIndex) + " State: "+firm.category;
 							//System.out.println(txt+tmp);
 							retVal += (txt+tmp+"\n");
 							//try {

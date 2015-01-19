@@ -185,18 +185,20 @@ public class prototypeintervalclass
 					//check if the firm evaluated has desired sic
 					
 					System.out.println("Test sic = "+sic+ " current sic = " + firmsInQuarterRange.get(i).get(j).sic);
-					if(Integer.parseInt(firmsInQuarterRange.get(i).get(j).sic) == Integer.parseInt(sic))
+					if(Integer.parseInt(firmsInQuarterRange.get(i).get(j).sic) == Integer.parseInt(sic) &&
+							
+								(econo.bankTree.get(firmsInQuarterRange.get(i).get(j).cusip) == null))
 					{						
 						if(
-								//Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Profitability)) ||
+								Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Profitability)) ||
 								Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Tobins_Q))
 						  ){}
 						else
 						{
-							if(econo.bankTree.get(firmsInQuarterRange.get(i).get(j).cusip) == null){
+							//if(econo.bankTree.get(firmsInQuarterRange.get(i).get(j).cusip) == null){
 								firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
-								System.out.println("Firm "+firmsInQuarterRange.get(i).get(j).cusip + "with sic = "+firmsInQuarterRange.get(i).get(j).sic+" added with TQ = "+firmsInQuarterRange.get(i).get(j).Tobins_Q);
-							}
+								System.out.println("Firm "+firmsInQuarterRange.get(i).get(j).cusip + " with sic = "+firmsInQuarterRange.get(i).get(j).sic+" added with TQ = "+Float.parseFloat(firmsInQuarterRange.get(i).get(j).Tobins_Q));
+							//}
 						}						
 					}					
 				}
@@ -374,6 +376,7 @@ public class prototypeintervalclass
 		
 		value.quarterlyIntervalTQDifferenceSIC = (value.afterAverageTQSIC - value.beforeAverageTQSIC) / (float)value.quarterSpan;
 		value.quarterlyIntervalProfDifferenceSIC = (value.afterAverageProfSIC - value.beforeAverageProfSIC) / (float)value.quarterSpan;
+		
 		System.out.println("IS THIS ZERO? -> "+value.quarterlyIntervalTQDifferenceSIC);
 		
 		return value;
