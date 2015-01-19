@@ -324,14 +324,14 @@ public class prototypeintervalclass
 		
 		for(int i = 0; i < list.size();i++)
 		{
-			if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= value.start) &&
-				(utils.qM2.get(utils.dM2.get((list.get(i).datadate))) < value.mid))
+			if( (utils.qM2.get(list.get(i).dateIndex) >= value.start) &&
+				(utils.qM2.get(list.get(i).dateIndex) < value.mid))
 			{				
 				beforeTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				beforeProfAvg.add(Float.parseFloat(list.get(i).Profitability));
 			}
-			else if( (utils.qM2.get(utils.dM2.get((list.get(i).datadate))) >= value.mid) &&
-				(utils.qM2.get(utils.dM2.get(list.get(i).datadate)) <= value.end))
+			else if( (utils.qM2.get(list.get(i).dateIndex) >= value.mid) &&
+				(utils.qM2.get(list.get(i).dateIndex) <= value.end))
 			{				
 				afterTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				afterProfAvg.add(Float.parseFloat(list.get(i).Profitability));
@@ -372,8 +372,8 @@ public class prototypeintervalclass
 		value.beforeAverageProfSIC = utils.averageProfList(beforeSIC);
 		value.afterAverageProfSIC = utils.averageProfList(afterSIC);	
 		
-		value.quarterlyIntervalTQDifferenceSIC = value.afterAverageTQSIC - value.beforeAverageTQSIC / (float)value.quarterSpan;
-		value.quarterlyIntervalProfDifferenceSIC = value.afterAverageProfSIC - value.beforeAverageProfSIC / (float)value.quarterSpan;
+		value.quarterlyIntervalTQDifferenceSIC = (value.afterAverageTQSIC - value.beforeAverageTQSIC) / (float)value.quarterSpan;
+		value.quarterlyIntervalProfDifferenceSIC = (value.afterAverageProfSIC - value.beforeAverageProfSIC) / (float)value.quarterSpan;
 		System.out.println("IS THIS ZERO? -> "+value.quarterlyIntervalTQDifferenceSIC);
 		
 		return value;
