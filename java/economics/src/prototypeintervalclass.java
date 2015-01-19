@@ -185,9 +185,8 @@ public class prototypeintervalclass
 					//check if the firm evaluated has desired sic
 					
 					System.out.println("Test sic = "+sic+ " current sic = " + firmsInQuarterRange.get(i).get(j).sic);
-					if(Integer.parseInt(firmsInQuarterRange.get(i).get(j).sic) == Integer.parseInt(sic) &&
-							
-								(econo.bankTree.get(firmsInQuarterRange.get(i).get(j).cusip) == null))
+					if(Integer.parseInt(firmsInQuarterRange.get(i).get(j).sic) == Integer.parseInt(sic) &&							
+					  (econo.bankTree.get(firmsInQuarterRange.get(i).get(j).cusip) == null))
 					{						
 						if(
 								Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Profitability)) ||
@@ -365,8 +364,8 @@ public class prototypeintervalclass
 		value.cusip = list.get(0).cusip;
 		value.sic = list.get(0).sic;
 		
-		ArrayList<Firm> beforeSIC = getFirmsInQuarterRangeWithSIC(value.start, value.mid, list.get(0).sic);
-		ArrayList<Firm> afterSIC = getFirmsInQuarterRangeWithSIC(value.mid, value.end, list.get(0).sic);
+		ArrayList<Firm> beforeSIC = getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic);
+		ArrayList<Firm> afterSIC = getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic);
 		
 		value.beforeAverageTQSIC = utils.averageTQList(beforeSIC);
 		value.afterAverageTQSIC = utils.averageTQList(afterSIC);	
@@ -517,7 +516,9 @@ public class prototypeintervalclass
 				temp.add(boundedBeforeBKVals.get(i));
 				resTree.put(boundedBeforeBKVals.get(i).cusip, temp);
 			} else {
-				resTree.get(boundedBeforeBKVals.get(i).cusip).add(boundedBeforeBKVals.get(i));
+				temp = resTree.get(boundedBeforeBKVals.get(i).cusip);
+				temp.add(boundedBeforeBKVals.get(i));
+				resTree.put(boundedBeforeBKVals.get(i).cusip, temp);
 			}		
 		}
 		
@@ -533,7 +534,9 @@ public class prototypeintervalclass
 				temp.add(boundedDuringBKVals.get(i));
 				resTree.put(boundedDuringBKVals.get(i).cusip, temp);
 			} else {
-				resTree.get(boundedDuringBKVals.get(i).cusip).add(boundedDuringBKVals.get(i));
+				temp = resTree.get(boundedDuringBKVals.get(i).cusip);
+				temp.add(boundedDuringBKVals.get(i));
+				resTree.put(boundedDuringBKVals.get(i).cusip, temp);
 			}		
 		}
 		
@@ -550,7 +553,9 @@ public class prototypeintervalclass
 				resTree.put(boundedAfterBKVals.get(i).cusip, temp);
 				
 			} else {
-				resTree.get(boundedAfterBKVals.get(i).cusip).add(boundedAfterBKVals.get(i));
+				temp = resTree.get(boundedAfterBKVals.get(i).cusip);
+				temp.add(boundedAfterBKVals.get(i));
+				resTree.put(boundedAfterBKVals.get(i).cusip, temp);
 			}		
 		}
 		
@@ -572,7 +577,7 @@ public class prototypeintervalclass
 					tmpMat.ave_before_before = val.get(j).beforeAverageTQFirm;
 					tmpMat.qint_diff_before = val.get(j).quarterlyIntervalTQDifference;
 					tmpMat.sic_ave_after_before = val.get(j).afterAverageTQSIC;
-					tmpMat.sic_ave_before_before = val.get(j).beforeAverageTQFirm;
+					tmpMat.sic_ave_before_before = val.get(j).beforeAverageTQSIC;
 					tmpMat.sic_qint_diff_before = val.get(j).quarterlyIntervalTQDifferenceSIC;
 					
 					treeToWrite.put(listo.get(i), tmpMat);
@@ -586,7 +591,7 @@ public class prototypeintervalclass
 					tmpMat.ave_before_during = val.get(j).beforeAverageTQFirm;
 					tmpMat.qint_diff_during = val.get(j).quarterlyIntervalTQDifference;
 					tmpMat.sic_ave_after_during = val.get(j).afterAverageTQSIC;
-					tmpMat.sic_ave_before_during = val.get(j).beforeAverageTQFirm;
+					tmpMat.sic_ave_before_during = val.get(j).beforeAverageTQSIC;
 					tmpMat.sic_qint_diff_during = val.get(j).quarterlyIntervalTQDifferenceSIC;
 					
 					treeToWrite.put(listo.get(i), tmpMat);
@@ -599,7 +604,7 @@ public class prototypeintervalclass
 					tmpMat.ave_before_after = val.get(j).beforeAverageTQFirm;
 					tmpMat.qint_diff_after = val.get(j).quarterlyIntervalTQDifference;
 					tmpMat.sic_ave_after_after = val.get(j).afterAverageTQSIC;
-					tmpMat.sic_ave_before_after = val.get(j).beforeAverageTQFirm;
+					tmpMat.sic_ave_before_after = val.get(j).beforeAverageTQSIC;
 					tmpMat.sic_qint_diff_after = val.get(j).quarterlyIntervalTQDifferenceSIC;
 					
 					treeToWrite.put(listo.get(i), tmpMat);
@@ -639,7 +644,7 @@ public class prototypeintervalclass
 			
 			 val += t.sic_ave_before_after + ",";
 			 val += t.sic_ave_after_after + ",";
-			 val += t.sic_qint_diff_after + ",";
+			 val += t.sic_qint_diff_after ;
 			 
 			 utils.writeList(resultFile, val);
 		}
