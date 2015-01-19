@@ -636,7 +636,7 @@ public class EconUtils
 		for(int i = 0; i< list.size(); i++){
 			x+=Float.parseFloat(list.get(i).Tobins_Q);
 		}
-		return (x / (list.size()+1));		
+		return (x / (list.size()));		
 	}
 	
 	public static float averageTQList(ArrayList<Firm> list)
@@ -656,7 +656,7 @@ public class EconUtils
 			//}
 		}
 		
-		return (res / (list.size()+1));	
+		return (res / (list.size()));	
 	}
 	
 	public static float averageProfList(ArrayList<Firm> list)
