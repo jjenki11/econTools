@@ -368,9 +368,7 @@ public class EconUtils
 		
 		ArrayList<Firm> lh = new ArrayList<Firm>();		
 		for(int i = (st-1); i < (end-1); i++)
-		{
-			
-			
+		{			
 			lh = new ArrayList<Firm>();
 			ArrayList<Firm> holster = e.quarterTree.get(i);
 			if(holster==null){}
@@ -393,8 +391,7 @@ public class EconUtils
 			}
 		}
 		return tmp;		
-	}
-	
+	}	
 	
 	public void writeUnconditionally(Firm f, String filename) throws IOException{
 		writeList(filename, dM2.get(f.datadate)+", "+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic+ ","+qM2.get(dM2.get(f.datadate)));				
@@ -494,7 +491,10 @@ public class EconUtils
 			writeList(foundFiles[3], txt);
 			addToGCTree(Eco, f);
 			if(Eco.categoryTree.get("NEVER") != null){
-				Eco.categoryTree.get("NEVER").add(f);
+				
+				tmp = Eco.categoryTree.get("NEVER");
+				tmp.add(f);
+				Eco.categoryTree.put("NEVER", tmp);
 			} else {
 				tmp = new ArrayList<Firm>();
 				tmp.add(f);
@@ -645,13 +645,15 @@ public class EconUtils
 		int badValues = 0;
 		for(int i = 0;i<list.size();i++)
 		{
-			if(Float.isNaN(Float.parseFloat(list.get(i).Tobins_Q))){
-				badValues++;
-			}
-			else{
-				res += Float.parseFloat(list.get(i).Tobins_Q);
+			//if(Float.isNaN(Float.parseFloat(list.get(i).Tobins_Q))){
+			//	badValues++;
+			//}
+			//else{
 				
-			}
+				res += Float.parseFloat(list.get(i).Tobins_Q);
+				System.out.println("Current tq value in average func: "+res);
+				
+			//}
 		}
 		
 		return (res / (list.size()+1));	

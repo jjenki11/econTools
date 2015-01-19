@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 
 
@@ -147,8 +147,8 @@ class boundedValue
 
 public class prototypeintervalclass 
 {	
-	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
-	//static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
+	//static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
+	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils(path);
@@ -168,16 +168,27 @@ public class prototypeintervalclass
 	{				
 		ArrayList<ArrayList<Firm>> firmsInQuarterRange = new ArrayList<ArrayList<Firm>>();
 		firmsInQuarterRange = utils.createGCRangeList(econo, start, end);
+		System.out.println("Size of gc firms... "+firmsInQuarterRange.size());
 		ArrayList<Firm> firmsWithSIC = new ArrayList<Firm>();		
 		for(int i = 0; i < firmsInQuarterRange.size(); i ++)
 		{
-			if((firmsInQuarterRange.get(i) != null))
-			{
+			//if((firmsInQuarterRange.get(i) != null))
+			//{
 				for(int j = 0; j < firmsInQuarterRange.get(i).size(); j ++)
 				{
+					
+					float tmpVal = 0.0f;
+					System.out.println("Firm "+firmsInQuarterRange.get(i).get(j).cusip + " added with TQ = "+firmsInQuarterRange.get(i).get(j).Tobins_Q);
+					firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
+					
 					//check if the firm evaluated has desired sic
+					
+					/*
 					if(firmsInQuarterRange.get(i).get(j).sic == sic)
 					{
+						tmpVal = Float.parseFloat(firmsInQuarterRange.get(i).get(j).Tobins_Q);
+						
+						
 						if(
 								Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Profitability)) ||
 								Float.isNaN(Float.parseFloat(firmsInQuarterRange.get(i).get(j).Tobins_Q))
@@ -185,28 +196,18 @@ public class prototypeintervalclass
 						else
 						{
 							firmsWithSIC.add(firmsInQuarterRange.get(i).get(j));
-						}
-						
-					}				
+							
+						}						
+					}
+					*/
 				}
-			}
+			//}
 		}		
 		return firmsWithSIC;
 	}
 	
 	// Take average on both sides of 3 element interval to return an arraylist
 	// of floats, the 'before midpoint average' and 'after midpoint average'	
-	public static int[] makeinterval(ArrayList<Firm> list)
-	{
-		int last = utils.qM2.get(utils.dM2.get((list.get(list.size()-1).datadate)));
-		int first = utils.qM2.get(utils.dM2.get((list.get(0).datadate)));		
-		int mid = (first+last)/2;
-		int[] x = new int[3];
-		x[0]=first;
-		x[1]=mid;
-		x[2]=last;		
-		return x;	
-	}
 	
 	public static int[] makeBeforeInterval(ArrayList<Firm> list)
 	{
@@ -369,8 +370,9 @@ public class prototypeintervalclass
 		value.beforeAverageProfSIC = utils.averageProfList(beforeSIC);
 		value.afterAverageProfSIC = utils.averageProfList(afterSIC);	
 		
-		value.quarterlyIntervalTQDifferenceSIC = (value.afterAverageTQSIC - value.beforeAverageTQSIC) / (float)value.quarterSpan;
-		value.quarterlyIntervalProfDifferenceSIC = (value.afterAverageProfSIC - value.beforeAverageProfSIC) / (float)value.quarterSpan;
+		value.quarterlyIntervalTQDifferenceSIC = value.afterAverageTQSIC - value.beforeAverageTQSIC / (float)value.quarterSpan;
+		value.quarterlyIntervalProfDifferenceSIC = value.afterAverageProfSIC - value.beforeAverageProfSIC / (float)value.quarterSpan;
+		System.out.println("IS THIS ZERO? -> "+value.quarterlyIntervalTQDifferenceSIC);
 		
 		return value;
 	}
