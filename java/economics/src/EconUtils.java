@@ -382,8 +382,7 @@ public class EconUtils
 			if(holster==null){}
 			else{			
 				for(int j = 0;j < holster.size(); j++)
-				{
-					
+				{					
 					if(e.bankTree.get(holster.get(j).cusip) == null) //found in GC tree
 					{
 						lh.add(holster.get(j));
@@ -402,7 +401,7 @@ public class EconUtils
 	}	
 	
 	public void writeUnconditionally(Firm f, String filename) throws IOException{
-		writeList(filename, dM2.get(f.datadate)+", "+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic+ ","+qM2.get(dM2.get(f.datadate)));				
+		writeList(filename, f.dateIndex+", "+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic+ ","+qM2.get(f.dateIndex));				
 	}
 	
 	public int[] writeIfFound(Economy Eco, ArrayList<String> list, Firm f, String[] foundFiles) throws IOException{
@@ -653,18 +652,18 @@ public class EconUtils
 		int badValues = 0;
 		for(int i = 0;i<list.size();i++)
 		{
-			//if(Float.isNaN(Float.parseFloat(list.get(i).Tobins_Q))){
-			//	badValues++;
-			//}
-			//else{
+			if(Float.isNaN(Float.parseFloat(list.get(i).Tobins_Q))){
+			badValues++;
+			}
+			else{
 				
 				res += Float.parseFloat(list.get(i).Tobins_Q);
 				System.out.println("Current tq value in average func: "+res);
 				
-			//}
+			}
 		}
 		
-		return (res / (list.size()));	
+		return (res / (list.size() - badValues));	
 	}
 	
 	public static float averageProfList(ArrayList<Firm> list)
@@ -680,7 +679,7 @@ public class EconUtils
 				res += Float.parseFloat(list.get(i).Profitability);
 			}			
 		}
-		return (res / (list.size()));	
+		return (res / (list.size() - badValues));	
 	}
 	
 	public void setEconomy(Economy e){
