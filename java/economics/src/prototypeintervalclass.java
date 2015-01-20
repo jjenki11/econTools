@@ -217,7 +217,7 @@ public class prototypeintervalclass
 		int dis2 = 120;		
 		int last = 0;
 		
-		int years = 2*365;
+		int years = (int)((float)(1.79*366));
 
 		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null &&
 				utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years) != null){
@@ -277,7 +277,7 @@ public class prototypeintervalclass
 		int dis = 120;		
 		int last = 0;
 		
-		int years = 2*366;
+		int years = (int)((float)(1.79*366));
 		
 		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null &&
 				utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years) != null){
