@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 
 
@@ -147,8 +147,8 @@ class boundedValue
 
 public class prototypeintervalclass 
 {	
-	//static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
-	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
+	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
+	//static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils(path);
@@ -217,11 +217,12 @@ public class prototypeintervalclass
 		int dis2 = 120;		
 		int last = 0;
 		
-		int years = (int)((float)(1.79*366));
+		int years = (int)((float)(2*366));
+		int quarter = 92;
 
-		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null &&
+		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex ) != null &&
 				utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years) != null){
-			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex);
+			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - quarter);
 			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years);
 		} else {
 			last = dis2;
@@ -277,15 +278,16 @@ public class prototypeintervalclass
 		int dis = 120;		
 		int last = 0;
 		
-		int years = (int)((float)(1.79*366));
+		int years = (int)((float)(2*366));
+		int quarter = 92;
 		
 		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null &&
 				utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years) != null){
-			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex);
+			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + quarter);
 			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years);
 		} else {
 			first = dis2;
-			last = utils.qM2.get(years);
+			last = dis;
 		}
 
 		//System.out.println(list.get(0).cusip + ", " + first + ", " + last);

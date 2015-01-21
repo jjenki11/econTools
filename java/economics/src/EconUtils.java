@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -376,6 +376,7 @@ public class EconUtils
 		
 		ArrayList<Firm> lh = new ArrayList<Firm>();		
 		for(int i = (st); i <= (end); i++)
+		
 		{			
 			lh = new ArrayList<Firm>();
 			ArrayList<Firm> holster = e.quarterTree.get(i);
