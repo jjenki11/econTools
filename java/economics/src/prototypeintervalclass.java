@@ -220,8 +220,8 @@ public class prototypeintervalclass
 		int years = (int)((float)(2*366));
 		int quarter = 92;
 		
-		Integer filed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - quarter)) - 1;
-		Integer beforeFiled = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years)) + 1;
+		Integer filed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - quarter));
+		Integer beforeFiled = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years));
 
 		if(filed != null &&
 		   beforeFiled != null){
@@ -285,8 +285,8 @@ public class prototypeintervalclass
 		int years = (int)((float)(2*366));
 		int quarter = 92;
 		
-		Integer disposed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + quarter)) + 1;
-		Integer afterDisposed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years)) - 1;
+		Integer disposed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + quarter));
+		Integer afterDisposed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years));
 		
 		if(disposed != null &&
 		   afterDisposed != null){
@@ -481,7 +481,7 @@ public class prototypeintervalclass
 		//System.out.println("cusip = " + value.cusip + " | state = "+state + " | beforeSICavg = "+ resultSIC[0] + " | afterSICavg = " + resultSIC[1] + " | qtrlyDiff = " + resultSIC[2]);
 		System.out.println("cusip = " + value.cusip + " | state = "+state + " | beforeSICavg = "+ value.beforeAverageTQSIC + " | afterSICavg = " + value.afterAverageTQSIC + " | qtrlyDiff = " + value.quarterlyIntervalTQDifferenceSIC);
 		//System.out.println("IS THIS ZERO? -> "+value.quarterlyIntervalTQDifferenceSIC);
-		
+		System.out.println("");
 		return value;
 	}
 	
