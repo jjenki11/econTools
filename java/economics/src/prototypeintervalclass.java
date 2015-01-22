@@ -164,11 +164,11 @@ public class prototypeintervalclass
 	static resultMatrix mat;
 	
 	// As the name suggests, find all firms within a range of quarter indices having a specified SIC
-	public static ArrayList<Firm> getFirmsInQuarterRangeWithSIC(int start, int end, String sic)
+	public static ArrayList<Firm> getFirmsInQuarterRangeWithSIC(int start, int end, String sic, String state)
 	{				
 		//System.out.println("TESTING FOR SIC = "+sic);
 		ArrayList<ArrayList<Firm>> firmsInQuarterRange = new ArrayList<ArrayList<Firm>>();
-		firmsInQuarterRange = utils.createGCRangeList(econo, start, end);
+		firmsInQuarterRange = utils.createGCRangeList(econo, start, end, state);
 		//System.out.println("Size of gc firms... "+firmsInQuarterRange.size());
 		ArrayList<Firm> firmsWithSIC = new ArrayList<Firm>();		
 		for(int i = 0; i < firmsInQuarterRange.size(); i ++)
@@ -337,7 +337,9 @@ public class prototypeintervalclass
 		value.start = interval[0];
 		value.mid = interval[1];
 		value.end = interval[2];
-		value.quarterSpan = (value.end - value.start);
+		
+
+		value.quarterSpan = value.end - value.start;
 		
 
 		ArrayList<Firm> tmp = new ArrayList<Firm>();
@@ -355,7 +357,9 @@ public class prototypeintervalclass
 				beforeTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				beforeProfAvg.add(Float.parseFloat(list.get(i).Profitability));
 				
-				tmp = getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic);
+				
+
+				tmp = getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic, state);
 				
 				for(int k = 0; k < tmp.size(); k++){
 					beforeTQSICAvg.add(Float.parseFloat(tmp.get(k).Tobins_Q));
@@ -364,17 +368,17 @@ public class prototypeintervalclass
 				
 				//beforeTQSICAvg.add(utils.averageTQList(getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic)));
 				//value.beforeAverageTQSIC += utils.averageTQList(getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic));
-				value.beforeAverageProfSIC += utils.averageProfList(getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic));
+				value.beforeAverageProfSIC += utils.averageProfList(getFirmsInQuarterRangeWithSIC(value.start, value.mid, value.sic, state));
 				
 				
 			}
-			else if( (utils.qM2.get(list.get(i).dateIndex) >= value.mid) &&
+			else if( (utils.qM2.get(list.get(i).dateIndex) > value.mid) &&
 				(utils.qM2.get(list.get(i).dateIndex) <= value.end))
 			{				
 				afterTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				afterProfAvg.add(Float.parseFloat(list.get(i).Profitability));
 				
-				tmp = getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic);
+				tmp = getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic, state);
 				
 				for(int k = 0; k < tmp.size(); k++){
 					afterTQSICAvg.add(Float.parseFloat(tmp.get(k).Tobins_Q));
@@ -383,7 +387,7 @@ public class prototypeintervalclass
 				//afterTQSICAvg.add(utils.averageTQList(getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic)));
 				
 				//value.afterAverageTQSIC += utils.averageTQList(getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic));
-				value.afterAverageProfSIC += utils.averageProfList(getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic));
+				value.afterAverageProfSIC += utils.averageProfList(getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic, state));
 			}			
 		}
 		
@@ -415,6 +419,24 @@ public class prototypeintervalclass
 		ArrayList<Firm> afterSIC = getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic);
 		*/
 		
+		// temporary hack
+		
+		System.out.println("WITH ADJUSTING QUARTER SPAN");
+		System.out.print("cusip: " + value.cusip + " | state: "+state+" | quarterSpan before: " + value.quarterSpan + " | quarterSpan after: ");
+		
+		
+		if(state == "during"){
+			value.quarterSpan = (value.end - value.start);
+		}
+		if(state == "before"){
+			value.quarterSpan = ((value.end-1) - value.start);
+		}
+		if(state == "after"){
+			value.quarterSpan = (value.end - (value.start+1));
+		}
+		
+		System.out.print(value.quarterSpan + "\n");
+		
 		float[] resultSIC = new float[3];
 		resultSIC[0] = utils.averageN(beforeTQSICAvg);
 		resultSIC[1] = utils.averageN(afterTQSICAvg);
@@ -423,6 +445,36 @@ public class prototypeintervalclass
 		value.beforeAverageTQSIC = resultSIC[0];
 		value.afterAverageTQSIC = resultSIC[1];
 		value.quarterlyIntervalTQDifferenceSIC = resultSIC[2];
+
+		//value.quarterlyIntervalTQDifferenceSIC = (value.afterAverageTQSIC - value.beforeAverageTQSIC) / value.quarterSpan;
+		value.quarterlyIntervalProfDifferenceSIC = (value.afterAverageProfSIC - value.beforeAverageProfSIC) / value.quarterSpan;
+		//System.out.println("cusip = " + value.cusip + " | state = "+state + " | beforeSICavg = "+ resultSIC[0] + " | afterSICavg = " + resultSIC[1] + " | qtrlyDiff = " + resultSIC[2]);
+		System.out.println("cusip = " + value.cusip + " | state = "+state + " | beforeSICavg = "+ value.beforeAverageTQSIC + " | afterSICavg = " + value.afterAverageTQSIC + " | qtrlyDiff = " + value.quarterlyIntervalTQDifferenceSIC);
+		//System.out.println("IS THIS ZERO? -> "+value.quarterlyIntervalTQDifferenceSIC);
+		
+		
+		
+		
+		
+		
+		
+		System.out.println("WITHOUT ADJUSTING QUARTER SPAN");
+		
+		value.quarterSpan = value.end - value.start;
+		
+		System.out.print("cusip = " + value.cusip + " | state = "+state+" | quarterSpan before = " + value.quarterSpan + " | quarterSpan after = ");
+
+		
+		System.out.print(value.quarterSpan + "\n");
+		
+		float[] resultSIC2 = new float[3];
+		resultSIC2[0] = utils.averageN(beforeTQSICAvg);
+		resultSIC2[1] = utils.averageN(afterTQSICAvg);
+		resultSIC2[2] = (resultSIC2[1] - resultSIC2[0]) / value.quarterSpan;
+		
+		value.beforeAverageTQSIC = resultSIC2[0];
+		value.afterAverageTQSIC = resultSIC2[1];
+		value.quarterlyIntervalTQDifferenceSIC = resultSIC2[2];
 
 		//value.quarterlyIntervalTQDifferenceSIC = (value.afterAverageTQSIC - value.beforeAverageTQSIC) / value.quarterSpan;
 		value.quarterlyIntervalProfDifferenceSIC = (value.afterAverageProfSIC - value.beforeAverageProfSIC) / value.quarterSpan;

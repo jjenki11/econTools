@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -370,12 +370,20 @@ public class EconUtils
 	}	
 	
 	//@SuppressWarnings("null")
-	public ArrayList<ArrayList<Firm>> createGCRangeList(Economy e, int st, int end)
+	public ArrayList<ArrayList<Firm>> createGCRangeList(Economy e, int start, int end, String state)
 	{		
 		ArrayList<ArrayList<Firm>> tmp = new ArrayList<ArrayList<Firm>>();
 		
 		ArrayList<Firm> lh = new ArrayList<Firm>();		
-		for(int i = (st); i <= (end); i++)
+		
+		if(state == "during")
+			// keep start and end the same
+		if(state == "before") 
+			end -=1;
+		if(state == "after")
+			start += 1;
+			
+		for(int i = (start); i <= (end); i++)
 		
 		{			
 			lh = new ArrayList<Firm>();
