@@ -220,7 +220,7 @@ public class prototypeintervalclass
 		int years = (int)((float)(2*366));
 		int quarter = 92;
 		
-		Integer filed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - quarter));
+		Integer filed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex));
 		Integer beforeFiled = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years));
 
 		if(filed != null &&
@@ -285,7 +285,7 @@ public class prototypeintervalclass
 		int years = (int)((float)(2*366));
 		int quarter = 92;
 		
-		Integer disposed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + quarter));
+		Integer disposed = (utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex));
 		Integer afterDisposed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years));
 		
 		if(disposed != null &&
