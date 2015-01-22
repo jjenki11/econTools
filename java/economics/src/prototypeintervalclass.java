@@ -286,7 +286,7 @@ public class prototypeintervalclass
 		int quarter = 92;
 		
 		Integer disposed = (utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex));
-		Integer afterDisposed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years));
+		Integer afterDisposed = (utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years));
 		
 		if(disposed != null &&
 		   afterDisposed != null){
