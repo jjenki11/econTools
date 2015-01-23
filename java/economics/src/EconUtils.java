@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -376,12 +376,12 @@ public class EconUtils
 		
 		ArrayList<Firm> lh = new ArrayList<Firm>();		
 		
-		if(state == "during")
+		//if(state == "during")
 			// keep start and end the same
-		if(state == "before") 
-			end -=1;
-		if(state == "after")
-			start += 1;
+		//if(state == "before") 
+			//end -=1;
+		//if(state == "after")
+			//start += 1;
 			
 		for(int i = (start); i <= (end); i++)
 		

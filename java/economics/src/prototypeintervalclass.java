@@ -1,4 +1,4 @@
-package test;
+//package test;
 
 
 
@@ -147,8 +147,8 @@ class boundedValue
 
 public class prototypeintervalclass 
 {	
-	//static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
-	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
+	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
+	//static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils(path);
@@ -220,7 +220,7 @@ public class prototypeintervalclass
 		int years = (int)((float)(2*366));
 		int quarter = 92;
 		
-		Integer filed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex));
+		Integer filed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - quarter));
 		Integer beforeFiled = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex - years));
 
 		if(filed != null &&
@@ -285,7 +285,7 @@ public class prototypeintervalclass
 		int years = (int)((float)(2*366));
 		int quarter = 92;
 		
-		Integer disposed = (utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex));
+		Integer disposed = (utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + quarter));
 		Integer afterDisposed = (Integer)(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex + years));
 		
 		if(disposed != null &&
@@ -352,7 +352,7 @@ public class prototypeintervalclass
 			 * 
 			 */
 			if( (utils.qM2.get(list.get(i).dateIndex) >= value.start) &&
-				(utils.qM2.get(list.get(i).dateIndex) <= value.mid))
+				(utils.qM2.get(list.get(i).dateIndex) < value.mid))
 			{				
 				beforeTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				beforeProfAvg.add(Float.parseFloat(list.get(i).Profitability));
@@ -429,10 +429,10 @@ public class prototypeintervalclass
 			value.quarterSpan = (value.end - value.start);
 		}
 		if(state == "before"){
-			value.quarterSpan = ((value.end-1) - value.start);
+			value.quarterSpan = ((value.end) - value.start);
 		}
 		if(state == "after"){
-			value.quarterSpan = (value.end - (value.start+1));
+			value.quarterSpan = (value.end - (value.start));
 		}
 		
 		System.out.print(value.quarterSpan + "\n");
