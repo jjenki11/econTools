@@ -372,13 +372,13 @@ public class prototypeintervalclass
 				
 				
 			}
-			else if( (utils.qM2.get(list.get(i).dateIndex) > value.mid) &&
+			else if( (utils.qM2.get(list.get(i).dateIndex) > (value.mid +1)) &&
 				(utils.qM2.get(list.get(i).dateIndex) <= value.end))
 			{				
 				afterTQAvg.add(Float.parseFloat(list.get(i).Tobins_Q));
 				afterProfAvg.add(Float.parseFloat(list.get(i).Profitability));
 				
-				tmp = getFirmsInQuarterRangeWithSIC(value.mid, value.end, value.sic, state);
+				tmp = getFirmsInQuarterRangeWithSIC((value.mid +1), value.end, value.sic, state);
 				
 				for(int k = 0; k < tmp.size(); k++){
 					afterTQSICAvg.add(Float.parseFloat(tmp.get(k).Tobins_Q));

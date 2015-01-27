@@ -22,10 +22,10 @@ public class ReadFile {
 		
 		//input filenames
 		System.out.println("first file");
-		String bankrupcies = util.filePath+"brd_data_set2b2.txt";
+		String bankrupcies = util.filePath+"brd_data_set2b.txt";
 		//String successfulMergers = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\sdc_processing\\m_a_data_success.txt";
 		//String failedMergers = "";
-		String bkCusipFile = util.filePath+"brd_cusips2.txt";
+		String bkCusipFile = util.filePath+"brd_cusips.txt";
 		//String taCusipFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\target_cusip.txt";		
 		//String acCusipFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\acquirer_cusip.txt";	
 		//String maCusipFile = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\econ_project\\june_2013\\ECON PAPER\\ma_cusip.txt";
@@ -33,7 +33,7 @@ public class ReadFile {
 		//String tgtCusips = "C:\\Users\\Jeff\\Desktop\\Laptop-Migration\\econ_shiznot\\october_2013\\output\\target_data_reduced.txt";
 		
 		//db filenames
-		String filename = util.filePath+"crsp_quarterly_and_yearly_large2.txt";				
+		String filename = util.filePath+"crsp_quarterly_and_yearly_large6.txt";				
 		
 		//output filenames
 		String bkOutputFile = util.filePath+"bk_k_tq_qtr.txt";		
