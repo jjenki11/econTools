@@ -11,18 +11,16 @@ import java.util.List;
 
 public class EconUtils 
 {
-
-	 Mapping m2= new Mapping();
-	 String filePath;
-	 BTree<String, Integer> dM2;
-	 BTree<Integer, Integer> qM2;
-		Mapping map = new Mapping();
-		BTree<Integer, Integer> qtrmap;
- 	 Economy utilEcon;
+	Mapping m2= new Mapping();
+	String filePath;
+	BTree<String, Integer> dM2;
+	BTree<Integer, Integer> qM2;
+	Mapping map = new Mapping();
+	BTree<Integer, Integer> qtrmap;
+	Economy utilEcon;
+	
 	public EconUtils(String path){
 		System.out.println("econ utils made");
-		//qM2 = m2.quartermap();
-		//dM2 = m2.dateMap();
 		 filePath = path;
 		 dM2 = m2.dateMap(path);
 		 qM2 = m2.quartermap(path);
@@ -46,25 +44,7 @@ public class EconUtils
 	}
 	
 	public int[] countElements(Economy E, ArrayList<String> aList){
-		
-/*
- * 	public BTree<String,ArrayList<Firm>> targetTree;
-	public BTree<String,ArrayList<Firm>> acquirerTree;
-	public BTree<String,ArrayList<Firm>> bankruptTree;
-	public BTree<String,ArrayList<Firm>> goingConcernTree;
 
-	public BTree<String,ArrayList<Merger>> mergeTree;
-	public BTree<Integer,ArrayList<Merger>> successfulMergerTree;
-	public BTree<Integer,ArrayList<Merger>> failedMergerTree;
-	public BTree<String,ArrayList<Bankrupcy>> bankTree; 
-	public BTree<String,ArrayList<Firm>> firmTree;
- * 
- * 		
- */
-
-		
-		
-		
 		int count = 0;
 		int remaining = 0 ;
 		for(int j=0;j<aList.size();j++)
@@ -247,17 +227,16 @@ public class EconUtils
 	        	firm.dateIndex = dM2.get(firm.datadate);
 	        	//  Since we use tobins q the correct way, please edit the line below to focus on a certain variable
 	        	// I chose at first, but you should choose everything else in the list in order
-
 	        	
-	        	firm.Tobins_Q = firm.atq;	            
+	        	//  EVERYTHING COMMENTED MEANS TOBINS Q
+	        	
+	        	//firm.Tobins_Q = firm.atq;	            
 	        	//firm.Tobins_Q = firm.oibdpq;
 	        	//firm.Tobins_Q = firm.ppegtq;
 	        	//firm.Tobins_Q = firm.Market_value_equity;
 	        	//firm.Tobins_Q = firm.Profitability;
 	        	//firm.Tobins_Q = firm.saleq;
 	        	//firm.Tobins_Q = firm.prccq;
-	        	
-	        	
 	        	
 	        	
 	        	if(firm.Tobins_Q == "" ||
@@ -315,13 +294,16 @@ public class EconUtils
 	        	}
 	        }
 	        //print out all firms grouped by sic
-	        for(int j = 0; j < sics.size(); j++){    		
-	        	System.out.println("Firm entry for SIC " + sics.get(j) + ": "+ E.sicTree.get(sics.get(j)).get(0).cusip);
-	        }
-	        //print out all firms grouped by quarter
-	        for(int j = 0; j < qtrs.size(); j++){
-	        	System.out.println("Firm entry for QUARTER " + qtrs.get(j) + ": "+ E.quarterTree.get(qtrs.get(j)).get(0).cusip);
-	        }
+	        /*
+	         * TBD not sure if we need these?
+		        for(int j = 0; j < sics.size(); j++){    		
+		        	System.out.println("Firm entry for SIC " + sics.get(j) + ": "+ E.sicTree.get(sics.get(j)).get(0).cusip);
+		        }
+		        //print out all firms grouped by quarter
+		        for(int j = 0; j < qtrs.size(); j++){
+		        	System.out.println("Firm entry for QUARTER " + qtrs.get(j) + ": "+ E.quarterTree.get(qtrs.get(j)).get(0).cusip);
+		        }
+	        */
 	        in.close();
 	    } catch (IOException e) {
 			System.out.println("BAD FILE WAS > " + filename);
@@ -388,39 +370,20 @@ public class EconUtils
 		return true;
 	}	
 	
-	//@SuppressWarnings("null")
 	public ArrayList<ArrayList<Firm>> createGCRangeList(Economy e, int start, int end, String state)
 	{		
-		ArrayList<ArrayList<Firm>> tmp = new ArrayList<ArrayList<Firm>>();
-		
+		ArrayList<ArrayList<Firm>> tmp = new ArrayList<ArrayList<Firm>>();		
 		ArrayList<Firm> lh = new ArrayList<Firm>();		
-		
-		//if(state == "during")
-			// keep start and end the same
-		//if(state == "before") 
-			//end -=1;
-		//if(state == "after")
-			//start += 1;
-			
-		for(int i = (start); i <= (end); i++)
-		
-		{			
+		for(int i = (start); i <= (end); i++){			
 			lh = new ArrayList<Firm>();
 			ArrayList<Firm> holster = e.quarterTree.get(i);
 			if(holster==null){}
 			else{			
-				for(int j = 0;j < holster.size(); j++)
-				{					
-					if(e.bankTree.get(holster.get(j).cusip) == null) //found in GC tree
-					{
+				for(int j = 0;j < holster.size(); j++){					
+					if(e.bankTree.get(holster.get(j).cusip) == null){ //found in GC tree
 						lh.add(holster.get(j));
-						//System.out.println("(econ utils) IS THIS A BK CUSIP: "+holster.get(j).cusip);
 					}
-					else
-					{
-						//System.out.println("BK entry omitted from gc always list: " + holster.get(j).cusip);
-					}
-					
+					else{}					
 				}			
 				tmp.add(lh);
 			}
@@ -438,11 +401,9 @@ public class EconUtils
 		int[] count = {0,0,0,0,0};				
 		ArrayList<Firm> tmp;
 		//boolean[] y = null;
-		boolean[] y = {false,false,false,false};
+		boolean[] y = {false,false,false,false};	
 		
-		
-		// checking bankrupcy for file write filtering
-		
+		// checking bankrupcy for file write filtering		
 		int watch = 0;
 		if(Eco.bankTree.get(f.cusip) != null){
 			for(int j = 0;j<Eco.bankTree.get(f.cusip).size();j++){						
@@ -458,18 +419,13 @@ public class EconUtils
 					f.setBankrupcy(Eco.bankTree.get(f.cusip).get(j));
 				}
 				
-				watch = j;
-				//txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qM2.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
+				watch = j;				
+				txt = f.dateIndex+","+f.cusip+","+f.Tobins_Q+","+","+f.sic+","+(qM2.get(f.dateIndex)+","+(j+1)+","+f.category);
 				
-				txt = f.dateIndex+", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(f.dateIndex)+","+(j+1)+","+f.category);
-				
-				//y = {
 				y[0] =	(x[0] && writeList(foundFiles[0], txt) && addToBeforeTree(Eco, f));
-				y[1] =	(x[1] &&  writeList(foundFiles[1], txt) && addToDuringTree(Eco, f));
-				y[2] =	(x[2] && writeList(foundFiles[2], txt) && addToAfterTree(Eco, f));
-				y[3] =	(x[3] && writeList(foundFiles[3], txt) && addToGCTree(Eco, f));
-				//};			
-				//xxx = y;
+				y[1] =	(x[1] && writeList(foundFiles[1], txt) && addToDuringTree(Eco, f));
+				y[2] =	(x[2] && writeList(foundFiles[2], txt) && addToAfterTree( Eco, f));
+				y[3] =	(x[3] && writeList(foundFiles[3], txt) && addToGCTree(    Eco, f));
 				
 				if(y[0]){						
 					if(Eco.categoryTree.get("BEFORE") != null){
@@ -507,22 +463,13 @@ public class EconUtils
 					}								
 				} else {
 					System.out.println("DONT KNOW");
-				}	
-				
-				
+				}					
 			}							
 		}
-		
-		// THE FORGOTTEN COMPONENT!!
-		
 		//  otherwise its not in bk list duh
-		else {
-			
-			
+		else {			
 			f.setCategory("NEVER");
-			txt = f.dateIndex +", "+f.cusip+","+f.Tobins_Q + ", " + f.Profitability + ", " + f.sic + ", "+ (qM2.get(f.dateIndex)+","+(watch+1)+","+f.category);
-			
-			
+			txt = f.dateIndex +","+f.cusip+","+f.Tobins_Q + "," + f.sic + ","+ (qM2.get(f.dateIndex)+","+(watch+1)+","+f.category);			
 			writeList(foundFiles[3], txt);
 			addToGCTree(Eco, f);
 			if(Eco.categoryTree.get("NEVER") != null){
@@ -535,11 +482,7 @@ public class EconUtils
 				tmp.add(f);
 				Eco.categoryTree.put("NEVER", tmp);
 			}	
-			
-			//System.out.println("THE MISSING CHILDREN!");
 		}
-		
-		
 		for(int k = 0;k<y.length;k++){
 			if(y[k])
 				count[k] = 1;
@@ -547,14 +490,10 @@ public class EconUtils
 		return count;
 	}	
 	
-	
 	public ArrayList<Float> calculateZScore(ArrayList<Float> values)
 	{		
-		
-		float std = (float) Math.sqrt(varianceN(values));
-		
-		ArrayList<Float> scores = new ArrayList<Float>();
-		
+		float std = (float) Math.sqrt(varianceN(values));		
+		ArrayList<Float> scores = new ArrayList<Float>();		
 		for(int i = 0; i < values.size(); i++)
 		{
 			scores.add(
@@ -563,8 +502,6 @@ public class EconUtils
 		}		
 		return scores;		
 	}
-	
-	
 	
 	
 	/*
@@ -683,30 +620,10 @@ public class EconUtils
 			if(Float.isNaN(Float.parseFloat(list.get(i).Tobins_Q))){
 			badValues++;
 			}
-			else{
-				
+			else{				
 				res += Float.parseFloat(list.get(i).Tobins_Q);
-				//System.out.println("Current tq value in average func: "+res);
-				
 			}
-		}
-		
-		return (res / (list.size() - badValues));	
-	}
-	
-	public static float averageProfList(ArrayList<Firm> list)
-	{
-		float res = 0;
-		int badValues = 0;
-		for(int i = 0;i<list.size();i++)
-		{
-			if(Float.isNaN(Float.parseFloat(list.get(i).Profitability))){
-				badValues++;
-			}
-			else{
-				res += Float.parseFloat(list.get(i).Profitability);
-			}			
-		}
+		}		
 		return (res / (list.size() - badValues));	
 	}
 	

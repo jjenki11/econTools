@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +7,14 @@ import java.util.List;
 public class Firm 
 {	
 	int dateIndex;
+	
 	boolean GC;
 	boolean MA;
 	boolean TA;
 	boolean AQ;
 	boolean BK;
 	
-	String category;
-	
+	String category;	
 	String gvkey;
 	String datadate;
 	String fyearq;
@@ -41,9 +41,7 @@ public class Firm
 	
 	ArrayList<Bankrupcy> bankrupcy = new ArrayList<Bankrupcy>();
 	ArrayList<Merger> merger = new ArrayList<Merger>();
-
-	String labor;
-	
+	String labor;	
 	List<Firm> entries;
 	
 	public Firm(){
@@ -67,20 +65,20 @@ public class Firm
 		Market_value_equity="";
 		Equity_book_value="";
 		Tobins_Q="";		
+		
 		GC = false;
 		MA = false;
 		BK = false;
 		TA = false;
 		AQ = false;
 		//dateIndex = 0;
-		bankrupcy = new ArrayList<Bankrupcy>();
-		merger = new ArrayList<Merger>();
 		
+		bankrupcy = new ArrayList<Bankrupcy>();
+		merger = new ArrayList<Merger>();		
 		entries=new ArrayList<Firm>();
 	}
 	
 	public Firm(String c, int d, String e, String s){
-		//String[] tmp = l.split(",");		
 		cusip=c;
 		dateIndex=d;
 		labor=e;
@@ -139,21 +137,16 @@ public class Firm
 		bankrupcy.add(b);
 	}
 	public ArrayList<Bankrupcy> getBankrupcy(){
-		Bankrupcy tmp = new Bankrupcy();
-		
-		for(int i =0; i<bankrupcy.size();i++){
-
-			if(((bankrupcy.get(i).cusip == cusip) ) && 
-			  ((bankrupcy.get(i).filedIndex <= dateIndex) && 
-			   (bankrupcy.get(i).effectiveIndex >= dateIndex))){
-				System.out.println("You got BK: "+bankrupcy.get(i).cusip);
-					tmp= bankrupcy.get(i);				
-			}
-			else{
-				
-			}
-		}
-		
+//		Bankrupcy tmp = new Bankrupcy();		
+//		for(int i =0; i<bankrupcy.size();i++){
+//			if(((bankrupcy.get(i).cusip == cusip) ) && 
+//			  ((bankrupcy.get(i).filedIndex <= dateIndex) && 
+//			   (bankrupcy.get(i).effectiveIndex >= dateIndex))){
+//				System.out.println("You got BK: "+bankrupcy.get(i).cusip);
+//					tmp= bankrupcy.get(i);				
+//			}
+//			else{}
+//		}		
 		return bankrupcy;
 	}
 	
@@ -163,7 +156,5 @@ public class Firm
 	}
 	public String getCategory(){
 		return category;
-	}
-	
-	
+	}	
 }
