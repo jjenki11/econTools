@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 
 
@@ -147,8 +147,8 @@ class boundedValue
 
 public class prototypeintervalclass 
 {	
-	static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
-	//static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
+	//static String path = "C:\\Users\\Rutger\\Desktop\\ECON REPO\\econTools\\java\\economics\\src\\";
+	static String path = "C:\\Users\\blackhole\\Desktop\\econRepo\\java\\economics\\src\\";
 	static ArrayList<Firm> firms = new ArrayList<Firm>();
 	static Economy econo;
 	static EconUtils utils = new EconUtils(path);
@@ -583,11 +583,10 @@ public class prototypeintervalclass
 			types[0] = categories;
 			types[1] =  dataTypes;
 			
-		utils.constructARFFFile(filePath, types);
-		
-		utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[0]), outFile1, outFile2, outFile3, outFile4, "BEFORE"), filePath);
-		utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[1]), outFile5, outFile6, outFile7, outFile8, "DURING"), filePath);
-		utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[2]), outFile9, outFile10, outFile11, outFile12, "AFTER"), filePath);
+		//utils.constructARFFFile(filePath, types);		
+		//utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[0]), outFile1, outFile2, outFile3, outFile4, "BEFORE"), filePath);
+		//utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[1]), outFile5, outFile6, outFile7, outFile8, "DURING"), filePath);
+		//utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[2]), outFile9, outFile10, outFile11, outFile12, "AFTER"), filePath);
 		
 	}
 	
@@ -875,7 +874,26 @@ public class prototypeintervalclass
 		String afterSICTQDist = econo.filePath+"results\\afterTQSICDist.txt";   	//11		
 		String afterSICProfDist = econo.filePath+"results\\afterProfSICDist.txt";   //12
 		
-		String resultFile = econo.filePath+"results2\\resultFile.txt";
+		
+		
+		
+		/*  This is for you rutger... */
+		
+		String atResultFile = econo.filePath+"ATresults\\resultFile.txt";		
+		String oibdpResultFile = econo.filePath+"OIBDPresults\\resultFile.txt";
+		String ppegtResultFile = econo.filePath+"PPEGTresults\\resultFile.txt";
+		String mveResultFile = econo.filePath+"MVEresults\\resultFile.txt";
+		String profResultFile = econo.filePath+"PROFresults\\resultFile.txt";
+		String saleResultFile = econo.filePath+"SALEresults\\resultFile.txt";
+		String prccResultFile = econo.filePath+"PRCCresults\\resultFile.txt";
+		
+		//  Change resultFile = X to any of the above.
+		String resultFile = atResultFile;
+		
+		
+		//String resultFile = econo.filePath+"results2\\resultFile.txt";
+		
+		
 
 		//perform econ exploration
 		writeQuarterlyIntervalDiff(vals, 

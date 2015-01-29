@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -244,55 +244,73 @@ public class EconUtils
 	        	firm.Market_value_equity=values[20];
 	        	firm.Equity_book_value=values[21];   
 	        	firm.Tobins_Q=values[22];	
-	        	
 	        	firm.dateIndex = dM2.get(firm.datadate);
+	        	//  Since we use tobins q the correct way, please edit the line below to focus on a certain variable
+	        	// I chose at first, but you should choose everything else in the list in order
+
 	        	
-	        	E.AllFirms.add(firm);	
-	        	//build firm tree
-	        	if(E.firmTree.get(firm.cusip)==null){
-	        		fList = new ArrayList<Firm>();
-	        		fList.add(firm);
-	        		E.firmTree.put(firm.cusip, fList);
-	        	} else{
-	        		fList = E.firmTree.get(firm.cusip);
-	        		fList.add(firm);
-	        		E.firmTree.put(firm.cusip, E.firmTree.get(firm.cusip));
-	        	}
+	        	firm.Tobins_Q = firm.atq;	            
+	        	//firm.Tobins_Q = firm.oibdpq;
+	        	//firm.Tobins_Q = firm.ppegtq;
+	        	//firm.Tobins_Q = firm.Market_value_equity;
+	        	//firm.Tobins_Q = firm.Profitability;
+	        	//firm.Tobins_Q = firm.saleq;
+	        	//firm.Tobins_Q = firm.prccq;
 	        	
-	        	// build quarter tree
-	        	if(E.quarterTree.get(qM2.get(firm.dateIndex)) == null){
-	        		fList = new ArrayList<Firm>();
-	        		fList.add(firm);
-	        		E.quarterTree.put(qM2.get(firm.dateIndex), fList);
-	        		qtrs.add(qtrmap.get(firm.dateIndex));
-	        	} else {
-	        		fList = E.quarterTree.get(qM2.get(firm.dateIndex));
-	        		fList.add(firm);
-	        		E.quarterTree.put(qM2.get(firm.dateIndex), fList);
-	        	}	        	
-	        	// build sic tree
-	        	if(E.sicTree.get(firm.sic)==null){
-	        		fList = new ArrayList<Firm>();
-	        		fList.add(firm);
-	        		E.sicTree.put(firm.sic, fList);
-	        		sics.add(firm.sic);
-	        	} else {
-	        		fList = E.sicTree.get(firm.sic);
-	        		fList.add(firm);
-	        		E.sicTree.put(firm.sic, E.sicTree.get(firm.sic));
-	        	}
 	        	
-	        	// build All firms linked list
-	        	if(E.AllFirms2.get(firm.cusip)!= null){
-	        		fList = (ArrayList<Firm>) E.AllFirms2.get(firm.cusip).entries;
-	        		fList.add(firm);
-	        		E.AllFirms2.put(firm.cusip, firm);
 	        	
-	        	}
+	        	
+	        	if(firm.Tobins_Q == "" ||
+	        	   firm.Tobins_Q == null ||
+	        	   Float.parseFloat(firm.Tobins_Q) == 0.0f){}
 	        	else{
-	        		fList = new ArrayList<Firm>();
-	        		fList.add(firm);
-	        		E.AllFirms2.put(firm.cusip, firm);
+	        	
+		        	E.AllFirms.add(firm);	
+		        	//build firm tree
+		        	if(E.firmTree.get(firm.cusip)==null){
+		        		fList = new ArrayList<Firm>();
+		        		fList.add(firm);
+		        		E.firmTree.put(firm.cusip, fList);
+		        	} else{
+		        		fList = E.firmTree.get(firm.cusip);
+		        		fList.add(firm);
+		        		E.firmTree.put(firm.cusip, E.firmTree.get(firm.cusip));
+		        	}
+		        	
+		        	// build quarter tree
+		        	if(E.quarterTree.get(qM2.get(firm.dateIndex)) == null){
+		        		fList = new ArrayList<Firm>();
+		        		fList.add(firm);
+		        		E.quarterTree.put(qM2.get(firm.dateIndex), fList);
+		        		qtrs.add(qtrmap.get(firm.dateIndex));
+		        	} else {
+		        		fList = E.quarterTree.get(qM2.get(firm.dateIndex));
+		        		fList.add(firm);
+		        		E.quarterTree.put(qM2.get(firm.dateIndex), fList);
+		        	}	        	
+		        	// build sic tree
+		        	if(E.sicTree.get(firm.sic)==null){
+		        		fList = new ArrayList<Firm>();
+		        		fList.add(firm);
+		        		E.sicTree.put(firm.sic, fList);
+		        		sics.add(firm.sic);
+		        	} else {
+		        		fList = E.sicTree.get(firm.sic);
+		        		fList.add(firm);
+		        		E.sicTree.put(firm.sic, E.sicTree.get(firm.sic));
+		        	}
+		        	
+		        	// build All firms linked list
+		        	if(E.AllFirms2.get(firm.cusip)!= null){
+		        		fList = (ArrayList<Firm>) E.AllFirms2.get(firm.cusip).entries;
+		        		fList.add(firm);
+		        		E.AllFirms2.put(firm.cusip, firm);		        	
+		        	}
+		        	else{
+		        		fList = new ArrayList<Firm>();
+		        		fList.add(firm);
+		        		E.AllFirms2.put(firm.cusip, firm);
+		        	}
 	        	}
 	        }
 	        //print out all firms grouped by sic
