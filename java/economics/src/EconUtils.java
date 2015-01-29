@@ -230,7 +230,7 @@ public class EconUtils
 	        	
 	        	//  EVERYTHING COMMENTED MEANS TOBINS Q
 	        	
-	        	//firm.Tobins_Q = firm.atq;	            
+	        	firm.Tobins_Q = firm.atq;	            
 	        	//firm.Tobins_Q = firm.oibdpq;
 	        	//firm.Tobins_Q = firm.ppegtq;
 	        	//firm.Tobins_Q = firm.Market_value_equity;
@@ -420,7 +420,7 @@ public class EconUtils
 				}
 				
 				watch = j;				
-				txt = f.dateIndex+","+f.cusip+","+f.Tobins_Q+","+","+f.sic+","+(qM2.get(f.dateIndex)+","+(j+1)+","+f.category);
+				txt = f.dateIndex+","+f.cusip+","+f.Tobins_Q+","+f.sic+","+(qM2.get(f.dateIndex)+","+(j+1)+","+f.category);
 				
 				y[0] =	(x[0] && writeList(foundFiles[0], txt) && addToBeforeTree(Eco, f));
 				y[1] =	(x[1] && writeList(foundFiles[1], txt) && addToDuringTree(Eco, f));
