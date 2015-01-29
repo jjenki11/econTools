@@ -36,11 +36,12 @@ public class ReadFile {
 	//  Change bkBeforeFile (etc) = <|xxxxxxx|> + "something.txt" to any of the above folder paths.
 		
 		//		I chose AT to push
+		String selected = atResult;
 		
-		String bkBeforeFile =         atResult     +  "bk_before.txt";
-		String bkDuringFile =         atResult     +  "bk_during.txt";
-		String bkAfterFile  =         atResult     +  "bk_after.txt";
-		String gcOutputFile =         atResult     +  "gc_firms.txt";
+		String bkBeforeFile =         selected     +  "bk_before.txt";
+		String bkDuringFile =         selected     +  "bk_during.txt";
+		String bkAfterFile  =         selected     +  "bk_after.txt";
+		String gcOutputFile =         selected     +  "gc_firms.txt";
 		
 		//output filenames
 		
