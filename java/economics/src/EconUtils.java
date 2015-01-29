@@ -261,8 +261,9 @@ public class EconUtils
 	        	
 	        	
 	        	if(firm.Tobins_Q == "" ||
-	        	   firm.Tobins_Q == null ||
-	        	   Float.parseFloat(firm.Tobins_Q) == 0.0f){}
+	        	   firm.Tobins_Q == null 
+	        	   || Float.parseFloat(firm.Tobins_Q) == 0.0f
+	        	){}
 	        	else{
 	        	
 		        	E.AllFirms.add(firm);	
