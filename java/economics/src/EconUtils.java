@@ -224,6 +224,8 @@ public class EconUtils
 	        	firm.Market_value_equity=values[20];
 	        	firm.Equity_book_value=values[21];   
 	        	firm.Tobins_Q=values[22];	
+	        	firm.ATO=calculateATO(firm);
+	        	firm.NW=calculateNW(firm);
 	        	firm.dateIndex = dM2.get(firm.datadate);
 	        	//  Since we use tobins q the correct way, please edit the line below to focus on a certain variable
 	        	// I chose at first, but you should choose everything else in the list in order
@@ -567,6 +569,17 @@ public class EconUtils
 	 * 
 	 */
 	//	 f.ppegt - averageK( within BK all firms );
+	public String calculateATO(Firm f){
+		
+		return  ((Float) ( Float.parseFloat(f.saleq)/Float.parseFloat(f.atq) )).toString();
+		
+	}
+	
+	public String calculateNW(Firm f){
+		
+		return  ((Float) ( Float.parseFloat(f.atq)-Float.parseFloat(f.dlcq)- Float.parseFloat(f.dlttq) )).toString();
+		
+	}
 	
 	public float averageN(ArrayList<Float> list){
 		float sum = sumN(list);
