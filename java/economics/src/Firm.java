@@ -38,6 +38,8 @@ public class Firm
 	String Market_value_equity;
 	String Equity_book_value;
 	String Tobins_Q;
+	String ATO;
+	String NW;
 	
 	ArrayList<Bankrupcy> bankrupcy = new ArrayList<Bankrupcy>();
 	ArrayList<Merger> merger = new ArrayList<Merger>();
@@ -64,7 +66,9 @@ public class Firm
 		Profitability="";		
 		Market_value_equity="";
 		Equity_book_value="";
-		Tobins_Q="";		
+		Tobins_Q="";
+		ATO= "";
+		NW= "";
 		
 		GC = false;
 		MA = false;
