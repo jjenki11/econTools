@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 
 /**
- * 
+ *  This is the following output order (column names)
  * 
  * CUSIP	
  * AVE_before(before)	
@@ -33,10 +33,6 @@ import java.util.ArrayList;
  * SIC_AVE_before(After)	
  * SIC_AVE_after(After)	
  * SIC_Qint_difference_After
- * 
- * 
- * 
- *
  */
 
 
@@ -221,15 +217,13 @@ public class prototypeintervalclass
 		int dis = 120;		
 		int last = 0;
 		
-		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null &&
-				utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null){
+		if(	utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex) != null){
 			last = utils.qM2.get(list.get(0).getBankrupcy().get(0).disposedIndex);
 		} else {
 			last = dis;
 		}
 		
-		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null &&
-				utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null){			
+		if(utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex) != null){			
 			first = utils.qM2.get(list.get(0).getBankrupcy().get(0).filedIndex);
 		} else {
 			first = dis2;
@@ -406,8 +400,6 @@ public class prototypeintervalclass
 			value.state = state;
 			if(
 					!(
-					//(Float.isNaN((value.afterAverageProfFirm))) &&
-					//(Float.isNaN((value.beforeAverageProfFirm))) &&
 					(Float.isNaN((value.afterAverageTQFirm))) &&
 					(Float.isNaN((value.beforeAverageTQFirm)))
 					)){
@@ -424,21 +416,6 @@ public class prototypeintervalclass
 	// THUS per row, thus per CUSIP; the following columns exist: beforeAVETQ, afterAVETQ, QintdifTQ (these three are all for the before category), the same three for the during category, same for after; FOR the SIC we have the same three values; before AVETQ, afterAVETQ and QintdifTQ (for each category:before, during, after)
 	//the values I am talking about are 17-26; we dont have to use the profatibility values since the TQ are enough to test the robustness of the program
 	
-	/*
-	public static void writeQuarterlyIntervalDiff(Object valList, 
-												  String outFile1, 
-												  String outFile2, 
-												  String outFile3, 
-												  String outFile4,
-												  String outFile5,
-												  String outFile6,
-												  String outFile7,
-												  String outFile8,
-												  String outFile9,
-												  String outFile10,
-												  String outFile11,
-												  String outFile12) throws IOException
-	*/
 	public static void writeQuarterlyIntervalDiff(Object valList)
 	{
 		Object[] vals = (Object[]) valList;			
@@ -454,12 +431,7 @@ public class prototypeintervalclass
 		
 		String[][] types = new String[2][categories.length];			
 		types[0] = categories;
-		types[1] =  dataTypes;
-			
-		//utils.constructARFFFile(filePath, types);		
-		//utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[0]), outFile1, outFile2, outFile3, outFile4, "BEFORE"), filePath);
-		//utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[1]), outFile5, outFile6, outFile7, outFile8, "DURING"), filePath);
-		//utils.writeToARFFFile(evaluateFirmSicQuery(((ArrayList<boundedValue>) vals[2]), outFile9, outFile10, outFile11, outFile12, "AFTER"), filePath);		
+		types[1] =  dataTypes;	
 	}
 	
 	public static void writeResultMatrix(Object valList, String resultFile) throws IOException
@@ -600,70 +572,12 @@ public class prototypeintervalclass
 			utils.writeList(resultFile, val);
 		}		
 	}
-	
-	
-	//		TBD candidate for removal
-	// Perform query
-	/*
-	public static String evaluateFirmSicQuery(ArrayList<boundedValue> vals, String file1, String file2, String file3, String file4, String period) throws IOException
-	{
-		boolean skip = false; float x = 0; float y = 0; float a = 0; float b = 0;
-		ArrayList<Float> tqFirm = new ArrayList<Float>();
-		ArrayList<Float> profFirm = new ArrayList<Float>();
-		ArrayList<Float> tqSIC = new ArrayList<Float>();
-		ArrayList<Float> profSIC = new ArrayList<Float>();		
-		ArrayList<String> arffLine = new ArrayList<String>();		
-		String all = "";		
-		String txt = "";
-		
-		for(int i = 0; i < vals.size();i++){		
-			
-			skip = false;
-			txt = "";
-			x = (float)vals.get(i).quarterlyIntervalTQDifference;
-			y = (float)vals.get(i).quarterlyIntervalProfDifference;			
-			if(
-					(Float.isNaN(x) || Float.isNaN(y)) || 
-					((x==0.0f) || (y==0.0f))  
-			  ){
-				skip = true;
-			}
-			else{}	
-			//sic
-			a = ((vals.get(i).afterAverageTQSIC - vals.get(i).beforeAverageTQSIC)) / vals.get(i).quarterSpan;
-			b = ((vals.get(i).afterAverageProfSIC - vals.get(i).beforeAverageProfSIC)) / vals.get(i).quarterSpan;
-			if(
-					(Float.isNaN(a) || Float.isNaN(b)) || 
-					((a==0.0f) || (b==0.0f))  ||
-					((float)vals.get(i).quarterSpan == 0.0f)
-			  ){
-				skip = true;
-			}
-			else{
-				if(!skip){							
-					txt = (vals.get(i).cusip + "," + x + "," + y + "," + a + "," + b + "," + period + "\r\n");
-					all += txt;
-					//tqFirm.add(x);
-					//profFirm.add(y);
-					//tqSIC.add(a);
-					//profSIC.add(b);
-				}
-			}	
-		}		
-		//utils.writeList(file1, getStringFromList(tqFirm));
-		//utils.writeList(file2, getStringFromList(profFirm));
-		//utils.writeList(file3, getStringFromList(tqSIC));
-		//utils.writeList(file4, getStringFromList(profSIC));		
-		
-		return all;		
-	}	
-	*/
+
 	// Main function
 	public static void main(String[] args) throws IOException 
 	{
 		System.out.println("HERE WE GO");
-		mat = new resultMatrix();
-		
+		mat = new resultMatrix();		
 		//setup elements
 		ReadFile f = new ReadFile(path);		
 		econo = f.getEconomy();
@@ -671,21 +585,6 @@ public class prototypeintervalclass
 		Object[] vals = doRoutine();
 		
 		//define file paths  TBD are these necessary?  I'm commenting them out
-	/*
-		String beforeTQDist = econo.filePath+"results\\beforeTQDist.txt"; 			//1
-		String beforeProfDist = econo.filePath+"results\\beforeProfDist.txt"; 		//2
-		String beforeSICTQDist = econo.filePath+"results\\beforeTQSICDist.txt"; 	//3
-		String beforeSICProfDist = econo.filePath+"results\\beforeProfSICDist.txt"; //4		
-		String duringTQDist = econo.filePath+"results\\duringTQDist.txt"; 			//5
-		String duringProfDist = econo.filePath+"results\\duringProfDist.txt"; 		//6
-		String duringSICTQDist = econo.filePath+"results\\duringTQSICDist.txt"; 	//7
-		String duringSICProfDist = econo.filePath+"results\\duringProfSICDist.txt"; //8		
-		String afterTQDist = econo.filePath+"results\\afterTQDist.txt";   			//9		
-		String afterProfDist = econo.filePath+"results\\afterProfDist.txt";   		//10
-		String afterSICTQDist = econo.filePath+"results\\afterTQSICDist.txt";   	//11		
-		String afterSICProfDist = econo.filePath+"results\\afterProfSICDist.txt";   //12
-	*/				
-		/*  This is where the variable is changed for now... */
 		
 		String tobinsqResultFile = econo.filePath+"TOBINSQresults\\resultFile.txt";
 		String atResultFile = econo.filePath+"ATresults\\resultFile.txt";		
@@ -695,33 +594,14 @@ public class prototypeintervalclass
 		String profResultFile = econo.filePath+"PROFresults\\resultFile.txt";
 		String saleResultFile = econo.filePath+"SALEresults\\resultFile.txt";
 		String prccResultFile = econo.filePath+"PRCCresults\\resultFile.txt";		
+		String atoResultFile = econo.filePath+"ATOresults\\resultFile.txt";
+		String nwResultFile = econo.filePath+"NETWORTHresults\\resultFile.txt";
 		
-		//  Change resultFile = X to any of the above.
-		String resultFile = tobinsqResultFile;
-
-		//perform econ exploration
+		//  Change resultFile = X to any of the above.		
+		String resultFile = atoResultFile;		
 		
-		//		Old 'write quarterly interval diff' function required several file inputs
-		/*
-		writeQuarterlyIntervalDiff(vals, 
-								   beforeTQDist,  		//1
-								   beforeProfDist,  	//2
-								   beforeSICTQDist,   	//3
-								   beforeSICProfDist,	//4 
-								   duringTQDist,		//5 
-								   duringProfDist, 		//6
-								   duringSICTQDist,		//7
-								   duringSICProfDist, 	//8
-								   afterTQDist,			//9
-								   afterProfDist,		//10
-								   afterSICTQDist, 		//11
-								   afterSICProfDist); 	//12	
-		*/
-		
-		writeQuarterlyIntervalDiff(vals);
-		
+		//perform econ exploration		
+		writeQuarterlyIntervalDiff(vals);		
 		writeResultMatrix(vals, resultFile);
 	}	
 }
-
-

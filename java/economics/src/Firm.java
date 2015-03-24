@@ -9,9 +9,6 @@ public class Firm
 	int dateIndex;
 	
 	boolean GC;
-	boolean MA;
-	boolean TA;
-	boolean AQ;
 	boolean BK;
 	
 	String category;	
@@ -42,7 +39,6 @@ public class Firm
 	String NW;
 	
 	ArrayList<Bankrupcy> bankrupcy = new ArrayList<Bankrupcy>();
-	ArrayList<Merger> merger = new ArrayList<Merger>();
 	String labor;	
 	List<Firm> entries;
 	
@@ -71,14 +67,9 @@ public class Firm
 		NW= "";
 		
 		GC = false;
-		MA = false;
 		BK = false;
-		TA = false;
-		AQ = false;
-		//dateIndex = 0;
 		
 		bankrupcy = new ArrayList<Bankrupcy>();
-		merger = new ArrayList<Merger>();		
 		entries=new ArrayList<Firm>();
 	}
 	
@@ -88,69 +79,15 @@ public class Firm
 		labor=e;
 		sic=s;
 		GC = false;
-		MA = false;
 		BK = false;
-		TA = false;
-		AQ = false;
 	}
 	
-	public void setMerger(Merger m){
-		merger.add(m);
-		MA = true;
-		if(m.targetcusip == this.cusip){
-			TA = true;
-		}
-		if(m.acquirercusip == this.cusip){
-			AQ = true;
-		}
-	}	
 	
-	public Merger getMerger(String type){
-		Merger tmp = new Merger();
-		
-		for(int i =0; i<merger.size();i++){
-			
-			if(type == "target"){
-
-			if(((merger.get(i).targetcusip == cusip)) && 
-			  ((merger.get(i).announcedIndex <= dateIndex) && 
-			   (merger.get(i).effectiveIndex >= dateIndex))){
-					System.out.println("You got target: "+merger.get(i).targetcusip);
-					tmp= merger.get(i);		
-					return tmp;
-			}
-			}
-			else if (type == "acquirer"){
-				 if(((merger.get(i).acquirercusip == cusip)) &&
-				    ((merger.get(i).announcedIndex < dateIndex) && 
-					 (merger.get(i).effectiveIndex > dateIndex))){
-					System.out.println("You got acquirer: "+merger.get(i).acquirercusip);
-					tmp= merger.get(i);		
-					return tmp;
-				 }				 
-			}
-			else{
-				
-			}
-		}
-		
-		return tmp;
-		//return merger;
-	}
 	public void setBankrupcy(Bankrupcy b){
 		bankrupcy.add(b);
 	}
 	public ArrayList<Bankrupcy> getBankrupcy(){
-//		Bankrupcy tmp = new Bankrupcy();		
-//		for(int i =0; i<bankrupcy.size();i++){
-//			if(((bankrupcy.get(i).cusip == cusip) ) && 
-//			  ((bankrupcy.get(i).filedIndex <= dateIndex) && 
-//			   (bankrupcy.get(i).effectiveIndex >= dateIndex))){
-//				System.out.println("You got BK: "+bankrupcy.get(i).cusip);
-//					tmp= bankrupcy.get(i);				
-//			}
-//			else{}
-//		}		
+
 		return bankrupcy;
 	}
 	

@@ -51,7 +51,6 @@ public class EconUtils
 		{
 			if(E.AllFirms2.get(aList.get(j)) != null){
 				E.AllFirms2.get(aList.get(j)).BK = true;
-				E.AllFirms2.get(aList.get(j)).MA = false;
 				E.AllFirms2.get(aList.get(j)).GC = false;
 				count++;
 			}
@@ -224,15 +223,20 @@ public class EconUtils
 	        	firm.Market_value_equity=values[20];
 	        	firm.Equity_book_value=values[21];   
 	        	firm.Tobins_Q=values[22];	
-	        	firm.ATO=calculateATO(firm);
-	        	firm.NW=calculateNW(firm);
+	        	
+	        	//calculated in excel
+	        	firm.ATO=values[23];
+	        	firm.NW=values[24];
+	        	
+	        	//firm.ATO=calculateATO(firm);   _inApp
+	        	//firm.NW=calculateNW(firm);     _inApp
 	        	firm.dateIndex = dM2.get(firm.datadate);
 	        	//  Since we use tobins q the correct way, please edit the line below to focus on a certain variable
 	        	// I chose at first, but you should choose everything else in the list in order
 	        	
 	        	//  EVERYTHING COMMENTED MEANS TOBINS Q
 	        	
-	        	firm.Tobins_Q = firm.atq;	            
+	        	firm.Tobins_Q = firm.ATO;	            
 	        	//firm.Tobins_Q = firm.oibdpq;
 	        	//firm.Tobins_Q = firm.ppegtq;
 	        	//firm.Tobins_Q = firm.Market_value_equity;
@@ -402,7 +406,6 @@ public class EconUtils
 		String txt = "";
 		int[] count = {0,0,0,0,0};				
 		ArrayList<Firm> tmp;
-		//boolean[] y = null;
 		boolean[] y = {false,false,false,false};	
 		
 		// checking bankrupcy for file write filtering		
@@ -499,76 +502,12 @@ public class EconUtils
 		for(int i = 0; i < values.size(); i++)
 		{
 			scores.add(
-					(float) ((values.get(i) - averageN(values)) / (std))	//xbar - mu0 / std_dev*sqrt(N) gives test statistic
+				(float) ((values.get(i) - averageN(values)) / (std))	//xbar - mu0 / std_dev*sqrt(N) gives test statistic
 			);
 		}		
 		return scores;		
 	}
-	
-	
-	/*
-	public void writespecificQuery(Economy Eco, ArrayList<String> list, Firm f, String[] foundFiles) throws IOException{
 
-		String txt = "";
-		int[] count = {0,0,0};				
-		ArrayList<Firm> tmp;
-		//boolean[] y = null;
-		boolean[] y = {false,false,false};
-		if(Eco."BEFORE".get(f.cusip) != null){
-			for(int j = 0;j<Eco."BEFORE".get(f.cusip).size();j++){						
-				boolean[] x = Eco.bankTree.get(f.cusip).get(j).evaluateBK(dM2.get(f.datadate));
-				boolean[] xx = {
-					(x[0] && f.setCategory("BEFORE")),
-					(x[1] && f.setCategory("DURING")),
-					(x[2] && f.setCategory("AFTER")),
-					(x[3] && f.setCategory("NEVER"))
-				};
-				txt = dM2.get(f.datadate)+", "+f.cusip+","+f.ppegtq + ", " + f.Tobins_Q + ", " + f.sic + ","+(qtrmap.get(dM2.get(f.datadate))+","+(j+1)+","+f.category);
-	}
-		}
-	}
-	*/
-				
-	//  float  f.ppegt - averageK( per quarter sic );
-	
-		
-	
-	
-	//		get all firms having f.sic and f.quarter; start with one CUSIP get SIC and write out file for all the quarters it has to find the average of the SIC for
-	/*		if(Eco.DuringTree.get(f.cusip) != null){
-			for(int j = 0;j<Eco.DuringTree.get(f.cusip).get(f.sic).get(f.quarter).size();j++) {
-			return perCusipSicquartersList;
-			
-			for(int j =0; j<Eco.GCalwaysTree.get(f.quarter).size();j++) {
-			return sicGCalwaysList;
-			
-			
-			.sicTree.get(f.sic).get(f.quarter).size();j++){	
-			
-			}
-			public ArrayList<firm> sicFirmList string (filename)
-	 * 		ArrayList<firm> sicFirmList = Econ.sicTree.get(f.sic);
-	 * 		return sicFirmList ; 
-	 *		}
-	 *		public ArrayList<firm> sicFirmList string (filename)
-	 * 		ArrayList<firm> quarterFirmSICList = Econ.sicTree.get(f.sic).get(f.quarter);
-	 * 		return quarterFirmSICList;
-	 * 
-	 * 		for(int i = 0; i<sicFirmList.size();i++){
-	 * 			if(sicFirmList.get(i).quarter == f.quarter){
-	 * 				quarterFirmSICList.add(sicFirmList.get(i));	
-	 * 			}
-	 * 		}
-	 * 
-	 * 		float averageSicAtQuarter = averageK(quarterFirmList);
-	 * 		
-	 * 		float differenceFromSic = f.ppegt - averageSicAtQuarter;
-	 * 
-	 * 
-	 * 		
-	 * 
-	 */
-	//	 f.ppegt - averageK( within BK all firms );
 	public String calculateATO(Firm f){
 		
 		return  ((Float) ( Float.parseFloat(f.saleq)/Float.parseFloat(f.atq) )).toString();
@@ -668,17 +607,11 @@ public class EconUtils
 			System.out.println("NULL LIST ");
 		}
 		return txt;
-	}
-	
-	
+	}	
 	
 	public void printSICTree(Economy e){
 			System.out.println(e.sicTree.toString());
 	}
-	
-	// constructing before/during/after firm difference values ; begin with two intervals per class
-	
-	
 	
 	public String printFirmTransitionObject(ArrayList<ArrayList<ArrayList<Firm>>> list){
 		
@@ -707,26 +640,13 @@ public class EconUtils
 						if(firm.category != "NEVER")
 						{
 							tmp = "CUSIP: "+firm.cusip+" Date: "+firm.dateIndex+" Quarter: "+qM2.get(firm.dateIndex) + " State: "+firm.category;
-							//System.out.println(txt+tmp);
 							retVal += (txt+tmp+"\n");
-							//try {
-								//writeList(fname,(txt+tmp));
-							//} catch (IOException e) {
-							//	System.out.println("BAD FILENAME IN FIRM TRANSITION OBJECT");
-							//	e.printStackTrace();
-							//}
 						}
 						txt = "";				
 					}
-				}				
-
+				}
 			}
-		}
-		
-		return retVal;
-		
-	}
-
-	
-	
+		}		
+		return retVal;		
+	}	
 }

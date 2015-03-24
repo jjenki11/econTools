@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -132,14 +132,10 @@ public class Bankrupcy {
 		state[0] = BankrupcyBefore(data, 2); 			// if firm is in BK now
 		state[1] = withinBankrupcyNow(data); 			// if firm is preceding BK
 		state[2] = BankrupcyAfter(data,2); 				// if firm emerges out of BK
-		//state[3] = (state[0] || state[1] || state[2]); 	// if firm is ever in BK		
 		state[3] = !(state[0] || state[1] || state[2]);							// if firm was never in BK, GC
 		return state;
 	}
 	
-	//public void addBKNOWToList(Bankrupcy bank){
-	//	bankrupcyList.add(bank);
-	//}
 	public void addBKBEFORETolist (Bankrupcy bank){
 		bankrupcyList.add(bank);
 	}		

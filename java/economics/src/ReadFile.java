@@ -22,20 +22,20 @@ public class ReadFile {
 		String bkCusipFile = util.filePath+"brd_cusips.txt";
 		
 		//db filenames
-		String filename = util.filePath+"crsp_quarterly_and_yearly_large6.txt";
-		
+		String filename = util.filePath+"crsp_removed_blanks_net_worth_asset_turnover.txt";
 		//  Define all the data types u want to go to separate folders		
 		String tobinsqResult = util.filePath+"TOBINSQresults\\";
 		String atResult = util.filePath+"ATresults\\";		
 		String oibdpResult = util.filePath+"OIBDPresults\\";
 		String ppegtResult = util.filePath+"PPEGTresults\\";
-		String mveResul = util.filePath+"MVEresults\\";
+		String mveResult = util.filePath+"MVEresults\\";
 		String profResult = util.filePath+"PROFresults\\";
 		String saleResult = util.filePath+"SALEresults\\";
 		String prccResult = util.filePath+"PRCCresults\\";
-		
-	//  Change selected = <|xxxxxxx|> + "something.txt" where xxxxxxx is any of the above folder paths.		
-		String selected = tobinsqResult;		
+		String atoResult = util.filePath+"ATOresults\\";
+		String netWorthResult = util.filePath+"NETWORTHresults\\";
+		//  Change selected = <|xxxxxxx|> + "something.txt" where xxxxxxx is any of the above folder paths.		
+		String selected = atoResult;		
 		String bkBeforeFile =         selected     +  "bk_before.txt";
 		String bkDuringFile =         selected     +  "bk_during.txt";
 		String bkAfterFile  =         selected     +  "bk_after.txt";
@@ -85,32 +85,31 @@ public class ReadFile {
 			try {
 				xx = util.writeIfFound(E, bkList, f, outputFileArray);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			 counter[0] += xx[0];	 
 			 counter[1] += xx[1];	
 			 counter[2] += xx[2];	
-			 counter[3] += xx[3];
-			 System.out.println(counter[3]);			 
+			 counter[3] += xx[3]; 
+			 System.out.println(perDone + "\t % done");
+			 //	Iff you want to see list building (makes things slower)
+			 /*
 			 System.out.println(perDone+" %  |  BK(before) : "+counter[0]+"  |  BK(during): "+counter[1] +
 					 					"    |  BK(after) : "+counter[2]+
-					 					"    |  GC(always) :"+counter[3]+ "  |  ");//TG: "+tgCount + "  |  AQ: "+aqCount);	
+					 					"    |  GC(always) :"+counter[3]+ "  |  ");//TG: "+tgCount + "  |  AQ: "+aqCount);
+			 */
 			 idx++;
 		 }		
 		 System.out.println("Done writing files!");     
 		 System.out.println("Printing firm transition object?");	
-		//E.shareResults();
+		//E.shareResults();  //  this will print out the results to the console -- interesting way to access data set in shareResults file found in Economy.java
 		text = util.printFirmTransitionObject(E.createFirmTransitionObj(bkList));
 		ECONOMY = E;
-	}
-	
+	}	
 	public Economy getEconomy(){
 		return ECONOMY;
-	}
-	
+	}	
 	public String getText(){
-		return text;
-		
+		return text;		
 	}
 }

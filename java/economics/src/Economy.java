@@ -1,4 +1,4 @@
-//package test;
+package test;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,56 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Economy {
-	
+public class Economy 
+{
 	public String filePath;
 	
 	public List<Firm> AllFirms;
 	public BTree<String,Firm> AllFirms2;
     public EconUtils utilities;
 	
-	public BTree<String,ArrayList<Firm>> targetTree;
-	public BTree<String,ArrayList<Firm>> acquirerTree;
 	public BTree<String,ArrayList<Firm>> bankruptTree;
 	public BTree<String,ArrayList<Firm>> goingConcernTree;
 
-	public BTree<String,ArrayList<Merger>> mergeTree;
 	
-	public BTree<Integer,ArrayList<Merger>> successfulMergerTree;
-	public BTree<Integer,ArrayList<Merger>> failedMergerTree;
-	
-	public BTree<String,ArrayList<Merger>> tarTree;
-	public BTree<String,ArrayList<Merger>> acqTree;
 	public BTree<String,ArrayList<Bankrupcy>> bankTree; 
 	public BTree<String,ArrayList<Firm>> firmTree;
 	public BTree<String,ArrayList<Firm>> BeforeTree;
 	public BTree<String,ArrayList<Firm>> DuringTree;
 	public BTree<String,ArrayList<Firm>> AfterTree;
 	
-	// add category specific trees and create trees for intersection of those trees
-	
-	//public BTree <String,Btree> int , BTree > String, ArrayList<Firm>>> BKGCalwaysComp ;//
-	
-	//public BTree<String, BTree<String, BTree<String, ArrayList<Firm>>>> bigTree = new BTree<String, BTree<String, BTree<String, ArrayList<Firm>>>>();
-	
-	//ArrayList<Firm> firmList = bigTree.get("SIC").get("BKNOW").get("1");
-	
-	//public Btree <String, withinBanrupcyNow > ;
-	//public void Bankrupcy(BTree<String, ArrayList<Firm>> bt1){
-		
-		
-		
-	//}
-	
-	public BTree<String,ArrayList<Firm>> sicTree;
-	
+	public BTree<String,ArrayList<Firm>> sicTree;	
 	public BTree<String,ArrayList<Firm>> categoryTree;
 	
 	public BTree<Integer,ArrayList<Firm>> quarterTree;
 	
-	public ArrayList<String> cusipList;
-	
-	
+	public ArrayList<String> cusipList;	
 	
 //	Describe data in terms of bk, tgt, acq, gc
 		int goingconcernCount = 0;
@@ -67,8 +41,8 @@ public class Economy {
 		BTree<String, Integer> dM;
 		BTree<Integer, Integer> qM;
 	
-	public Economy(String path){
-		
+	public Economy(String path)
+	{
 		filePath = path;
 		dM = m.dateMap(path);			
 		qM = m.quartermap(path);
@@ -80,17 +54,8 @@ public class Economy {
 		firmTree = new BTree<String,ArrayList<Firm>>();		
 		
 		bankTree = new BTree<String,ArrayList<Bankrupcy>>();		
-		mergeTree = new BTree<String,ArrayList<Merger>>();
-		
-		successfulMergerTree = new BTree<Integer,ArrayList<Merger>>();
-		failedMergerTree = new BTree<Integer,ArrayList<Merger>>();
-
-		tarTree = new BTree<String,ArrayList<Merger>>();
-		acqTree = new BTree<String,ArrayList<Merger>>();
 
 		bankruptTree = new BTree<String,ArrayList<Firm>>();
-		targetTree = new BTree<String,ArrayList<Firm>>();
-		acquirerTree = new BTree<String,ArrayList<Firm>>();		
 		goingConcernTree = new BTree<String,ArrayList<Firm>>();		
 		sicTree = new BTree<String,ArrayList<Firm>>();
 		categoryTree = new BTree<String,ArrayList<Firm>>();
@@ -102,285 +67,6 @@ public class Economy {
 		
 	}
 	
-	public ArrayList<String> setupTarget(String filename){
-		ArrayList<String> tList = new ArrayList<String>();
-		return tList;		
-		
-	}
-	
-	public ArrayList<String> setupAcquirer(String filename){
-		ArrayList<String> aList = new ArrayList<String>();		
-		return aList;
-	}
-	
-	public void doTarget(String filename, String cusips){
-		BTree<String,ArrayList<Merger>> treeTarget = new BTree<String,ArrayList<Merger>>();
-		//int INDEX = 0;		
-		int index =0;
-		ArrayList<String> tcusips = utilities.readList(cusips);
-		
-		Merger b;
-	 	String text="";		
-	 	//Writer out;
-		Mapping m = new Mapping();
-		BTree<String, Integer> dM = m.dateMap(filePath);	
-		String[] values = new String[4];
-		//read in successful mergers
-		//String filename = "C:\\Users\\jeff\\Desktop\\econ_project\\sdc_processing\\m_a_data_success.txt";
-		//i = 0;
-		ArrayList<Merger> l;	
-		
-		try {
-		    BufferedReader in = new BufferedReader(new FileReader(filename));
-		    String str;    
-		    str = in.readLine();  
-		    
-		    while ((str = in.readLine()) != null) 
-		    {	        	
-	            values = str.split(",");	 
-	            
-	            b = new Merger();
-	            b.acquirercusip = values[0];
-	            b.targetcusip = values[1];
-	            b.dateAnnounced = values[2];
-	            b.dateEffective = values[3];
-	            
-	            b.merge = "yes";
-	            if(dM.get(b.dateAnnounced) == null){
-	            	b.announcedIndex = 0;
-	            }
-	            else{
-	            	b.announcedIndex = dM.get(b.dateAnnounced);
-	            }
-	            if(dM.get(b.dateEffective) == null){
-	            	b.effectiveIndex = 0;
-	            	b.daysIn = 10957-b.announcedIndex;
-	            }
-	            else{
-	            	 b.effectiveIndex = dM.get(b.dateEffective);
-	            	 b.daysIn = b.effectiveIndex - b.announcedIndex;
-	            }            
-	            
-	            text = b.targetcusip+","+b.acquirercusip+","+b.daysIn+","+b.merge+","+b.announcedIndex+","+b.effectiveIndex;
-	            
-	            for(int i=0;i<tcusips.size();i++){
-			        if(tcusips.get(i) == b.targetcusip){
-		            	treeTarget.get(b.targetcusip).add(b);
-		            	//System.out.println("FOUND TARGET DATE ANNOUNCED: "+b.dateAnnounced +" | INDEX FOUND: "+dM.get(b.dateAnnounced));	 
-		            	//System.out.println("Target FIRM: "+b.targetcusip+" has "+treeTarget.get(b.targetcusip).size()+" entries.");
-		            	targetCount++;
-		            }
-		            else if(treeTarget.get(b.targetcusip) == null){
-		            	l = new ArrayList<Merger>();
-		            	l.add(b);
-		            	treeTarget.put(b.targetcusip, l);
-		            	//System.out.println("NEW TARGET DATE ANNOUNCED: "+b.dateAnnounced +" | INDEX FOUND: "+dM.get(b.dateAnnounced));	 
-		            	//System.out.println("NEW TGT: "+b.targetcusip);
-		            	targetCount++;
-		            }  
-	            }
-		            index++;
-		    }
-		    in.close();
-			//tarTree = treeTarget;
-			//acqTree = treeAcquirer;
-		} catch (IOException e) {
-			System.out.println("BAD FILE WAS > " + filename);
-		    System.out.println("File Read Error in doTarget");
-		    System.exit(0);
-		}	    
-		setTGTree(treeTarget);
-		System.out.println("Reading successful target data: done!");		
-	}
-	
-	public void doAcquirer(String filename, String cusips){
-		
-		BTree<String,ArrayList<Merger>> treeAcquirer = new BTree<String,ArrayList<Merger>>();
-		ArrayList<String> acquirers = setupAcquirer(cusips);
-		int INDEX = 0;	
-		ArrayList<String> acusips = utilities.readList(cusips);
-		Merger b;
-	 	String text="";		
-	 	//Writer out;
-		Mapping m = new Mapping();
-		BTree<String, Integer> dM = m.dateMap(filePath);	
-		String[] values = new String[4];
-		//read in successful mergers
-		//String filename = "C:\\Users\\jeff\\Desktop\\econ_project\\sdc_processing\\m_a_data_success.txt";
-		//i = 0;
-		ArrayList<Merger> l;	
-		
-		try {
-		    BufferedReader in = new BufferedReader(new FileReader(filename));
-		    String str;    
-		    str = in.readLine();  
-		    
-		    while ((str = in.readLine()) != null) 
-		    {	        	
-	            values = str.split(",");	 
-	            
-	            b = new Merger();
-	            b.acquirercusip = values[0].substring(values[0].length());
-	            b.targetcusip = values[1].substring(values[1].length());
-	            b.dateAnnounced = values[2];
-	            b.dateEffective = values[3];
-	            
-	            b.merge = "yes";
-	            if(dM.get(b.dateAnnounced) == null){
-	            	b.announcedIndex = -1;
-	            }
-	            else{
-	            	b.announcedIndex = dM.get(b.dateAnnounced);
-	            }
-	            if(dM.get(b.dateEffective) == null){
-	            	b.effectiveIndex = -1;
-	            	b.daysIn = 10957-b.announcedIndex;
-	            }
-	            else{
-	            	 b.effectiveIndex = dM.get(b.dateEffective);
-	            	 b.daysIn = b.effectiveIndex - b.announcedIndex;
-	            }
-	            
-	            
-	           // text = b.targetcusip+","+b.acquirercusip+","+b.daysIn+","+b.merge+","+b.announcedIndex+","+b.effectiveIndex;
-		            for(int i=0;i<acusips.size();i++){
-			            if((acusips.get(i) == b.acquirercusip) || 
-			            	(acusips.get(i) == b.acquirercusip)){
-			            	b.acquirercusip = acusips.get(i);
-			            	treeAcquirer.get(b.acquirercusip).add(b);
-			            	//System.out.println("FOUND ACQ DATE ANNOUNCED: "+b.dateAnnounced +" | INDEX FOUND: "+dM.get(b.dateAnnounced));	 
-			            	//System.out.println("Acquirer FIRM: "+b.acquirercusip+" has "+treeAcquirer.get(b.acquirercusip).size()+" entries.");	
-			            	acquirerCount++;
-			            }
-			            else{
-			            	l = new ArrayList<Merger>();
-			            	l.add(b);
-			            	treeAcquirer.put(b.acquirercusip, l);
-			            	//System.out.println("NEW ACQ DATE ANNOUNCED: "+b.dateAnnounced +" | INDEX FOUND: "+dM.get(b.dateAnnounced));	 
-			            	//System.out.println("NEW ACQ: "+b.acquirercusip);
-			            	acquirerCount++;
-			            }		            	
-		            }
-
-		            /*
-		            if(type.equals("S")){
-		            	l = new ArrayList<Merger>();
-		            	l.add(b);
-		            	getSuccessMATree().put(INDEX, l);		            	
-		            } */  
-		            INDEX++;
-		    }
-		    in.close();
-			//tarTree = treeTarget;
-			//acqTree = treeAcquirer;
-		} catch (IOException e) {
-			System.out.println("BAD FILE WAS > " + filename);
-		    System.out.println("File Read Error in doTarget");
-		    System.exit(0);
-		}	    
-		setAQTree(treeAcquirer);
-		System.out.println("Reading successful target data: done!");		
-	}
-    /*	
-	public void doMerger(String filename)
-	{
-		
-
-
-		
-		int INDEX = 0;
-			
-
-		
-		Merger b;
-	 	String text="";		
-	 	//Writer out;
-		Mapping m = new Mapping();
-		BTree<String, Integer> dM = m.dateMap();	
-		String[] values = new String[4];
-		//read in successful mergers
-		//String filename = "C:\\Users\\jeff\\Desktop\\econ_project\\sdc_processing\\m_a_data_success.txt";
-		//i = 0;
-		ArrayList<Merger> l;	
-		
-		try {
-		    BufferedReader in = new BufferedReader(new FileReader(filename));
-		    String str;    
-		    str = in.readLine();  
-		    
-		    while ((str = in.readLine()) != null) 
-		    {	        	
-	            values = str.split(",");	 
-	            
-	            b = new Merger();
-	            b.acquirercusip = values[0];
-	            b.targetcusip = values[1];
-	            b.dateAnnounced = values[2];
-	            b.dateEffective = values[3];
-	            
-	            b.merge = "yes";
-	            if(dM.get(b.dateAnnounced) == null){
-	            	b.announcedIndex = -1;
-	            }
-	            else{
-	            	b.announcedIndex = dM.get(b.dateAnnounced);
-	            }
-	            if(dM.get(b.dateEffective) == null){
-	            	b.effectiveIndex = -1;
-	            	b.daysIn = 10957-b.announcedIndex;
-	            }
-	            else{
-	            	 b.effectiveIndex = dM.get(b.dateEffective);
-	            	 b.daysIn = b.effectiveIndex - b.announcedIndex;
-	            }
-	            
-	            
-	            text = b.targetcusip+","+b.acquirercusip+","+b.daysIn+","+b.merge+","+b.announcedIndex+","+b.effectiveIndex;
-	            
-		            if(treeTarget.get(b.targetcusip) != null){
-		            	treeTarget.get(b.targetcusip).add(b);
-		            	System.out.println("FOUND TARGET DATE ANNOUNCED: "+b.dateAnnounced +" | INDEX FOUND: "+dM.get(b.dateAnnounced));	 
-		            	//System.out.println("Target FIRM: "+b.targetcusip+" has "+treeTarget.get(b.targetcusip).size()+" entries.");
-		            	targetCount++;
-		            }
-		            else if(treeTarget.get(b.targetcusip) == null){
-		            	l = new ArrayList<Merger>();
-		            	l.add(b);
-		            	treeTarget.put(b.targetcusip, l);
-		            	System.out.println("NEW DATE ANNOUNCED: "+b.dateAnnounced +" | INDEX FOUND: "+dM.get(b.dateAnnounced));	 
-		            	//System.out.println("NEW TGT: "+b.targetcusip);
-		            	targetCount++;
-		            }
-		            
-		            if(treeAcquirer.get(b.acquirercusip) != null){
-		            	treeAcquirer.get(b.acquirercusip).add(b);
-		            	System.out.println("FOUND ACQ DATE ANNOUNCED: "+b.dateAnnounced +" | INDEX FOUND: "+dM.get(b.dateAnnounced));	 
-		            	//System.out.println("Acquirer FIRM: "+b.acquirercusip+" has "+treeAcquirer.get(b.acquirercusip).size()+" entries.");	
-		            	acquirerCount++;
-		            }
-		            else if(treeAcquirer.get(b.acquirercusip) == null){
-		            	l = new ArrayList<Merger>();
-		            	l.add(b);
-		            	treeAcquirer.put(b.acquirercusip, l);
-		            	System.out.println("NEW DATE ANNOUNCED: "+b.dateAnnounced +" | INDEX FOUND: "+dM.get(b.dateAnnounced));	 
-		            	//System.out.println("NEW ACQ: "+b.acquirercusip);
-		            	acquirerCount++;
-		            }
-		            INDEX++;
-		    }
-		    in.close();
-			//tarTree = treeTarget;
-			//acqTree = treeAcquirer;
-		} catch (IOException e) {
-		    System.out.println("File Read Error");
-		}	    
-		setTGTree(treeTarget);
-		setAQTree(treeAcquirer);
-		System.out.println("Reading successful merger data: done!");
-	}	
-	
-	
-	*/
 	public void doBankrupcy(String filename){
 		
 		BTree<String,ArrayList<Bankrupcy>> tree = new BTree<String,ArrayList<Bankrupcy>>();
@@ -437,8 +123,7 @@ public class Economy {
 	            if(dM.get(b.dateFiled) == null){
 	            	b.filedIndex = 0;
 	            }
-	            else{
-	            	///System.out.println(b.dateFiled+" | INDEX FOUND: "+dM.get(b.dateFiled));	            	
+	            else{	
 	            	b.filedIndex = dM.get(b.dateFiled);
 	            }
 	            if(dM.get(b.dateDisposed) == null){
@@ -483,24 +168,17 @@ public class Economy {
 	        			 b.emergingIndex+","+
 	        			 b.filedIndex+","+
 	        			 b.disposedIndex;    */
-	        	 //System.out.println(text);
 	            
 	            if(tree.get(b.cusip) != null){ //the cusip has a prior entry
 	            	tree.get(b.cusip).add(b); // so add the new entry to the bk tree	            	
-	            	//System.out.println("BK FIRM: "+b.cusip+" has "+tree.get(b.cusip).size()+" entries.");	
 	            	bankruptCount++;
 	            }
 	            else{ //we havent seen this cusip yet
 	            	ArrayList<Bankrupcy> l = new ArrayList<Bankrupcy>(); //make a new list to insert with the cusip
 	            	l.add(b);	  	//add the bk to the new list
 	            	tree.put(b.cusip, l);	//put <cusip, ArrayList<Bankrupcy>> key,value pair into tree
-	            	//System.out.println("NEW BK");
 	            	bankruptCount++;
 	            }
-	            
-	           // System.out.println(b.filedIndex);
-	           // BT.put(b.cusip, )
-		    	//bankrupcyList.add(b);
 		    }		    
 		    in.close();		    
 		} catch (IOException e) {
@@ -508,38 +186,16 @@ public class Economy {
 		    System.out.println("File Read Error in doBankrupcy");
 		    System.exit(0);
 		}	    
-		System.out.println("Reading bankrupcy data: done!");
-		
+		System.out.println("Reading bankrupcy data: done!");		
 		setBKTree(tree); //this sets the 
 	}	
 	
-	public BTree<Integer,ArrayList<Merger>> getSuccessMATree(){
-		return successfulMergerTree;
-	}		
-	public void setSuccessMATree(BTree<Integer,ArrayList<Merger>> t){
-		successfulMergerTree = t;
-	}	
-	public BTree<String,ArrayList<Merger>> getFailMATree(){
-		return mergeTree;
-	}
 	public void setBKTree(BTree<String,ArrayList<Bankrupcy>> bt){
 		bankTree = bt;
 	}
-	public BTree<String,ArrayList<Merger>> getMATree(){
-		return mergeTree;
-	}
 	
-	public void setTGTree(BTree<String,ArrayList<Merger>> f){	
-		tarTree = f;
-	}
-	public void setAQTree(BTree<String,ArrayList<Merger>> f){
-		acqTree = f;
-	}
-	
-
-	
-	public ArrayList<Firm> getFirmsInSIC(String sic){
-		
+	public ArrayList<Firm> getFirmsInSIC(String sic)
+	{	
 		ArrayList<Firm> fInSIC = new ArrayList<Firm>();
 		
 		for(int i = 0;i < sicTree.get(sic).size(); i++){
@@ -549,8 +205,8 @@ public class Economy {
 		return fInSIC;	
 	}
 	
-	public ArrayList<Firm> getFirmsInQuarter(ArrayList<Firm> tree, Integer quarter){
-		
+	public ArrayList<Firm> getFirmsInQuarter(ArrayList<Firm> tree, Integer quarter)
+	{
 		ArrayList<Firm> fInQuarter = new ArrayList<Firm>();
 		
 		for(int i=0; i<tree.size();i++){
@@ -561,8 +217,8 @@ public class Economy {
 		return fInQuarter;
 	}
 	
-	public float[] compareSICandFirm(Firm f){
-		
+	public float[] compareSICandFirm(Firm f)
+	{
 		ArrayList<Firm> inSic = getFirmsInSIC(f.sic);		
 		Integer qtr = utilities.getQuarterIndex(qM, dM.get(f.datadate));		
 		ArrayList<Firm> inQuarter = getFirmsInQuarter(inSic, qtr);		
@@ -571,13 +227,10 @@ public class Economy {
 		
 		float[] result = 
 		{				
-				(Float.parseFloat(f.ppegtq) - avgK),
-				(Float.parseFloat(f.Tobins_Q) - avgQ)
-				
-		};
-		
-		return result;
-		
+			(Float.parseFloat(f.ppegtq) - avgK),
+			(Float.parseFloat(f.Tobins_Q) - avgQ)				
+		};		
+		return result;		
 	}
 	
 	public void shareResults(){	
@@ -599,11 +252,8 @@ public class Economy {
 		for(int i = 0;i<after.size();i++){
 			float[] tmp = compareSICandFirm(after.get(i));
 			System.out.println("difference in K: "+ tmp[0] + " difference in TQ: "+ tmp[1]);
-		}
-		
+		}		
 	}
-	
-
 	
 	/**
 	 * 
@@ -616,9 +266,8 @@ public class Economy {
 	 * @param cusips
 	 * @return
 	 */
-	public ArrayList<ArrayList<ArrayList<Firm>>> createFirmTransitionObj(ArrayList<String> cusips) {
-		// TODO Auto-generated method stub
-		
+	public ArrayList<ArrayList<ArrayList<Firm>>> createFirmTransitionObj(ArrayList<String> cusips) 
+	{		
 		ArrayList<Firm> beforeList = new ArrayList<Firm>();
 		ArrayList<Firm> duringList = new ArrayList<Firm>();
 		ArrayList<Firm> afterList= new ArrayList<Firm>();
@@ -627,9 +276,7 @@ public class Economy {
 		ArrayList<ArrayList<Firm>> cusipTimeSeries;
 
 		for(int i = 0; i<cusips.size();i++)
-		{
-			
-			
+		{			
 			cusipTimeSeries = new ArrayList<ArrayList<Firm>>();
 			
 			beforeList = BeforeTree.get(cusips.get(i));
@@ -644,12 +291,8 @@ public class Economy {
 			cusipTimeSeries.add(duringList);
 			cusipTimeSeries.add(afterList);
 			
-			firmTimeSeries.add(cusipTimeSeries);
-			
+			firmTimeSeries.add(cusipTimeSeries);			
 		}
-
 		return firmTimeSeries;
-	}
-
-	
+	}	
 }
